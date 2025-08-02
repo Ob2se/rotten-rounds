@@ -1,0 +1,38 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanel
+@namespace Sandbox
+
+<div class="play-container @(IsMenuVisible ? "" : "hidden")">
+    <div class="bg-strip"></div>
+    <div class="button-containers">
+        <button class="button-join" @onclick="@OnJoinClicked">Join</button>
+        <button class="button-create" @onclick="@OnCreateClicked">Create</button>
+    </div>
+</div>
+
+@code
+{
+
+    MainMenuPanelComponent mainMenu { get; set; }
+
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( IsMenuVisible );
+
+    void OnJoinClicked()
+    {
+        Log.Info("hello");
+    }
+
+
+    void OnCreateClicked()
+    {
+        var x = AddChild<CreateGame>();
+        
+    }
+
+
+}

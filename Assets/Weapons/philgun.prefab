@@ -1,0 +1,206 @@
+{
+  "RootObject": {
+    "__guid": "87268560-094b-4b2f-8999-ef7e2ba64c42",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "philgun",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "ZEssentialsTest.BaseWeapon",
+        "__guid": "a4424409-2065-46cd-87fb-a2059bf804e2",
+        "__enabled": true,
+        "AmmoMax": 144,
+        "Automatic": false,
+        "FireRate": 6,
+        "FleshImpactEffectPrefab": null,
+        "ImpactEffectPrefab": "particles/surfaces/impact.generic.prefab",
+        "MagMax": 12,
+        "MuzzleFlashPrefab": "prefabs/weapon_effects/pistol_muzzleflash.prefab",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "ReloadTime": 1500,
+        "WeaponContainer": null,
+        "WeaponDamage": 10,
+        "WeaponModel": {
+          "_type": "component",
+          "component_id": "0a0adfac-52c3-4f67-b9e4-0aa1149cdc50",
+          "go": "279d320e-8b60-43f6-b425-8340b3012653",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "WeaponRange": 9999999,
+        "WeaponType": "Pistol"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "279d320e-8b60-43f6-b425-8340b3012653",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "WeaponContainer",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "0a0adfac-52c3-4f67-b9e4-0aa1149cdc50",
+            "__enabled": true,
+            "AnimationGraph": "models/weapons/sbox_pistol_usp/v_usp.vanmgrph",
+            "BodyGroups": 147,
+            "BoneMergeTarget": null,
+            "CreateAttachments": true,
+            "CreateBoneObjects": false,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {
+                "b_twohanded": true
+              },
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "Off",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          },
+          {
+            "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+            "__guid": "95c0c826-a768-4338-bb3d-a7d273ad967d",
+            "__enabled": true,
+            "BodyWeight": 1,
+            "EyeSource": null,
+            "EyesWeight": 1,
+            "HeadWeight": 1,
+            "Height": null,
+            "IkLeftFoot": null,
+            "IkLeftHand": null,
+            "IkRightFoot": null,
+            "IkRightHand": null,
+            "LookAt": null,
+            "LookAtEnabled": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Target": {
+              "_type": "component",
+              "component_id": "0a0adfac-52c3-4f67-b9e4-0aa1149cdc50",
+              "go": "279d320e-8b60-43f6-b425-8340b3012653",
+              "component_type": "SkinnedModelRenderer"
+            }
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "a190ab3e-0591-4123-b611-1a09476464c7",
+            "__version": 1,
+            "Flags": 8,
+            "Name": "muzzle",
+            "Position": "3.848412,0.0000004676039,4.945133",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          },
+          {
+            "__guid": "b05be5e0-bc4b-4fa6-be82-19de745f3bd0",
+            "__version": 1,
+            "Flags": 8,
+            "Name": "eject",
+            "Position": "0.2193301,-0.1475519,5.091545",
+            "Rotation": "0.0000001053671,-0.7071066,0.00000002107342,0.7071068",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [
+    "facepunch.impactgeneric#88477",
+    "facepunch.pistol_muzzleflash#76089",
+    "facepunch.v_usp#109724"
+  ],
+  "__version": 2
+}

@@ -1,0 +1,84 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanel
+@namespace Sandbox
+
+<div class="create-menu-container">
+    <div class="menu-options-container">
+        <div class="inputs-line">
+            <text class="inputs-text">Players:</text>
+            <SliderControl class="player-slider" Min="@PartyCount" Max="@(64)" Step="@(1)" Value:bind="@MaxPlayersGame"></SliderControl>
+            <text class="inputs-text">@MaxPlayersGame</text>
+        </div>
+        <div class="inputs-line">
+            <text class="inputs-text">Invite Only</text>
+            <Checkbox class="inputs-checkbox" Checked=@false Value:bind="@InviteOnly"></Checkbox>
+        </div>
+        <div class="inputs-line">
+            <text class="inputs-text">Friends Only</text>
+            <Checkbox class="inputs-checkbox" Checked="@FriendsOnly" Value:bind="@FriendsOnly"></Checkbox>
+        </div>       
+        <div class="create-button-wrapper">
+            <button class="create-lobby-button" @onclick="@CreateLobby">Create</button>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    public Panel InputContainer;
+
+    public int MaxPlayersGame { get; set; }
+
+    public bool InviteOnly { get; set; } = false;
+    public bool FriendsOnly { get; set; } = false;
+
+    public int PartyCount { get; set; }
+
+    public MainMenuManager mainMenu { get; set; }
+
+
+
+    [Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( InviteOnly, FriendsOnly, PartyCount, MaxPlayersGame );
+
+
+    public void GetMainMenuComp()
+    { 
+        mainMenu = Scene.GetAllComponents<MainMenuManager>().First();
+    }
+
+
+    //make own checkbox
+    public void OnFriendsOnly()
+    {
+        FriendsOnly = true;
+        Log.Info("Hello");
+    }
+
+    public void OnInviteOnly()
+    {
+        InviteOnly = true;
+        Log.Info("Hello");
+    }
+
+
+
+    public void CreateLobby()
+    {
+        GetMainMenuComp();
+
+         _ = mainMenu.CreateLobby(new Network.LobbyConfig()
+             {
+                 MaxPlayers = MaxPlayersGame,
+                 Privacy = Network.LobbyPrivacy.FriendsOnly,
+                 Name = "rotten rounds testing"
+             });
+    }
+
+
+}

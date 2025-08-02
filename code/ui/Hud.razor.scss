@@ -1,0 +1,47 @@
+.player-card-container {
+	position: absolute;
+	bottom: 250px;
+	left: 75px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.weapon-panel-container {
+	position: absolute;
+	bottom: 32px;
+	right: 32px;
+}
+
+
+
+@keyframes dissolveIn {
+	0% {
+		mask-position: 0% 0%;
+		mask-size: 200%;
+	}
+
+	100% {
+		mask-position: 100% 100%;
+		mask-size: 100%;
+	}
+}
+
+
+.rounds-container {
+	position: absolute;
+	top: 0px;
+	left: 75px;
+	mask-image: url('textures/unnamed.png'); /* black & white noise texture */
+	mask-mode: alpha;
+	mask-size: cover;
+	animation: dissolveIn 1s forwards;
+}
+
+.rounds {
+	font-size: 84px;
+	//font-weight: bold;
+	font-family: Bloody Terror;
+	color: rgb(108, 0, 0);
+	margin: 0 0 4px 0;
+}

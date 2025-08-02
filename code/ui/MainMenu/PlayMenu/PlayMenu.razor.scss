@@ -1,0 +1,70 @@
+.play-container {
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    pointer-events: all;
+    justify-content: space-between;
+    width: 100vw;
+    height: 100vh;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    overflow: visible;
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    .bg-strip {
+        background-color: black;
+        width: 15vw;
+        //background-color: black;
+
+        &::after {
+            //content: "";
+            //position: absolute;
+            position: absolute;
+            //top: 0;
+            left: 15vw;
+            width: 5vw;
+            height: 100vh;
+            background: linear-gradient(to right, black, transparent);
+            pointer-events: none;
+        }
+    }
+
+
+    .button-containers {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 9vh;
+        align-items: flex-start;
+        top: 40vh;
+        left: 3vw;
+
+
+        .button {
+            font-size: 2vw;
+            font-family: HEROLD;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+
+
+            &:hover {
+                //font: bold;
+                background-image: url(ui/images/favpng_b8f4c8ee5c84df0b4738672ad0ccad05.png);
+                color: darkred;
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: contain;
+                overflow: visible;
+                transform: scale(1.35vw);
+                color: gold;
+                //font-family: Scream Blood;
+                //border-radius: 2vw;
+            }
+        }
+    }
+}

@@ -1,0 +1,124 @@
+.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.75vw;
+    width: 100vw;
+    height: 100vh;
+    opacity: 1;
+    pointer-events: all;
+    overflow: visible;
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    .left-side-container {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5vh;
+        align-items: flex-start;
+        pointer-events: all;
+        height: 100%;
+        width: 100%;
+        justify-content: space-between;
+        overflow: visible;
+
+
+        .title {
+            font-family: Scream Blood;
+            font-size: 6vw;
+            color: red;
+            overflow: visible;
+            padding: 0 1vw;
+            text-shadow: .75px .75px 1.1px red;
+            
+        }
+
+        .buttons-container {
+            display: flex;
+            padding-left: 2vw;
+            flex-direction: column;
+
+
+            .button {
+                font-size: 2vw;
+                font-family: HEROLD;
+                color: white;
+                cursor: pointer;
+                transition: background 0.3s;
+
+                &:hover {
+                    background-image: url(ui/images/favpng_b8f4c8ee5c84df0b4738672ad0ccad05.png);
+                    color: darkred;
+                    background-repeat: no-repeat;
+                    background-position: left;
+                    background-size: contain;
+                    overflow: visible;
+                    transform: scale(1.35);
+                    color: gold;
+                }
+            }
+
+            .button-customize,
+            .button-leaderboards {
+                pointer-events: none;
+                color: gray;
+
+                &:hover {
+                    background-image: none;
+                    transform: none;
+                }
+            }
+        }
+
+
+
+        .motd {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+    }
+}
+
+
+
+
+
+
+
+.back-button-container {
+    position: absolute;
+    bottom: 2vh;
+    right: 5vw;
+    pointer-events: all;
+    z-index: 9999;
+    .back-button {
+        color: white;
+        font-size: 3vw;
+        font-family: HEROLD;
+
+        &:hover {
+            // background-image: url(ui/images/favpng_b8f4c8ee5c84df0b4738672ad0ccad05.png);
+            color: darkred;
+            //background-repeat: no-repeat;
+            //background-position: left;
+            //background-size: contain;
+            overflow: visible;
+            transform: scale(1.35);
+            color: gold;
+        }
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+}
+
+
+
+
+
+
+

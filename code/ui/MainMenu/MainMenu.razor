@@ -1,0 +1,144 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanelComponent
+@namespace Sandbox
+
+<div class="menu @(IsMenuVisible ? "" : "hidden")">
+    <div class="left-side-container">
+        <div class="title">@GameTitle</div>
+        <div class="buttons-container">
+            <button class="button-play" @onclick="@OnPlayClicked">Play</button>
+            <button class="button-customize" @onclick="OnCustomizeClicked">Customize</button>
+            <button class="button-leaderboards" @onclick="OnLeaderboardClicked">Leaderboards</button>
+            <button class="button-options" @onclick="@OnOptionsClicked">Options</button>
+            <button class="button-quit" @onclick="@OnQuitClicked">Quit</button>
+        </div>
+        <div class="motd">
+            <Motd @ref="MotdPanel" ImagePath="@NewsImagePath" Title="@NewsTitle" ShortDescription="@NewsShortDescription" />
+        </div>
+    </div>
+</div>
+
+<div class="back-button-container @(IsBackVisible ? "" : "hidden")">
+    <button class="back-button" @onclick="@OnBackClicked">Back</button>
+</div>
+
+@code
+{
+    public bool IsBackVisible { get; set; } = false;
+
+    public string GameTitle { get; set; } = "Rotten Rounds";
+
+    public List<NewsData> newsList = new();
+
+    public string NewsImagePath;
+    public string NewsTitle;
+    public string NewsShortDescription;
+
+    [Property]
+    public CreateLobby LobbyCreator { get; set; }
+
+
+    PlayMenu PlayPanel { get; set; }
+    //Panel CustomizePanel;
+    //Panel LeaderboardsPanel;
+    Panel OptionsPanel { get; set; }
+    //MainMenu MainMenuPanel { get; set; }
+    Motd MotdPanel { get; set; }
+
+    List<MainMenuPanel> currentFocusedMenu { get; set; } = new();
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine(NewsImagePath, NewsTitle, NewsShortDescription);
+
+
+    protected override void OnStart()
+    {
+
+
+
+        IsMenuVisible = true;
+
+        PlayPanel = Panel.AddChild<PlayMenu>();
+        
+
+
+        var json = FileSystem.Mounted.ReadAllText("/ui/mainmenu/motd.json");
+
+        var deser = Json.Deserialize<List<NewsData>>(json);
+
+        foreach (var x in deser)
+        {
+            newsList.Add(x);
+        }
+
+        NewsImagePath = newsList[0].Image;
+        NewsTitle = newsList[0].Title;
+        NewsShortDescription = newsList[0].ShortDescription;
+
+
+
+    }
+
+    public void OnBackClicked()
+    {
+        if (currentFocusedMenu.Count == 0) return;
+
+        if(currentFocusedMenu.Count > 1)
+        {
+            currentFocusedMenu[currentFocusedMenu.Count - 1].IsMenuVisible = false;
+            currentFocusedMenu[currentFocusedMenu.Count - 2].IsMenuVisible = true;
+
+            currentFocusedMenu.RemoveAt(currentFocusedMenu.Count - 1);
+        }
+
+        if (currentFocusedMenu.Count == 1)
+        { 
+            currentFocusedMenu[currentFocusedMenu.Count - 1].IsMenuVisible = false;
+            IsMenuVisible = true;
+            IsBackVisible = false;
+        }
+    }
+
+    public void OnPlayClicked()
+    {
+        Log.Info("play button clicked");
+        GotoMenu(PlayPanel);
+    }
+
+
+    public void GotoMenu(MainMenuPanel panel)
+    {
+        IsMenuVisible = false;
+        
+
+        if (currentFocusedMenu.Count >= 1)
+        {
+            currentFocusedMenu[^1].IsMenuVisible = false;
+            currentFocusedMenu.Add(panel);
+        }
+        if (currentFocusedMenu.Count == 0)
+        {
+            currentFocusedMenu.Add(panel);
+        }
+
+        panel.IsMenuVisible = true;
+        IsBackVisible = true;
+    }
+
+
+
+    public void OnOptionsClicked()
+    {
+
+    }
+
+    public void OnQuitClicked()
+    {
+        Game.Disconnect();
+    }
+
+
+}

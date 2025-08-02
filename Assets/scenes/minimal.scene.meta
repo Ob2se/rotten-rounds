@@ -1,0 +1,25 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "night of terry scene (rr_terry_scene)",
+      "Type": "map",
+      "Org": "clickhq",
+      "Ident": "",
+      "Schema": 0,
+      "IncludeSourceFiles": true,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "scenes/minimal.scene",
+        "ParentPackage": "clickhq.deadmeat",
+        "GameSupport": [
+          "clickhq.deadmeat"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <div class="WeaponDisplay">    
+        <div class="WeaponName">@WeaponName</div>
+        <div class="WeaponCost">@Cost</div>
+    </div>
+
+</root>
+
+@code
+{
+
+    [Property, TextArea] public string WeaponName { get; set; } = "";
+    public float Cost { get; set; }
+
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine(WeaponName, Cost);
+
+
+    protected override void OnStart()
+    {
+        Cost = GameObject.GetComponent<WallBuy>().Cost;
+    }
+
+
+
+
+}

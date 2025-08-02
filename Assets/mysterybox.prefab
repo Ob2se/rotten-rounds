@@ -1,0 +1,215 @@
+{
+  "RootObject": {
+    "__guid": "2bffec3b-0f38-45eb-91c9-191c4e860ac5",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "mysterybox",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "interactable",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "MysteryBox",
+        "__guid": "fb90c175-faaf-45bc-9e88-c247e7061e87",
+        "__enabled": true,
+        "BoxLid": {
+          "_type": "gameobject",
+          "go": "8348c6f5-883d-4a3a-a419-2e34711a8d6f"
+        },
+        "Cost": 5,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "WeaponEndPoint": {
+          "_type": "gameobject",
+          "go": "462bd3dc-3fa6-4e44-a502-2504d9237810"
+        },
+        "WeaponStartPoint": {
+          "_type": "gameobject",
+          "go": "85a4c2b8-4cd2-40b8-9bfc-512058e9d770"
+        }
+      },
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "ecd75176-de06-4206-b6c2-9e4e84db6467",
+        "__enabled": true,
+        "AnimationGraph": null,
+        "BodyGroups": 18446744073709551615,
+        "BoneMergeTarget": null,
+        "CreateAttachments": false,
+        "CreateBoneObjects": false,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Materials": null,
+        "Model": "models/mysterybox/mystery_box_test_box1.vmdl",
+        "Morphs": {},
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "PlaybackRate": 1,
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Sequence": {
+          "Name": null,
+          "Looping": true,
+          "Blending": false
+        },
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "3cdb1e0c-10b1-4c0d-9b33-ec25710f18c0",
+        "__enabled": true,
+        "Center": "-10.0914,-0.008872986,-7.047832",
+        "Elasticity": null,
+        "Friction": null,
+        "IsTrigger": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnObjectTriggerEnter": null,
+        "OnObjectTriggerExit": null,
+        "OnTriggerEnter": null,
+        "OnTriggerExit": null,
+        "RollingResistance": null,
+        "Scale": "24.73785,91.94755,19.52415",
+        "Static": false,
+        "Surface": null,
+        "SurfaceVelocity": "0,0,0"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "8348c6f5-883d-4a3a-a419-2e34711a8d6f",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "MysteryBoxLid",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "104ab5a2-a058-4b3d-889e-38b9a971f403",
+            "__enabled": true,
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "models/mysterybox/mystery_box_test_lid1.vmdl",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "85a4c2b8-4cd2-40b8-9bfc-512058e9d770",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "WeaponStartPoint",
+        "Position": "-10.45883,2.740469,-10.46218",
+        "Rotation": "0,0,-0.7071067,0.7071068",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
+      },
+      {
+        "__guid": "462bd3dc-3fa6-4e44-a502-2504d9237810",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "WeaponEndPoint",
+        "Position": "-10.45883,2.740469,16.77462",
+        "Rotation": "0,0,-0.7071067,0.7071068",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

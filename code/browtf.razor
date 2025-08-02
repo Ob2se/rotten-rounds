@@ -1,0 +1,41 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+@attribute [StyleSheet("/code/ui/Hud.scss")]
+
+<div class="hud">
+    <div class="player-card-container">
+        @foreach (var player in PlayerList)
+        {
+            <PlayerCard PlayerName="@player.PlayerConnection.DisplayName" Points="@player.Points" />
+        }
+    </div>
+
+    <div class="weapon-panel-container">
+    </div>
+</div>
+
+@code
+{
+
+
+
+    List<Player> PlayerList { get; set; } = new();
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( PlayerList );
+
+
+    protected override void OnStart()
+    {
+        foreach (var i in Scene.GetAllComponents<Player>())
+        {
+            PlayerList.Add(i);
+        }
+    }
+
+}

@@ -1,0 +1,37 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+
+<root>
+<div class="player-card">
+        <div class="card-inner">
+            <img src="/blood-smear.png" class="hud-background" />
+
+            <div class="text">
+                <p class="PlayerName">@PlayerName</p>
+                <p class="Points">$@Points</p>
+            </div>
+        </div>
+
+        <div class="avatar-container">
+            <img src="avatar:@PlayerSteamId" class="avatar" />
+        </div>
+</div>
+</root>
+
+@code
+{
+
+    [Parameter] public string PlayerName { get; set; }
+    [Parameter] public float Points { get; set; }
+    [Parameter] public SteamId PlayerSteamId { get; set; }
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine(PlayerName, Points, PlayerSteamId);
+
+    
+}

@@ -1,0 +1,82 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanelComponent
+@namespace Sandbox
+
+
+<div class="map-selector-container">
+    <div class="map-filters">
+        Filters
+        <div class="map-filters-wrapper">
+            <div class="filter-line">
+                <text class="inputs-text">Most Popular</text>
+                <Checkbox class="inputs-checkbox" Checked="@MostPopular" Value:bind="@MostPopular"></Checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="map-grid">
+        @foreach(var x in MapList)
+        {
+            <MapCard @onclick="@(() => OnMapClick(x))" class="map-card" @MapAuthor="@x.Author" @MapName="@x.Name" @MapRatingDown="@x.DownVotes.ToString()" @MapRatingUp="@x.UpVotes.ToString()" @MapThumbnail="@x.Thumbnail" @MapsData="@x"></MapCard>
+        }
+    </div>
+    <div @key="@SelectedMap" class="chosen-map-container">
+        @if(AMapSelected)
+        {
+            <div class="the-map-title">@SelectedMap.Name</div>
+            <img class="the-map-thumbnail" src="@SelectedMap.Thumbnail"></img>
+            <div class="author-vote-wrapper">
+                <text class="the-map-author">Author: @SelectedMap.Author</text>
+                <text class="the-map-up">Thumb Ups: @SelectedMap.UpVotes</text>
+                <text class="the-map-down">Thumb Downs: @SelectedMap.DownVotes</text>
+            </div>
+            <div class="the-map-description">@SelectedMap.Description</div>
+            <button @onclick="@SelectTheMapClick" class="select-map-button">Select</button>
+        }
+    </div>
+</div>
+
+
+
+
+
+@code
+{
+    [Parameter]
+    public List<MapData> MapList { get; set; }
+
+    public MapData SelectedMap { get; set; }
+
+    public bool MostPopular { get; set; }
+
+    private bool AMapSelected { get; set; }
+
+    [Property]
+    public LobbyMenu TheLobbyMenu { get; set; }
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( MapList, SelectedMap, AMapSelected );
+
+    private void OnMapClick(MapData MapsData)
+    {
+        AMapSelected = true;
+        SelectedMap = MapsData;
+        StateHasChanged();
+    }
+
+    private void SelectTheMapClick()
+    {
+        Log.Info("hello");
+        TheLobbyMenu.SelectedMap = SelectedMap;
+        Log.Info(TheLobbyMenu.SelectedMap.Name);
+        this.Destroy();
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        AMapSelected = false;
+    }
+}

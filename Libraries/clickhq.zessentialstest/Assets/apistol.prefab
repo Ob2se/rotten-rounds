@@ -1,0 +1,154 @@
+{
+  "RootObject": {
+    "__guid": "12cf2c61-6415-4a76-881e-d2a517ac588f",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "apistol",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [],
+    "Children": [
+      {
+        "__guid": "380b16c8-a498-4af5-ae37-0dcda504d566",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "BasePistol",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "BaseWeapon",
+            "__guid": "a2f15f9c-f317-4e7f-aba1-41c2a26fc9f9",
+            "__enabled": true,
+            "AmmoMax": 0,
+            "Automatic": false,
+            "FireRate": 0,
+            "FleshImpactEffectPrefab": null,
+            "ImpactEffectPrefab": null,
+            "MagMax": 0,
+            "MuzzleFlashPrefab": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ReloadTime": 0,
+            "WeaponDamage": 0,
+            "WeaponModel": {
+              "_type": "component",
+              "component_id": "ff11b779-3d02-4f47-89f2-a6256905a749",
+              "go": "b21ea0cb-ab54-4508-9038-ed513641d4d6",
+              "component_type": "SkinnedModelRenderer"
+            },
+            "WeaponRange": 0,
+            "WeaponType": "Pistol"
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "b21ea0cb-ab54-4508-9038-ed513641d4d6",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "WeaponContainer",
+            "Position": "149.3263,149.3264,-211.1794",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "ff11b779-3d02-4f47-89f2-a6256905a749",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": null,
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": null,
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

@@ -1,0 +1,121 @@
+.map-selector-container {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    pointer-events: all;
+    align-items: flex-start;
+    top: 11vh;
+    left: 11vw;
+    max-width: 75vw;
+    max-height: 80vh;
+    opacity: 1;
+    overflow: hidden;
+    background-color: grey;
+    //margin: 2vh;
+    padding: 1vh;
+
+    .map-filters {
+        display: flex;
+        flex-direction: column;
+        //justify-content: center;
+        //align-self: center;
+        color: white;
+        width: 10vw;
+        //border-width: .2rem;
+        //background-color: red;
+
+        .map-filters-wrapper {
+            //display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            color: white;
+
+            .filter-line {
+                font-size: 1.5vh;
+                justify-content: space-between;
+
+                .inputs-checkbox {
+                    border-width: .05vw;
+                    border-radius: 1vh;
+                }
+            }
+        }
+    }
+
+    .map-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1vh;
+        padding: 1vh;
+        overflow: scroll;
+        //border-width: .1vw;
+        height: 75vh;
+        width: 44vw;
+        //background-color: orange;
+
+        .map-card {
+            width: 10.3vw;
+            height: 17.5vh;
+            flex: 0 0 10.3vw;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            position: relative;
+        }
+    }
+
+    .chosen-map-container {
+        //background-color: green;
+        //border-width: .1vw;
+        width: 20vw;
+        height: 75vh;
+        max-height: 75vh;
+        display: flex;
+        flex-direction: column;
+        //background-color: blue;
+        color: white;
+        gap: 1vh;
+        padding: 1vh;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        .the-map-title {
+            font-size: 3vh;
+            align-self: center;
+            flex-shrink: 0;
+        }
+
+        .the-map-thumbnail {
+            height: 256px;
+            width: 256px;
+            align-self: center;
+        }
+
+        .author-vote-wrapper {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .the-map-description {
+            flex-shrink: 0;
+            font-size: 1.2vw;
+            overflow: scroll;
+            //background-color: green;
+        }
+
+        .select-map-button {
+            margin-top: 2vh;
+            padding: 1vh;
+            flex-shrink: 0;
+            align-self: center;
+            font-size: 4vh;
+            border-width: .2vh;
+            //background-color: yellow;
+
+            &:hover {
+                color: gold;
+                border-color: gold;
+            }
+        }
+    }
+}

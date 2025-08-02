@@ -1,0 +1,77 @@
+{
+  "RootObject": {
+    "__guid": "cf17ae03-d0f7-4ccd-9e85-58be8f02fdb6",
+    "Flags": 0,
+    "Name": "bullethiteffect",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.Decal",
+        "__guid": "e1ac2cb2-13d5-4a38-9145-dbc5235d6447",
+        "__version": 1,
+        "AttenuationAngle": 1,
+        "ColorTexture": null,
+        "ColorTint": "255,255,255,255",
+        "NormalTexture": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "RMOTexture": null,
+        "SequenceId": 0,
+        "SheetSequence": false,
+        "Size": "32,32,32",
+        "SortLayer": 0
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "e02b94a5-d6ab-46bd-8825-ca3e01ebc7c2",
+        "Flags": 0,
+        "Name": "VFX",
+        "Enabled": true,
+        "Components": [],
+        "Children": []
+      },
+      {
+        "__guid": "aa6b9ccb-7f3d-4358-8407-cbed6cda4fc8",
+        "Flags": 0,
+        "Name": "impact.generic",
+        "Rotation": "0,0,0,0",
+        "Enabled": true,
+        "__Prefab": "particles/surfaces/impact.generic.prefab",
+        "__PrefabVariables": {}
+      }
+    ],
+    "__variables": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [
+    "facepunch.impactgeneric#88477"
+  ],
+  "__version": 1
+}

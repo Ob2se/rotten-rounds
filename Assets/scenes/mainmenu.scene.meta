@@ -1,0 +1,22 @@
+{
+  "publish": {
+    "Enabled": true,
+    "ProjectConfig": {
+      "Title": "Mainmenu",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "mainmenu",
+      "Schema": 0,
+      "IncludeSourceFiles": true,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "scenes/mainmenu.scene",
+        "ParentPackage": "clickhq.deadmeat"
+      }
+    }
+  }
+}

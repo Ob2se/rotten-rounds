@@ -1,0 +1,21 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "zom base weapon test",
+      "Type": "prefab",
+      "Org": "clickhq",
+      "Ident": "zessentialsweapontest",
+      "Schema": 0,
+      "IncludeSourceFiles": true,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "weapons/baseweapon.prefab"
+      }
+    }
+  }
+}

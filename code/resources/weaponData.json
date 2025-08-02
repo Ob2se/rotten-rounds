@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "TestPistol",
+    "PrefabPath": "weapons/baseweapon.prefab"
+  },
+  {
+    "Name": "TestSmg",
+    "PrefabPath": "weapons/smgtest.prefab"
+  },
+  {
+    "Name": "TestRifle",
+    "PrefabPath": "weapons/rifletest.prefab"
+  }
+]
+

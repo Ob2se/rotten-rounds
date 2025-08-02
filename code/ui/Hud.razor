@@ -1,0 +1,86 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+
+<root>
+    <div class="player-card-container">
+        @foreach (var player in PlayerList)
+        {
+            <PlayerCard PlayerName="@player.PlayerConnection.DisplayName" Points="@player.Points" PlayerSteamId="@player.PlayerConnection.SteamId" />
+        }
+    </div>
+    <div class="rounds-dissolve-wrap">
+        <div class="rounds-container">
+            <p class="rounds">@Round</p>
+        </div>
+    </div>
+</root>
+
+@code
+{
+
+    List<Player> PlayerList { get; set; } = new();
+
+    int Round { get; set; }
+
+    GameModeManager GameModeManager;
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( PlayerList, Round );
+
+    protected override void OnStart()
+    {
+        Player.PlayerPointsChanged += HandlePlayerPointsChanged;
+
+        Player.UpdateHud += UpdateHud;
+
+        UpdatePlayerList();
+
+        foreach (var x in Scene.GetAllComponents<GameModeManager>())
+        {
+            GameModeManager = x;
+        }
+        Round = GameModeManager.Round;
+        GameModeManager.ChangeRound += RoundChanged;
+
+    }
+
+
+
+
+    private void UpdatePlayerList()
+    {
+        if (PlayerList.Any())
+        {
+            PlayerList.Clear();
+        }
+        if (Scene is null)
+        {
+            return;
+        }
+        foreach (var i in Scene.GetAllComponents<Player>())
+        {
+            PlayerList.Add(i);
+
+        }
+    }
+
+
+    private void UpdateHud()
+    {
+        UpdatePlayerList();
+    }
+
+    private void RoundChanged()
+    {
+        Round = GameModeManager.Round;
+    }
+
+    private void HandlePlayerPointsChanged()
+    {
+        StateHasChanged();
+    }
+}

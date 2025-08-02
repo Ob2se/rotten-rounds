@@ -1,0 +1,71 @@
+.create-menu-container {
+    display: flex;
+    position: absolute;
+    pointer-events: all;
+    //justify-content: space-between;
+    width: 30%;
+    height: 50%;
+    opacity: 1;
+    top: 25%;
+    left: 25%;
+    overflow: visible;
+    background-color: black;
+    border-radius: 2rem;
+    padding: 16px;
+
+
+    .menu-options-container {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        width: 100%;
+        //margin:
+        justify-content: space-evenly;
+        //pointer-events: all;
+        //justify-content: center;
+        //background-color: orange;
+
+        .inputs-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 32px;
+            font-family: HEROLD;
+            margin-right: 1rem;
+
+            .player-slider {
+            }
+
+            .inputs-checkbox {
+                border-width: 1px;
+                border-radius: 1rem;
+                //padding-left: 10px;
+                max-width: 50%;
+
+                &:hover {
+                    color: gold;
+                    border-color: gold;
+                }
+            }
+        }
+    }
+
+    .create-button-wrapper {
+        display: flex;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+        font-family: HEROLD;
+
+        .create-lobby-button {
+            border-radius: 1rem;
+            border-width: .2rem;
+
+            &:hover {
+                color: gold;
+                border-color: gold;
+            }
+        }
+    }
+}

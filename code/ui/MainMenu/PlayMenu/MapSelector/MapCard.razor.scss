@@ -1,0 +1,63 @@
+@keyframes marquee {
+    from {
+        transform: translateX(0%);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    border-width: .2rem;
+    border-radius: .5rem;
+    padding: .2rem;
+
+    &:hover {
+        border-color: gold;
+    }
+
+    .bg-image {
+        display: flex;
+        width: 100%;
+        position: relative;
+        flex: 1 1 auto;
+
+        .map-title-wrapper {
+            width: 100%;
+            position: relative;
+            justify-content: center;
+            align-items: flex-start;
+
+            .map-title {
+                white-space: nowrap;
+                font-size: 16px;
+                font-weight: bold;
+                transform: translateX(0);
+            }
+        }
+    }
+
+
+    &:hover .map-title {
+        animation: marquee 5s linear forwards;
+        color: gold;
+        border-color: gold;
+        overflow: visible;
+        animation-iteration-count: infinite;
+    }
+
+
+    .bottom-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        color: white;
+
+        .map-rating {
+        }
+    }
+}

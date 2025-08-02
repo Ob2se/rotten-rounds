@@ -1,0 +1,58 @@
+{
+  "Images": null,
+  "Sequences": [
+    {
+      "Source": "materials/nightskybox/right.png",
+      "IsLooping": false,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    },
+    {
+      "Source": "materials/nightskybox/left.png",
+      "IsLooping": false,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    },
+    {
+      "Source": "materials/nightskybox/top.png",
+      "IsLooping": false,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    },
+    {
+      "Source": "materials/nightskybox/bottom.png",
+      "IsLooping": false,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    },
+    {
+      "Source": "materials/nightskybox/front.png",
+      "IsLooping": false,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    },
+    {
+      "Source": "materials/nightskybox/back.png",
+      "IsLooping": false,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    }
+  ],
+  "InputColorSpace": "Linear",
+  "OutputFormat": "DXT5",
+  "OutputColorSpace": "Linear",
+  "OutputMipAlgorithm": "None",
+  "OutputTypeString": "2D"
+}

@@ -1,0 +1,266 @@
+{
+  "RootObject": {
+    "__guid": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "zombie",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "zombie,flesh",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 1,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "9a5cae68-d97c-4341-9199-0e0b70c51fe4",
+        "__enabled": true,
+        "AnimationGraph": "models/citizen/citizen.vanmgrph",
+        "BodyGroups": 681,
+        "BoneMergeTarget": null,
+        "CreateAttachments": false,
+        "CreateBoneObjects": false,
+        "MaterialGroup": null,
+        "MaterialOverride": "models/citizen/skin/citizen_skin_greyvmat.vmat",
+        "Materials": null,
+        "Model": "models/citizen_human/citizen_human_male.vmdl",
+        "Morphs": {
+          "jawOpen": 0,
+          "jawForward": 0
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Parameters": {
+          "bools": {
+            "b_attack": true
+          },
+          "ints": {
+            "holdtype": 4,
+            "holdtype_handedness": 0,
+            "character_type": 1
+          },
+          "floats": {
+            "holdtype_attack": 3.25,
+            "holdtype_pose_hand": 0
+          },
+          "vectors": {},
+          "rotations": {}
+        },
+        "PlaybackRate": 1,
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Sequence": {
+          "Name": null,
+          "Looping": true,
+          "Blending": false
+        },
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      },
+      {
+        "__type": "SimpleZombieController",
+        "__guid": "6273251c-ed3c-4b64-9693-5c6cf992f9db",
+        "__enabled": true,
+        "CurrentState": "None",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "SpawnPoint": null,
+        "zombieAgent": {
+          "_type": "component",
+          "component_id": "c3cbec67-2432-4fb8-8571-72a82ad6efec",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "NavMeshAgent"
+        },
+        "ZombieAnimationHelper": {
+          "_type": "component",
+          "component_id": "9c753c15-b6d5-40f0-87bb-6e25eee11e12",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "CitizenAnimationHelper"
+        },
+        "ZombieClass": {
+          "_type": "component",
+          "component_id": "2c65985a-bfb3-4c94-b8b0-66cd81ce101d",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "Zombie"
+        },
+        "ZombieCollider": {
+          "_type": "component",
+          "component_id": "bcbd3d06-a8d0-4972-96ce-000ff5e9c870",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "CapsuleCollider"
+        },
+        "ZombiePrefabRef": {
+          "_type": "gameobject",
+          "prefab": "zombie.prefab"
+        }
+      },
+      {
+        "__type": "Sandbox.NavMeshAgent",
+        "__guid": "c3cbec67-2432-4fb8-8571-72a82ad6efec",
+        "__enabled": true,
+        "Acceleration": 120,
+        "AutoTraverseLinks": true,
+        "Height": 64,
+        "MaxSpeed": 120,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Radius": 16,
+        "Separation": 0.25,
+        "UpdatePosition": true,
+        "UpdateRotation": false
+      },
+      {
+        "__type": "Sandbox.CapsuleCollider",
+        "__guid": "bcbd3d06-a8d0-4972-96ce-000ff5e9c870",
+        "__enabled": true,
+        "Elasticity": null,
+        "End": "0,0,55",
+        "Friction": 1,
+        "IsTrigger": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnObjectTriggerEnter": null,
+        "OnObjectTriggerExit": null,
+        "OnTriggerEnter": null,
+        "OnTriggerExit": null,
+        "Radius": 15,
+        "RollingResistance": null,
+        "Start": "0,0,12",
+        "Static": false,
+        "Surface": "surfaces/flesh.surface",
+        "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "Zombie",
+        "__guid": "2c65985a-bfb3-4c94-b8b0-66cd81ce101d",
+        "__enabled": true,
+        "GameModeManaga": null,
+        "Health": 25,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "SimpleZombieController": {
+          "_type": "component",
+          "component_id": "6273251c-ed3c-4b64-9693-5c6cf992f9db",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "SimpleZombieController"
+        },
+        "ZombieCollider": {
+          "_type": "component",
+          "component_id": "bcbd3d06-a8d0-4972-96ce-000ff5e9c870",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "CapsuleCollider"
+        },
+        "zombieModel": {
+          "_type": "component",
+          "component_id": "9a5cae68-d97c-4341-9199-0e0b70c51fe4",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "SkinnedModelRenderer"
+        }
+      },
+      {
+        "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+        "__guid": "9c753c15-b6d5-40f0-87bb-6e25eee11e12",
+        "__enabled": true,
+        "BodyWeight": 1,
+        "EyeSource": null,
+        "EyesWeight": 1,
+        "HeadWeight": 1,
+        "Height": null,
+        "IkLeftFoot": null,
+        "IkLeftHand": null,
+        "IkRightFoot": null,
+        "IkRightHand": null,
+        "LookAt": null,
+        "LookAtEnabled": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Target": {
+          "_type": "component",
+          "component_id": "9a5cae68-d97c-4341-9199-0e0b70c51fe4",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "SkinnedModelRenderer"
+        }
+      },
+      {
+        "__type": "Sandbox.ModelHitboxes",
+        "__guid": "9581e94c-8987-43c2-a4d9-c14c4fffec12",
+        "__enabled": true,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Renderer": {
+          "_type": "component",
+          "component_id": "9a5cae68-d97c-4341-9199-0e0b70c51fe4",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "Target": {
+          "_type": "gameobject",
+          "go": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
+        }
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

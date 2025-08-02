@@ -1,0 +1,54 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanel
+@namespace Sandbox
+
+<button class="card-container" @onclick="@MapSelected">
+    <div class="bg-image" style="background-image: url('@MapThumbnail');">
+        <div class="map-title-wrapper">
+            <div class="map-title">@MapName</div>
+        </div>
+    </div>
+    <div class="bottom-card">
+        <div class="author">Author: @MapAuthor</div>
+        <div class="map-rating">
+            <div class="map-up-votes">@MapRatingUp</div>
+            <div class="map-down-votes">@MapRatingDown</div>
+        </div>
+    </div>
+</button>
+
+@code
+{
+
+
+    [Parameter]
+    public string MapName { get; set; } 
+
+    [Parameter]
+    public string MapAuthor { get; set; }
+
+    [Parameter]
+    public string MapRatingUp { get; set; }
+
+    [Parameter]
+    public string MapRatingDown { get; set; }
+
+    [Parameter]
+    public string MapThumbnail { get; set; }
+
+
+    [Parameter]
+    public MapData MapsData { get; set; }
+
+    private void MapSelected()
+    {
+
+    }
+
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MapName, MapAuthor, MapRatingUp, MapRatingDown );
+}

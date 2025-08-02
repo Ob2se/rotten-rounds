@@ -1,0 +1,105 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using System.Threading.Tasks;
+@inherits PanelComponent
+@namespace Sandbox
+
+
+<div class="create-lobby-container">
+    <div class="left-side-container">
+        <text class="title">Lobby</text>
+        <ChosenMap @key="@SelectedMap" class="chosen-container" @MapAuthor="@SelectedMap.Author" @MapDescription="@SelectedMap.Description" @MapTitle="@SelectedMap.Name" @MapDownVotes="@SelectedMap.DownVotes.ToString()" @MapUpVotes="@SelectedMap.UpVotes.ToString()" @MapThumbnail="@SelectedMap.Thumbnail" ></ChosenMap>
+        <div class="buttons-wrapper">
+            <button class="button-start" @onclick="@OnStartClick">Start Game</button>
+            <button class="button" @onclick="@MapBrowseClick">Map Browse</button>
+            <button class="button" @onclick="@GameOptionsClick">Game Options</button>
+            <button class="button" @onclick="@OptionsClick">Options</button>
+            <button class="button" @onclick="@LeaveClick">Leave</button>
+        </div>
+    </div>
+</div>
+
+
+@code
+{
+
+    public MapData SelectedMap { get; set; } = new MapData
+    {
+        Name = "None",
+        Description = "None",
+        Author = "None",
+        UpVotes = 0,
+        DownVotes = 0,
+        Thumbnail = "ui/images/questionmark.png", // or null if you're handling that
+        Tags = new List<string>(),
+        Genres = new List<string>()
+    };
+
+    private CreateLobby LobbyCreator { get; set; }
+
+    [Property]
+    private CameraComponent Camera { get; set; }
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( SelectedMap, LobbyCreator );
+
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        _ = GetLobbyCreator();
+
+
+
+    }
+
+    private void OnStartClick(){
+        LobbyCreator.StartMap(SelectedMap);
+    }
+
+    private async Task GetLobbyCreator()
+    {
+        await Task.DelayRealtimeSeconds(.1f);
+        LobbyCreator = Scene.GetAllComponents<CreateLobby>().First();
+    }
+
+
+    private void GameOptionsClick()
+    {
+
+    }
+
+
+    private void OpenMapBrowser()
+    {
+        var mapSelector = Camera.AddComponent<MapSelector>();
+        mapSelector.TheLobbyMenu = this;
+        mapSelector.MapList = LobbyCreator.mapList;
+
+    }
+
+    private void CloseMapBrowser()
+    {
+
+    }
+
+
+    private void MapBrowseClick()
+    {
+        OpenMapBrowser();
+    }
+
+    private void OptionsClick()
+    {
+
+    }
+
+    private void LeaveClick()
+    {
+
+    }
+
+
+}

@@ -1,0 +1,25 @@
+{
+  "publish": {
+    "Enabled": true,
+    "ProjectConfig": {
+      "Title": "Sceneofterry (rr_sceneot)",
+      "Type": "map",
+      "Org": "clickhq",
+      "Ident": "sceneofterry",
+      "Schema": 0,
+      "IncludeSourceFiles": true,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "scenes/sceneofterry.scene",
+        "ParentPackage": "clickhq.rottenrounds",
+        "GameSupport": [
+          "clickhq.rottenrounds"
+        ]
+      }
+    }
+  }
+}

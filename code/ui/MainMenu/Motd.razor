@@ -1,0 +1,29 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+<div class="motd-container">
+    <div class="news-title">@Title</div>
+    <img class="news-background" src="@ImagePath" />
+    <div class="news-description-short">@ShortDescription</div>
+</div>
+
+@code
+{
+
+    [Parameter] public string ImagePath;
+    [Parameter] public string Title;
+    [Parameter] public string ShortDescription;
+
+    List<NewsData> newsList;
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( ImagePath, Title, ShortDescription );
+
+   
+
+    
+}

@@ -1,0 +1,46 @@
+{
+  "BaseSurface": null,
+  "AudioSurface": "Wood",
+  "Description": null,
+  "Friction": 0.8,
+  "Elasticity": 0.25,
+  "Density": 2000,
+  "Thickness": -1,
+  "RollingResistance": 0,
+  "BounceThreshold": 40,
+  "ImpactEffects": {
+    "Regular": null,
+    "Bullet": null,
+    "BulletDecal": null,
+    "SoftParticles": null,
+    "SoftDecal": null,
+    "HardParticles": null,
+    "HardDecal": null
+  },
+  "ScrapeEffects": {
+    "RoughnessFactor": 0,
+    "RoughThreshold": 0,
+    "SmoothParticles": null,
+    "RoughParticles": null,
+    "SmoothDecal": null,
+    "RoughDecal": null
+  },
+  "Sounds": {
+    "FootLeft": "sounds/footsteps/footstep-wood.sound",
+    "FootRight": "sounds/footsteps/footstep-wood.sound",
+    "FootLaunch": "sounds/footsteps/footstep-wood-jump.sound",
+    "FootLand": "sounds/footsteps/footstep-wood-land.sound",
+    "Bullet": "sounds/impacts/bullets/impact-bullet-wood.sound",
+    "ImpactHard": null,
+    "ImpactSoft": null,
+    "ScrapeRough": null,
+    "ScrapeSmooth": null
+  },
+  "Breakables": {
+    "BreakSound": null,
+    "GenericGibs": null
+  },
+  "Tags": null,
+  "__references": [],
+  "__version": 0
+}

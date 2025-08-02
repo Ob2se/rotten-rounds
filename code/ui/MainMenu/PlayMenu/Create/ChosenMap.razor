@@ -1,0 +1,42 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanel
+@namespace Sandbox
+
+<div class="chosen-map-container">
+    <div class="chosen-info-container">
+        <text class="chosen-map-title">@MapTitle</text>
+            <div class="chosen-map-thumbnail" style="background-image: url('@MapThumbnail');"></div>
+            <div class="map-text-info-wrapper">
+                <text class="chosen-text-info">@MapAuthor</text>
+                <div class="map-votes-wrapper">
+                    <text class="chosen-text-info">@MapUpVotes</text>
+                    <text class="chosen-text-info">@MapDownVotes</text>
+                </div>
+        </div>
+        <text class="chosen-text-description">@MapDescription</text>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public string MapTitle { get; set; }
+    [Parameter]
+    public string MapAuthor { get; set; }
+    [Parameter]
+    public string MapDescription { get; set; }
+    [Parameter]
+    public string MapUpVotes { get; set; }
+    [Parameter]
+    public string MapDownVotes { get; set; }
+    [Parameter]
+    public string MapThumbnail { get; set; }
+
+	
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MapTitle, MapAuthor, MapDescription, MapUpVotes, MapDownVotes, MapThumbnail );
+}

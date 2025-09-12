@@ -1,0 +1,32 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+<root>
+    <div class="crosshair-container">
+        <div class="crosshair-lines @(isSprinting || isShooting ? "gap-running"
+                             : isWalking ? "gap-walking"
+                             : "gap-idle")">
+            <div class="crosshair-top"></div>
+            <div class="crosshair-bottom"></div>
+            <div class="crosshair-left"></div>
+            <div class="crosshair-right"></div>
+        </div>
+    </div>
+</root>
+
+@code
+{
+
+    public bool isWalking { get; set; } = false;   
+    public bool isAiming { get; set; } = false;
+    public bool isShooting { get; set; } = false;
+    public bool isSprinting { get; set; } = false;
+
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( isWalking, isAiming, isShooting, isSprinting );
+}

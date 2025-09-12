@@ -1,5 +1,5 @@
 using Sandbox;
-using ZEssentialsTest;
+using System.Threading.Tasks;
 
 public sealed class WeaponHandler : Component, IWeaponHandler
 {
@@ -10,10 +10,10 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	BaseWeapon currentWeaponData { get; set; }
 
 
-	private GameObject ImpactEffectObject { get; set; }
+	public GameObject ImpactEffectObject { get; set; }
 
-	private GameObject ImpactEffectFlesh { get; set; }
-	private GameObject MuzzleFlash { get; set; }
+	public GameObject ImpactEffectFlesh { get; set; }
+	public GameObject MuzzleFlash { get; set; }
 
 	SkinnedModelRenderer WeaponModel { get; set; }
 
@@ -37,36 +37,50 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 	int AmmoMax;
 
+	
 
 	int MagMax;
 
 	private void UnADS()
 	{
 		if ( !this.Network.IsOwner ) return;
+		
 		currentWeaponData.WeaponModel.Set( "ironsights", 0 );
+		WeaponOwner.isAiming = false;
 	}
 
 
 	private void ADS()
 	{
 		if ( !this.Network.IsOwner ) return;
+
+		if(currentWeaponData == null)
+		{
+			Log.Info( "but how is this possible" );
+		}
+
+		WeaponOwner.isAiming = true;
 		currentWeaponData.WeaponModel.Set( "ironsights", 1 );
 	}
 
 
-	[Rpc.Owner]
+	
 	private void Shoot()
 	{
 		
 		if ( !this.Network.IsOwner ) return;
 		
 		if ( Reloading ) return;
-		
-		if ( CurrentMag <= 0 )
+
+
+		if ( WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag <= 0 && WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].AmmoTotal <= 0 ) return;
+
+		if ( WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag <= 0 )
 		{
 			Reload();
 		}
-		Log.Info( "uhuh " + FireRate );
+		
+
 		if ( TimeSinceLastShot < 1f / FireRate ) return;
 
 		Log.Info( "aw shhoot" );
@@ -83,21 +97,17 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	}
 
 
-	[Rpc.Owner]
-	private void ClientReduceAmmo( int ammo )
-	{
-		CurrentMag -= ammo;
-	}
+	
 
 	[Rpc.Host]
 	private void ServerReduceAmmo( int ammo )
 	{
-		CurrentMag -= ammo;
-		ClientReduceAmmo( 1 );
+		WeaponOwner.Inventory.ReduceCurrentMag( ammo );
+
 	}
 
 
-	[Rpc.Host]
+	[Rpc.Owner]
 	private void DoLineTrace( Vector3 pos, Rotation rot )
 	{
 
@@ -107,7 +117,7 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 		var endPosition = cameraPos + direction * WeaponRange;
 		//DebugOverlay.Line( cameraPos, endPosition, Color.Red, 4f );
-		var traceResult = Scene.Trace.Ray( cameraPos, endPosition ).IgnoreGameObject( GameObject ).IgnoreGameObject( GameObject.Parent.Parent.Parent.Parent.Parent ).WithoutTags( "winder" ).RunAll(); //should probably limit the amount of zombies/objects/thickness of things but fuck it for now
+		var traceResult = Scene.Trace.Ray( cameraPos, endPosition ).IgnoreGameObject( GameObject ).IgnoreGameObject( GameObject ).WithoutTags( "winder" ).UseHitboxes().RunAll(); //should probably limit the amount of zombies/objects/thickness of things but fuck it for now
 		foreach ( var hit in traceResult )
 		{
 			if ( hit.Hit )
@@ -128,18 +138,18 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 
 	[Rpc.Broadcast]
-	private void CreateBulletImpactEffects( Vector3 location, bool flesh )
+	private void CreateBulletImpactEffects( Vector3 location, bool flesh, PrefabFile effect)
 	{
 		if ( !flesh )
 		{
-
-			var gHit = ImpactEffectObject.Clone( location );
+			var gHit = GameObject.GetPrefab( effect.ResourcePath ).Clone( location );
 			ServerDestroyMS( gHit, 300 );
+			
 
 		}
 		else
 		{
-			var gHit = ImpactEffectFlesh.Clone( location );
+			var gHit = GameObject.GetPrefab( effect.ResourcePath ).Clone( location );
 			ServerDestroyMS( gHit, 300 );
 		}
 
@@ -147,56 +157,56 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 
 
-	[Rpc.Host]
+	
 	private void BulletImpact( SceneTraceResult Hr )
 	{
-		PlaySoundAtLoc( Hr.Surface.Sounds.Bullet, Hr.EndPosition ); //bug here
+		PlaySoundAtLoc( Hr.Surface.Sounds.Bullet, Hr.EndPosition ); 
 		if ( Hr.Tags.Contains( "flesh" ) )
 		{
-			CreateBulletImpactEffects( Hr.EndPosition, true );
+			CreateBulletImpactEffects( Hr.EndPosition, true , currentWeaponData.FleshImpactEffectPrefab );
 		}
 		else
 		{
-			CreateBulletImpactEffects( Hr.EndPosition, false ); //ill have to do this differently, for now no decals
+			CreateBulletImpactEffects( Hr.EndPosition, false, currentWeaponData.ImpactEffectPrefab );
 		}
 
 	}
 
 
 
-	private void ApplyDamage( Zombie zombie, DamageInfo damageInfo )
+	private void ApplyDamage( Zombie zombie, DamageInfo damageInfo, Vector3 hitPos, int hitBone, Vector3 Direction )
 	{
 
-		zombie.TakeDamage( damageInfo );
+		zombie.TakeDamage( damageInfo, hitPos, hitBone, Direction );
 	}
 
 
-	[Rpc.Host]
+	[Rpc.Owner]
 	private void handleTrace( SceneTraceResult hitResult )
 	{
 		if ( hitResult.Tags.Contains( "zombie" ) )
 		{
 			DamageInfo damageInfo = new DamageInfo();
 
-			damageInfo.Attacker = GameObject.Parent.Parent.Parent.Parent.Parent; //very questionable
+			damageInfo.Attacker = GameObject;
 			damageInfo.Damage = WeaponDamage;
 			var zombie = hitResult.GameObject.GetComponentInChildren<Zombie>();
 			if ( zombie == null )
 			{
 				Log.Info( "zombie null" );
+				
 			}
 
-			ApplyDamage( zombie, damageInfo );
+			ApplyDamage( zombie, damageInfo, hitResult.EndPosition, hitResult.Bone, hitResult.Direction );
 
 		}
 	}
 
-	[Rpc.Broadcast]
+	[Rpc.Owner]
 	private void UpdateAmmo()
 	{
-		var ammo1 = MagMax - CurrentMag;
-		WeaponOwner.WeaponAmmo[WeaponOwner.CurrentWeaponSlot] -= MagMax + ammo1;
-		CurrentMag = MagMax;
+		WeaponOwner.Inventory.ReduceAmmo( WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].MagMax - WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag );
+		WeaponOwner.Inventory.AddAmmoToMag( currentWeaponData.MagMax );
 	}
 
 	//change to timesince
@@ -204,7 +214,7 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	{
 
 		if ( !this.Network.IsOwner ) return;
-		if ( CurrentMag == MagMax ) return;
+		if ( WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag == WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].MagMax || WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].AmmoTotal == 0 ) return;
 		Reloading = true;
 		UpdateAmmo();
 		WeaponModel.Set( "b_reload", true );
@@ -238,25 +248,29 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		gameobject?.Destroy();
 	}
 
-
+	//[Rpc.Owner]
 	public void WeaponEquipped( GameObject weapon )
 	{
-
+		if ( !Network.IsOwner ) return;
 		Log.Info( "hellllloo" );
 
-		var wClass = weapon.GetComponent<BaseWeapon>();
+		WeaponOwner = GameObject.GetComponent<Player>();
+		
+
+		var wClass = weapon.GetComponentInChildren<BaseWeapon>();
 		currentWeaponData = wClass;
 
 		WeaponModel = wClass.WeaponModel;
 
 
-		AmmoMax = wClass.AmmoMax;
+		
 
-		//ReloadTime = wClass.ReloadTime;
+		ReloadTime = wClass.ReloadTime;
 
-		//isAutomatic = wClass.Automatic;
+		isAutomatic = wClass.Automatic;
 
-		MagMax = wClass.MagMax;
+		MagMax = WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].MagMax;
+		CurrentMag = WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag;
 
 		FireRate = wClass.FireRate;
 
@@ -264,34 +278,67 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 		WeaponDamage = wClass.WeaponDamage;
 
-		ImpactEffectObject = GameObject.GetPrefab( wClass.MuzzleFlashPrefab.ResourcePath );
+		Log.Info( "path: " + wClass.ImpactEffectPrefab.ResourcePath );
+		ImpactEffectObject = GameObject.GetPrefab( wClass.ImpactEffectPrefab.ResourcePath );
+		Log.Info("object: " + ImpactEffectObject );
+
+		Log.Info("path: " + wClass.FleshImpactEffectPrefab.ResourcePath );
 
 		ImpactEffectFlesh = GameObject.GetPrefab( wClass.FleshImpactEffectPrefab.ResourcePath );
+		Log.Info( "object: " + ImpactEffectFlesh );
+
+		Log.Info("path: " + wClass.MuzzleFlashPrefab.ResourcePath );
 		MuzzleFlash = GameObject.GetPrefab( wClass.MuzzleFlashPrefab.ResourcePath );
+		Log.Info( "object: " + MuzzleFlash );
+
+
 	}
+
+
+	
 
 
 	private void HandleInputs()
 	{
 
 
-		if ( isAutomatic )
-		{
-			if ( Input.Down( "Attack1" ) )
+		if ( !Reloading ) {
+			
+			if ( isAutomatic )
 			{
-				Log.Info( "uh" );
-				Shoot();
-				Log.Info( "ok" );
+				if ( Input.Down( "Attack1" ) )
+				{
+					WeaponOwner.isFiring = true;
+					Shoot();
+				}
+				else if ( Input.Released( "Attack1" ) )
+				{
+					WeaponOwner.isFiring = false;
+				}
+
 			}
-		}
-		else
-		{
-			if ( Input.Pressed( "Attack1" ) )
+			else
 			{
-				Log.Info( "uh" );
-				Shoot();
-				Log.Info( "ok" );
+				if ( Input.Pressed( "Attack1" ) )
+				{
+					WeaponOwner.isFiring = true;
+					Shoot();
+				
+				}
+				if(TimeSinceLastShot > .1f)
+				{
+					WeaponOwner.isFiring = false;
+				}
+				if ( Input.Released( "Attack1" ) )
+				{
+					WeaponOwner.isFiring = false;
+				}
+
+
 			}
+		}else if( Reloading )
+		{
+			WeaponOwner.isFiring = false;
 		}
 
 		if ( Input.Down( "Reload" ) )

@@ -31,7 +31,7 @@ public sealed class WallBuy : Component, IInteraction
 	private void GiveWeapon( Player player )
 	{
 		Log.Info( "gave weapon?" );
-		WeaponManager.GivePlayerStartingWeapon( WeaponName, player );
+		
 	}
 
 

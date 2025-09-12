@@ -4,17 +4,27 @@ using Sandbox.Audio;
 using Sandbox.ModelEditor;
 using System.Threading.Tasks;
 
+
 public sealed class CreateLobby : Component, Component.INetworkListener
 {
 
+	[Sync]
 	public List<MapData> mapList { get; set; } = new();
+
+	public List<string> WeaponPrefabList { get; set; } = new();
+
+	public List<string> WeaponIndents { get; set; } = new();
+
+	private bool MapDownloaded { get; set; } = false;
 
 	[Sync]
 	SceneFile mapToLaunchScene { get; set; }
 
 	private bool LaunchingMap { get; set; } = false;
 
-	private Dictionary<long, bool> DownloadProgress { get; set; } = new();
+	private Dictionary<long, bool> DownloadProgressMap { get; set; } = new();
+
+	private Dictionary<long, bool> DownloadProgressWeapons { get; set; } = new();
 
 	protected override void OnStart()
 	{
@@ -23,8 +33,26 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		if ( Networking.IsHost ) 
 		{ 
 			_ = GetMaps();
+			GetWeapons();
 		}
 	}
+
+
+	//should be similiar to GetMaps() but there is no supportgames for prefabs currently and addons are busted
+	private void GetWeapons()
+	{
+		var json = FileSystem.Mounted.ReadAllText( "resources/tempweaponlist.json" );
+
+		var deser = Json.Deserialize<List<string>>( json );
+
+		foreach ( var x in deser )
+		{
+			WeaponIndents.Add( x );
+		}
+	}
+
+
+
 
 
 	//get maps
@@ -70,8 +98,8 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		Log.Info( "wtf" );
 		foreach ( var x in Connection.All )
 		{
-			DownloadProgress.TryAdd( x.SteamId, false );
-			Log.Info( DownloadProgress.First() );
+			DownloadProgressMap.TryAdd( x.SteamId, false );
+			Log.Info( DownloadProgressMap.First() );
 		}
 
 		TellClientsToStartDownload( SelectedMap.FullIndent );
@@ -83,32 +111,34 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 	[Rpc.Broadcast]
 	private void LoadMap()
 	{
-		_ = InitializeMap();
+		InitializeMap();
 		
 
 
 	}
 
 
-	private async Task InitializeMap()
+	private void InitializeMap()
 	{
 		var SceneOptions = new SceneLoadOptions();
 		SceneOptions.SetScene( mapToLaunchScene );
 		Game.ChangeScene( SceneOptions );
-		Game.ActiveScene.CreateObject().AddComponent<GameModeManager>();
-		//await Task.Frame();
+		var x = Game.ActiveScene.CreateObject();
+		x.NetworkMode = NetworkMode.Object;
+		var y = x.AddComponent<GameModeManager>();
+		var z = x.AddComponent<WeaponManager>();
+		z.WeaponPaths = WeaponPrefabList;
+		x.NetworkSpawn();
 
-		//x.Name = "GameModeManager";
-		//x.AddComponent<GameModeManager>();
 	}
 
 
 
 	[Rpc.Host]
-	private void CheckIfDownloaded( ) 
+	private void CheckIfMapDownloaded( ) 
 	{
 
-		foreach(var x in DownloadProgress)
+		foreach(var x in DownloadProgressMap)
 		{
 			if(x.Value == false)
 			{
@@ -116,10 +146,27 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 			}
 		}
 
-		LoadMap();
-		LaunchingMap = false;
+		MapDownloaded = true;
+		StartWeaponDownload();
 	}
 
+
+
+	[Rpc.Host]
+	private void CheckIfWeaponsDownloaded()
+	{
+
+		foreach ( var x in DownloadProgressWeapons )
+		{
+			if ( x.Value == false )
+			{
+				return;
+			}
+			Log.Info( x );
+		}
+
+		LoadMap();
+	}
 
 
 	[Rpc.Broadcast]
@@ -131,14 +178,26 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 
 	[Rpc.Host]
-	private void DownloadFinished(long SteamId)
+	private void DownloadFinishedMap(long SteamId)
 	{
-		if ( DownloadProgress?[SteamId] == false )
+		if ( DownloadProgressMap?[SteamId] == false )
 		{
-			DownloadProgress.Remove( SteamId );
-			DownloadProgress.Add(SteamId, true );
+			DownloadProgressMap.Remove( SteamId );
+			DownloadProgressMap.Add(SteamId, true );
 		}
 		
+	}
+
+
+	[Rpc.Host]
+	private void DownloadFinishedWeapons( long SteamId )
+	{
+		if ( DownloadProgressWeapons?[SteamId] == false )
+		{
+			DownloadProgressWeapons.Remove( SteamId );
+			DownloadProgressWeapons.Add( SteamId, true );
+		}
+
 	}
 
 
@@ -163,10 +222,56 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 		mapToLaunchScene = SceneFile;
 
-		DownloadFinished( Connection.Local.SteamId );
+		DownloadFinishedMap( Connection.Local.SteamId );
 
 		Log.Info( scenePath );
 		return;
+	}
+
+
+	[Rpc.Host]
+	private void StartWeaponDownload()
+	{
+		foreach ( var x in Connection.All )
+		{
+			DownloadProgressWeapons.TryAdd( x.SteamId, false );
+		}
+
+		TellClientToDownloadWeapons();
+	}
+
+
+
+	[Rpc.Broadcast]
+	private void TellClientToDownloadWeapons()
+	{
+		_ = DownloadWeapons();
+	}
+
+
+	private async Task DownloadWeapons()
+	{
+		Log.Info( "weapon download started" );
+		foreach ( var x in WeaponIndents )
+		{
+			var weapon = await Package.Fetch( x, false );
+
+			if ( weapon == null )
+			{
+				return;
+			}
+
+			await weapon.MountAsync();
+
+			var weaponPath = weapon.GetMeta( "PrimaryAsset", "" );
+			WeaponPrefabList.Add( weaponPath );
+
+			Log.Info( weaponPath + " was added to list" );
+			
+		}
+
+		DownloadFinishedWeapons( Connection.Local.SteamId );
+
 	}
 
 
@@ -174,9 +279,13 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 	{
 		if ( Networking.IsHost )
 		{
-			if ( LaunchingMap == true )
+			if ( LaunchingMap )
 			{
-				CheckIfDownloaded();
+				CheckIfMapDownloaded();
+				if( MapDownloaded )
+				{
+					CheckIfWeaponsDownloaded();
+				}
 			}
 
 		}

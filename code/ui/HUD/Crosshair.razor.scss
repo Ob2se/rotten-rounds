@@ -1,0 +1,93 @@
+.crosshair-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+
+    .crosshair-lines {
+        position: absolute;
+
+        .crosshair-top,
+        .crosshair-bottom {
+            width: 0.28rem; // thickness
+            height: 1vh; // length
+            background-color: lightgrey;
+            border: 0.1rem solid black;
+            border-radius: 10rem;
+            position: absolute;
+            left: -0.14rem; // half thickness
+            transition: top 0.15s ease;
+        }
+
+        .crosshair-left,
+        .crosshair-right {
+            width: 1vh; // length
+            height: 0.28rem; // thickness
+            background-color: lightgrey;
+            border: 0.1rem solid black;
+            border-radius: 10rem;
+            position: absolute;
+            top: -0.14rem; // half thickness
+            transition: left 0.15s ease;
+        }
+        // === GAP STATES ===
+        &.gap-idle {
+            .crosshair-top {
+                top: -1.55vh;
+            }
+
+            .crosshair-bottom {
+                top: 0.55vh;
+            }
+
+            .crosshair-left {
+                left: -1.55vh;
+            }
+
+            .crosshair-right {
+                left: 0.55vh;
+            }
+        }
+
+        &.gap-walking {
+            .crosshair-top {
+                top: -1.75vh;
+            }
+
+            .crosshair-bottom {
+                top: 0.75vh;
+            }
+
+            .crosshair-left {
+                left: -1.75vh;
+            }
+
+            .crosshair-right {
+                left: 0.75vh;
+            }
+        }
+
+        &.gap-running { // also used for shooting
+            .crosshair-top {
+                top: -3vh;
+            }
+
+            .crosshair-bottom {
+                top: 2vh;
+            }
+
+            .crosshair-left {
+                left: -3vh;
+            }
+
+            .crosshair-right {
+                left: 2vh;
+            }
+        }
+    }
+}
+

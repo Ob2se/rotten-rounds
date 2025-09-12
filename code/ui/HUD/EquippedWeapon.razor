@@ -1,0 +1,26 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+<div class="weapon-container">
+    <div class="ammo-row">
+        <span class="weapon-ammo-clip">@AmmoClip</span> 
+        <span class="slash"> / </span>
+        <span class="weapon-ammo-total">@AmmoTotal</span>
+    </div>
+    <div class="weapon-name">@WeaponName</div>
+</div>
+
+@code
+{
+
+    public int AmmoClip { get; set; }
+    public int AmmoTotal { get; set; }
+    public string WeaponName { get; set; }
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( AmmoClip, AmmoTotal, WeaponName );
+}

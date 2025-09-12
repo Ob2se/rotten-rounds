@@ -2,46 +2,33 @@ using Sandbox;
 using System;
 using static Sandbox.Clothing;
 using System.Numerics;
+using static Sandbox.PhysicsContact;
 
 public sealed class WeaponManager : Component
 {
+	
+
 	[Sync( SyncFlags.FromHost )]
-	public NetList<WeaponData> Weapons { get; set; } = new();
+	public List<string> WeaponPaths { get; set; } = new();
+	
+
+	public string StartingWeapon { get; set; }
+
 
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		
-		var json = FileSystem.Mounted.ReadAllText( "resources/weaponData.json" );
-
-		var deser = Json.Deserialize<NetList<WeaponData>>( json );
-
-		foreach ( var x in deser )
-		{
-			Weapons.Add( x );
-		}
 	}
 
-	[Rpc.Broadcast]
-	public void GivePlayerStartingWeapon(string WeaponName, Player player)
+
+	[Rpc.Host]
+	public void GivePlayerWeapon(string Weapon, Player player, int slot)
 	{
-
-		//if ( IsProxy ) return;
-		
-		foreach ( var x in Weapons )
-			{
-			if ( x.Name == WeaponName )
-			{
-				Log.Info( x.Name );
-				Log.Info( Weapons.Count );
-				Log.Info( player.Weapons.Count );
-				
-				//player.Weapons.Add( x );
-				
-				//Log.Info( "Gave " + player.PlayerConnection.DisplayName + " " + WeaponName );
-
-			}
+	
+		if ( WeaponPaths.Contains(Weapon) )
+		{
+			player.Inventory.AddWeapon( Weapon, slot );
 		}
 		
 	}

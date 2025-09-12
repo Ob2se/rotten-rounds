@@ -19,7 +19,7 @@ public sealed class SimpleZombieController : Component
 	[Sync] GameObject targetWindow { get; set; }
 	[Sync] Window targetWindowClass { get; set; }
 
-	[Sync] PlayerController targetPlayer { get; set; }
+	[Sync] Player targetPlayer { get; set; }
 
 
 	[Property] CitizenAnimationHelper ZombieAnimationHelper { get; set; }
@@ -40,7 +40,7 @@ public sealed class SimpleZombieController : Component
 	Collider ZombieCollider { get; set; }
 
 	//player go list
-	IEnumerable<PlayerController> players;
+	IEnumerable<Player> players;
 
 	IEnumerable<GameObject> window;
 
@@ -84,7 +84,7 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Host]
 	private void ZombieStart()
 	{
-		players = Scene.GetAllComponents<PlayerController>();
+		players = Scene.GetAllComponents<Player>();
 
 
 		var winder = SpawnPoint.AssociatedWindow;
@@ -108,11 +108,12 @@ public sealed class SimpleZombieController : Component
 	private void GetClosestPlayer()
 	{
 		//create a dict distance, playerGO
-		Dictionary<float, PlayerController> indexs = [];
+		Dictionary<float, Player> indexs = [];
 
 		//for each player in the playerlist get the distance from the zombie to the player then add their distances and corresponding GO to the dict
-		foreach ( PlayerController player in players )
+		foreach ( Player player in players )
 		{
+			
 			var distance = Scene.Trace.FromTo( GameObject.WorldPosition, player.WorldPosition ).Run().Distance;
 			indexs.TryAdd( distance, player );
 		}
@@ -169,21 +170,7 @@ public sealed class SimpleZombieController : Component
 				MoveZombieTo( targetWindowClass.WindowDestroyPointPos );
 				flatDirection = (targetWindow.WorldPosition - WorldPosition).WithZ( 0 ).Normal;
 				WorldRotation = Rotation.LookAt(flatDirection);
-				/*if ( GameObject.WorldPosition == TargetPosition && !targetWindowClass.isBeingAttacked )
-				{
-
-					ChangeState( ZomState.AttackWindow );
-				}*/
-				/*if ( targetWindowClass.isBeingAttacked )
-				{
-					ChangeState( ZomState.WaitInLine );
-					targetWindowClass.ZombiesInLine.Add( ZombieClass );
-				}*/
-				/*if ( GameObject.WorldPosition == TargetPosition && targetWindowClass.isOpen )
-				{
-
-					ChangeState( ZomState.EnterWindow );
-				}*/
+				
 				break;
 			case ZomState.TargetPlayer:
 				GetClosestPlayer();
@@ -316,7 +303,7 @@ public sealed class SimpleZombieController : Component
 			}
 			ZombieState();
 			CheckIfStuck();
-			//Log.Info(CurrentState);
+			
 		}
 		
 		ZombieAnimationHelper.WithVelocity( zombieAgent.Velocity );

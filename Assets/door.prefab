@@ -9,9 +9,9 @@
     "Scale": "1,1,1",
     "Tags": "interactable",
     "Enabled": true,
-    "NetworkMode": 2,
+    "NetworkMode": 1,
     "NetworkInterpolation": true,
-    "NetworkOrphaned": 0,
+    "NetworkOrphaned": 1,
     "OwnerTransfer": 1,
     "Components": [
       {
@@ -23,6 +23,7 @@
         "BoneMergeTarget": null,
         "CreateAttachments": false,
         "CreateBoneObjects": false,
+        "LodOverride": null,
         "MaterialGroup": null,
         "MaterialOverride": null,
         "Materials": null,

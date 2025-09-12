@@ -1,28 +1,35 @@
 using Sandbox;
 using Sandbox.Citizen;
+using Sandbox.UI;
 using System;
-using ZEssentialsTest;
+using System.Net.Http.Headers;
+using System.Numerics;
+
+//using rrcustomcontent;
 using System.Reflection;
 using System.Threading.Tasks;
 using static Sandbox.Package;
+using static Sandbox.PhysicsContact;
 
 
 
-public sealed class Player : Component
+public sealed class Player : Component, IHudInterface
 {
 	[RequireComponent]
 	[Sync]
-	private PlayerController PlayerController { get; set; }
+	public PlayerController PlayerController { get; set; }
 
 	ClothingContainer ClothingContainer { get; set; }
 
-	[Sync] SkinnedModelRenderer Body { get; set; }
+	[Property] SkinnedModelRenderer Body { get; set; }
 
 	[Property] public SkinnedModelRenderer fpsArms { get; set; }
 
 	[Property] GameObject WeaponContainer { get; set; }
 
-	[Sync, Property] SkinnedModelRenderer ThirdPersonWeaponModel {get; set;}
+	[Property] public GameObject ThirdPersonWeaponModelContainer {get; set;}
+
+	public ModelRenderer ThirdPersonWeaponModel { get; set; }
 
 	[Property] public CameraComponent playerCamera { get; set; }
 
@@ -30,14 +37,20 @@ public sealed class Player : Component
 
 	public Connection PlayerConnection { get; set; }
 
-	[Property] CitizenAnimationHelper PlayerAnimationHelper { get; set; }
-	[Sync] public NetList<WeaponData> Weapons { get; set; } = new();
-	[Sync] public GameObject CurrentWeapon { get; set; }
+	public CitizenAnimationHelper PlayerAnimationHelper { get; set; }
+	
+	private WeaponManager WeaponManager { get; set; }
+	
+	public GameObject CurrentWeapon { get; set; }
 
-	[Sync] public NetList<int> WeaponAmmo { get; set; } = new();
+	[Sync]
+	public CitizenAnimationHelper.HoldTypes HoldType { get; set; }
+
+	private float BaseRunSpeed { get; set; } = 200f;
+	public int CurrentWeaponType { get; set; }
 
 	GameObject WeaponPrefab { get; set; }
-	[Sync] public int CurrentWeaponSlot { get; set; }
+	public int CurrentWeaponSlot { get; set; }
 
 	[Sync] SkinnedModelRenderer WeaponModel { get; set; }
 
@@ -51,17 +64,47 @@ public sealed class Player : Component
 
 	[Sync] public bool Downed { get; set; }
 
+	[Property]
+	public InventoryComponent Inventory {  get; set; }
+
+	[Property]
+	public PanelComponent Hud { get; set; }
+
+	public bool isAiming { get; set; } = false;
+
+	public bool isSprinting { get; set; } = false;
+
+	public bool isWalking { get; set;} = false;
+	public bool isFiring { get; set; } = false;
+
+	public BaseWeapon CurrentWeaponClass { get; set; }
 
 
+	public string WeaponName => CurrentWeaponClass != null ? CurrentWeaponClass.WeaponName : "None";
 
-	private async void SetWeaponPosition()
+	public int AmmoInMag => Inventory.Weapons.Count > 0 ? Inventory.WeaponsAmmo[CurrentWeaponSlot].CurrentMag : 0;
+	
+	public int AmmoTotal => Inventory.Weapons.Count > 0 ? Inventory.WeaponsAmmo[CurrentWeaponSlot].AmmoTotal : 0;
+
+	public List<Player> PlayerList { get; set; } = new();
+
+	Angles lastEyeAngles;
+	float aimPitchInertia;
+	float aimYawInertia;
+
+	Rotation lastViewRot;
+
+	[Rpc.Owner]
+	private void SetWeaponPosition()
 	{
 		Log.Info( "set wepaonpos " );
 		var boneObject = fpsArms.GetBoneObject( "weapon_IK_hand_R" );
-		var bw = CurrentWeapon.GetComponent<BaseWeapon>();
-		await Task.Delay( 1 );
+		var bw = CurrentWeapon.GetComponentInChildren<BaseWeapon>();
+		
 		fpsArms.BoneMergeTarget = bw.WeaponModel;
-		//bw.WeaponModel.BoneMergeTarget = fpsArms;
+
+		Log.Info( fpsArms.BoneMergeTarget );
+		
 	}
 
 
@@ -77,19 +120,11 @@ public sealed class Player : Component
 	}
 
 
-	[Rpc.Host]
-	public void GivenWeapon(int slot)
+	public void AddToPlayerList( Connection connection, Player player )
 	{
-		if ( slot >= 0 && slot < WeaponAmmo.Count )
-		{
-			WeaponAmmo[slot] = Weapons[slot].MaxAmmo;
-		}
-		else 
-		{
-			WeaponAmmo.Add( Weapons[slot].MaxAmmo );
-		}
+		PlayerList.Add( player );
+		Log.Info( connection + " | " + player );
 	}
-
 
 	private void DestroyWeapon()
 	{
@@ -107,10 +142,10 @@ public sealed class Player : Component
 	[Rpc.Broadcast]
 	private void ChangePointsPos( int points )
 	{
-		Points += points;
+		this.Points += points;
 	}
 
-	[Rpc.Owner]
+	[Rpc.Host]
 	public void RemovePoints( int points )
 	{
 		CheckPoints( points );
@@ -119,7 +154,7 @@ public sealed class Player : Component
 	[Rpc.Host]
 	private void CheckPoints( int points )
 	{
-		var check = Points - points < 0;
+		var check = this.Points - points < 0;
 		ChangePointsNeg( check, points );
 
 	}
@@ -130,76 +165,158 @@ public sealed class Player : Component
 	{
 		if ( !check )
 		{
-			Points -= points;
+			this.Points -= points;
 
 		}
 	}
 
 
-	//called spawn because it is spawning it, but this is "equipping" a weapon
-	[Rpc.Host]
+
+	
 	private void SpawnWeapon()
 	{
-		Log.Info( "is this running?" );
-		var weap = GameObject.GetPrefab( Weapons[CurrentWeaponSlot].PrefabPath );
+
+		CurrentWeapon?.Destroy();
+
+
+		var weap = GameObject.GetPrefab( Inventory.Weapons[CurrentWeaponSlot] );
 		var weapon = weap.Clone();
-		weapon.NetworkSpawn(PlayerConnection);
 		CurrentWeapon = weapon;
+		
+		CurrentWeaponClass = weapon.GetComponentInChildren<BaseWeapon>();
+
+		CurrentWeaponClass.WeaponModel.RenderType = ModelRenderer.ShadowRenderType.Off;
+
+
 		CurrentWeapon.SetParent( fpsArms.GameObject, false );
-		fpsArms.AnimationGraph = CurrentWeapon.GetComponent<BaseWeapon>().WeaponModel.AnimationGraph;
+
+		ClientWeaponEquipped();
+
 		SetWeaponPosition();
-		Scene.RunEvent<IWeaponHandler>( x => x.WeaponEquipped(CurrentWeapon) );
+
+		ChangeThirdPersonChar( this );
+
+		int holdtype = ((int)CurrentWeaponClass.WeaponType) + 1;
+
+		ManageHoldType(holdtype);
+
+		Log.Info("current weapon slot: " + CurrentWeaponSlot );
 	}
+
+
+	[Rpc.Owner]
+	private void ClientWeaponEquipped()
+	{
+		Scene.RunEvent<IWeaponHandler>( x => x.WeaponEquipped( CurrentWeapon ) );
+
+	}
+
+	[Rpc.Host]
+	private void ServerChangeThidPersonChar()
+	{
+		Log.Info( Connection.Local.DisplayName + " changing weapon" );
+		ChangeThirdPersonChar(this);
+	}
+
 
 
 	//this is for changing the weapon that appears for other players, purely cosmetic for others, not seen by owner[[[
-	[Rpc.Broadcast]		
-	private void ChangeThirdPersonChar()
+			
+	public void ChangeThirdPersonChar(Player player)
 	{
 		if ( CurrentWeapon != null )
 		{
-			ThirdPersonWeaponModel.Model = CurrentWeapon.GetComponent<BaseWeapon>().WeaponModel.Model;
+			Thefuckifiknow(CurrentWeapon.GetComponentInChildren<BaseWeapon>().WeaponModel.Model );
+			ManageHoldType(1);
 		}
+	}
+
+	[Rpc.Host]
+	private void Thefuckifiknow(Model currentWeapon)
+	{
+		
+		ThirdPersonWeaponModel?.Destroy();
+		ThirdPersonWeaponModel = ThirdPersonWeaponModelContainer.AddComponent<ModelRenderer>();
+		
+		ThirdPersonWeaponModel.CreateAttachments = true;
+		//ThirdPersonWeaponModel.UseAnimGraph = false;
+
+		ThirdPersonWeaponModel.Model = currentWeapon;
+		ThirdPersonWeaponModelContainer.NetworkSpawn();
+
+		/*foreach(var x in ThirdPersonWeaponModel.Model.Attachments.All )
+		{
+			Log.Info( x.Name );
+		}*/
+		
 	}
 
 	[Rpc.Broadcast]
-	private void ManageHoldType()
+	public void ManageHoldType(int x)
 	{
-		if ( CurrentWeapon == null ) return;
-		if ( CurrentWeapon.GetComponent<BaseWeapon>() == null ) return;
 
-		switch ( CurrentWeapon.GetComponent<BaseWeapon>().WeaponType )
-		{
-			case BaseWeapon.weaponType.Pistol:
-				PlayerAnimationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Pistol;
-				break;
-			case BaseWeapon.weaponType.Smg:
-				PlayerAnimationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Shotgun;
-				break;
-
-		}
+		Body.Set( "holdtype", x );
 
 	}
 
 
+	private void GetWeaponManager()
+	{
+		var WeaponManagers = Scene.GetAllComponents<WeaponManager>();
+
+		if ( WeaponManagers == null || WeaponManagers.Count() != 1 )
+		{
+			Log.Info( "ERROR: Weapon manager null or theres more than 1!" );
+		}
+
+		foreach ( var i in WeaponManagers )
+		{
+			WeaponManager = i;
+			Log.Info( "weapon manager found!" );
+		}
+	}
+
+	public void UpdatePlayerList()
+	{
+		PlayerList?.Clear();
+		foreach ( var i in Scene.GetAllComponents<Player>() )
+		{
+			Log.Info( "adding player" );
+			AddToPlayerList( i.PlayerConnection, i );
+		}
+
+	}
 
 
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		PlayerConnection = Network.Owner;
+		PlayerAnimationHelper = new CitizenAnimationHelper();
+		PlayerAnimationHelper.Target = PlayerController.Renderer;
 
+		
+
+		
+
+		PlayerConnection = Connection.Local;
+
+		
 
 		ClothingContainer = ClothingContainer.CreateFromLocalUser();
 		ClothingContainer.Apply( PlayerController.Renderer );
-
+		foreach ( var i in Scene.GetAllComponents<Player>() )
+		{
+			//if ( i == this ) continue;
+			AddToPlayerList( i.PlayerConnection, i );
+		}
 
 
 		if ( IsProxy )
 		{
 			playerCamera.Enabled = false;
 			fpsArms.Enabled = false;
+			//PlayerAnimationHelper.Target = PlayerController.Renderer;
 
 
 		}
@@ -207,35 +324,46 @@ public sealed class Player : Component
 		{
 			playerCamera.Enabled = true;
 			fpsArms.Enabled = true;
+			Hud.Enabled = true;
+			Log.Info( PlayerList.Count );
+
+			
+			//PlayerAnimationHelper.Target = PlayerController.Renderer;
+
 		}
 
 		Log.Info( "player spawned" );
 
-		
-		ChangeCurrentSlot( 1 );
+		Scene.RunEvent<IHudInterface>( x => x.UpdatePlayerList() );
+
+
 		StartingValues();
 	}
 
 
-
-	[Rpc.Host]
-	private void ChangeCurrentSlot(int slot)
+	
+	public void ChangeCurrentSlot(int slot)
 	{
-		CurrentWeaponSlot = slot - 1;
+		CurrentWeaponSlot = slot;
 		SpawnWeapon();
 	}
 
 
-	[Rpc.Broadcast]
+	[Rpc.Owner]
 	private void StartingValues()
 	{
 
 		if ( Points != 0 || Health != 0 ) return;
-		Points = 500f;
+		AddPoints( 500 );
 		
 		Downed = false;
 		Health = 100f;
 	}
+
+
+	
+
+
 
 
 	[Rpc.Owner]
@@ -264,34 +392,148 @@ public sealed class Player : Component
 	}
 
 
+	
+	public void ServerManageTPV()
+	{
+
+		//ManageHoldType();
+	}
+
+
+
+	public static byte ClampToByte( float value, float min, float max )
+	{
+		if ( value < min ) value = min;
+		if ( value > max ) value = max;
+		return (byte)((value - min) / (max - min) * 255f);
+	}
+
+
+
+
+	public void UpdateWeaponSway( )
+	{
+
+		
+		Rotation viewRot = Scene.Camera.WorldRotation.Angles();
+
+		
+		Rotation deltaRot = viewRot * lastViewRot.Inverse;
+
+		
+		Angles deltaAngles = deltaRot.Angles();
+
+		
+		aimPitchInertia = aimPitchInertia.LerpTo( deltaAngles.pitch * 3f, Time.Delta * 50f );
+		aimYawInertia = aimYawInertia.LerpTo( deltaAngles.yaw * 3f, Time.Delta * 50f );
+
+		CurrentWeaponClass.WeaponModel.Set( "aim_pitch_inertia", aimPitchInertia );
+		CurrentWeaponClass.WeaponModel.Set( "aim_yaw_inertia", aimYawInertia );
+
+		lastViewRot = viewRot;
+	}
+
+
+
+
+	private void ControlMovingAnimationFPS()
+	{
+		var speed = PlayerController.Velocity.WithZ( 0 ).Length;
+		float normalizedSpeed = ClampToByte( speed, 0f, 200f );
+
+		//float moveBobFloat = moveBobFloat.LerpTo( target, Time.Delta * 5f );
+
+		CurrentWeaponClass.WeaponModel.Set( "move_bob", normalizedSpeed );
+		if ( isSprinting )
+		{
+			CurrentWeaponClass.WeaponModel.Set( "b_sprint", true );
+		}
+		else
+		{
+			CurrentWeaponClass.WeaponModel.Set( "b_sprint", false );
+		}	
+
+	}
+
 
 
 	protected override void OnUpdate()
 	{
-
-		if ( CurrentWeapon != null )
+		
+		
+		if ( IsProxy ) return;
+		
+		/*if(CurrentWeapon == null)
 		{
-			ManageHoldType();
-		}
+			ChangeCurrentSlot( 0 );
+		}*/	
 
 		if ( Input.Down( "attack2" ) )
 		{
-			
+			//Log.Info( ThirdPersonWeaponModel.Model.Attachments. );
+			/*foreach ( var x in ThirdPersonWeaponModel.Model.Attachments.All )
+			{
+				Log.Info( x.Name );
+			}*/
 		}
+
+		if ( isSprinting && (isAiming || isFiring) )
+		{
+			PlayerController.RunSpeed = PlayerController.WalkSpeed;
+			isSprinting = false;
+		}
+		else
+		{
+			PlayerController.RunSpeed = BaseRunSpeed;
+		}
+
+		if ( CurrentWeapon != null )
+		{
+			ControlMovingAnimationFPS();
+			UpdateWeaponSway( );
+		}
+
+
+		if( PlayerController.Velocity.LengthSquared >= 0.2f )
+		{
+			isWalking = true;
+		}
+		else
+		{
+			isWalking = false;
+		}
+
+		if ( Input.Down( "run" ) && PlayerController.Velocity.LengthSquared >= 0.2f)
+		{
+			isSprinting = true;
+		}
+		else if ( Input.Released( "run" ) || PlayerController.Velocity.LengthSquared <= 0.2f )
+		{
+			isSprinting = false;
+		}
+
 
 		if ( Input.Pressed( "Slot1" ) )
 		{
-			ChangeCurrentSlot( 1 );
+			
+
+			if ( CurrentWeaponSlot == 0 ) return;
+			ChangeCurrentSlot( 0 );
 		}
 
 		if ( Input.Pressed( "Slot2" ) )
 		{
-			ChangeCurrentSlot( 2 );
+			if ( Inventory.Weapons.Count < 2 ) return;
+
+			if ( CurrentWeaponSlot == 1 ) return;
+			ChangeCurrentSlot( 1 );
 		}
 
 		if ( Input.Pressed( "Slot3" ) )
 		{
-			ChangeCurrentSlot( 3 );
+			if ( Inventory.Weapons.Count < 3 ) return;
+			if ( CurrentWeaponSlot == 3 ) return;
+			ChangeCurrentSlot( 2 );
 		}
 
 

@@ -70,8 +70,6 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
-  "__references": [
-    "facepunch.impactgeneric#88477"
-  ],
+  "__references": [],
   "__version": 1
 }

@@ -72,74 +72,6 @@
       "Children": []
     },
     {
-      "__guid": "b07e04ca-9c87-4d5f-b966-cd25df176522",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "SpawnPoint",
-      "Position": "-242.3521,9.659027,12.59351",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [],
-      "Children": []
-    },
-    {
-      "__guid": "79e0e866-d769-4d8a-8bef-6645909c90dc",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "SpawnPoint",
-      "Position": "-242.3521,91.7272,12.59351",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [],
-      "Children": []
-    },
-    {
-      "__guid": "eb25df24-0221-418c-bff4-7d843adea475",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "SpawnPoint",
-      "Position": "-332.4156,91.7272,12.59351",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [],
-      "Children": []
-    },
-    {
-      "__guid": "f07deb1a-3ebf-46c4-a727-e4b11c4972d7",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "SpawnPoint",
-      "Position": "-327.7925,3.757369,12.59351",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [],
-      "Children": []
-    },
-    {
       "__guid": "bde86950-baf6-4496-8bf6-f1fcb8078f1e",
       "__version": 1,
       "__Prefab": "zombiewindow.prefab",
@@ -1807,6 +1739,22 @@
           },
           {
             "Target": {
+              "Type": "GameObject",
+              "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
+            },
+            "Property": "NetworkMode",
+            "Value": 1
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
+            },
+            "Property": "NetworkOrphaned",
+            "Value": 1
+          },
+          {
+            "Target": {
               "Type": "Component",
               "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
             },
@@ -2103,6 +2051,22 @@
           },
           {
             "Target": {
+              "Type": "GameObject",
+              "IdValue": "795dda7a-d915-406f-b056-4087c77d45d6"
+            },
+            "Property": "NetworkMode",
+            "Value": 1
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "795dda7a-d915-406f-b056-4087c77d45d6"
+            },
+            "Property": "NetworkOrphaned",
+            "Value": 1
+          },
+          {
+            "Target": {
               "Type": "Component",
               "IdValue": "fcc31630-abbf-4e11-90a0-662112941460"
             },
@@ -2120,12 +2084,12 @@
       }
     },
     {
-      "__guid": "d994de7d-f106-4c62-bd52-d412b50eda1c",
+      "__guid": "38b29543-18c6-43b3-abb6-629fcfbf93f7",
       "__version": 1,
       "Flags": 0,
       "Name": "Point Light",
-      "Position": "-538.697,28.58767,124.9372",
-      "Rotation": "0,0,0,1",
+      "Position": "-532.5712,29.58501,77.73421",
+      "Rotation": "0,0,-0.9999999,0.0000001947072",
       "Scale": "1,1,1",
       "Tags": "light_point,light",
       "Enabled": true,
@@ -2136,7 +2100,7 @@
       "Components": [
         {
           "__type": "Sandbox.PointLight",
-          "__guid": "a1051091-427d-44f3-a015-1d230ae49a97",
+          "__guid": "ee41e2a5-4be3-4268-97eb-c15a47a91a09",
           "__enabled": true,
           "Attenuation": 1,
           "FogMode": "Enabled",
@@ -2177,6 +2141,22 @@
             },
             "Property": "Rotation",
             "Value": "0,0,-0.9999999,0.0000001947072"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "2bffec3b-0f38-45eb-91c9-191c4e860ac5"
+            },
+            "Property": "NetworkMode",
+            "Value": 1
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "2bffec3b-0f38-45eb-91c9-191c4e860ac5"
+            },
+            "Property": "NetworkOrphaned",
+            "Value": 1
           }
         ],
         "MovedObjects": []
@@ -2190,6 +2170,102 @@
         "104ab5a2-a058-4b3d-889e-38b9a971f403": "8265b69e-5ca6-4508-bfc0-15657c0662e1",
         "85a4c2b8-4cd2-40b8-9bfc-512058e9d770": "a1fa2dfc-9e3c-4934-a22f-ac6f80f89cbd",
         "462bd3dc-3fa6-4e44-a502-2504d9237810": "3d764984-d4ab-4bc8-b8cd-a0cd0a7a635d"
+      }
+    },
+    {
+      "__guid": "e2d5a5b0-404b-46f1-a478-878b1f6dc7c1",
+      "__version": 1,
+      "__Prefab": "playerspawn.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7"
+            },
+            "Property": "Position",
+            "Value": "-289.1485,57.22654,2.765274"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7": "e2d5a5b0-404b-46f1-a478-878b1f6dc7c1",
+        "1dca0a5e-f358-4622-bea2-23edfd545716": "15f0d18a-7e43-44bb-a725-bc4d5a811c21"
+      }
+    },
+    {
+      "__guid": "6f2f76e4-1b1c-4d5c-9baa-70d34851c86e",
+      "__version": 1,
+      "__Prefab": "playerspawn.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7"
+            },
+            "Property": "Position",
+            "Value": "-358.9636,57.22654,2.765274"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7": "6f2f76e4-1b1c-4d5c-9baa-70d34851c86e",
+        "1dca0a5e-f358-4622-bea2-23edfd545716": "176a6981-efe5-4648-aec7-37ad5700f4f9"
+      }
+    },
+    {
+      "__guid": "5f66054e-0ecb-4d33-90ee-3aecd5eca171",
+      "__version": 1,
+      "__Prefab": "playerspawn.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7"
+            },
+            "Property": "Position",
+            "Value": "-296.6615,-24.3172,2.765282"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7": "5f66054e-0ecb-4d33-90ee-3aecd5eca171",
+        "1dca0a5e-f358-4622-bea2-23edfd545716": "acc04764-fb1b-49c7-b990-d1137fef7771"
+      }
+    },
+    {
+      "__guid": "6017d015-e378-4a49-8967-dd1bf22d2403",
+      "__version": 1,
+      "__Prefab": "playerspawn.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7"
+            },
+            "Property": "Position",
+            "Value": "-358.1505,-24.3172,2.765282"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7": "6017d015-e378-4a49-8967-dd1bf22d2403",
+        "1dca0a5e-f358-4622-bea2-23edfd545716": "f179a2b0-98b7-463e-97ab-f4c707ebe750"
       }
     }
   ],

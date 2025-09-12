@@ -5,18 +5,22 @@ using System.Runtime.Intrinsics.Arm;
 using System.Numerics;
 using System.Threading.Channels;
 using System.Data;
+using Sandbox.Movement;
+using System.ComponentModel.Design;
+using System.IO;
 
-public sealed class GameModeManager : Component, Component.INetworkListener
+public sealed class GameModeManager : Component, Component.INetworkListener, IZombieHandler
 {
 
-	[Sync, Change("RoundChanged")] public int Round { get; set; }
+	[Sync( SyncFlags.FromHost ), Change("RoundChanged")] public int Round { get; set; }
 
-	[Sync] int zombieCount { get; set; } = 0;
+	[Sync] int zombieCount { get; set; }
 
-	[Sync] int maxZombies { get; set; } = 0;
+	[Sync] int maxZombies { get; set; }
 
 	int zombiesLeft;
 
+	private bool PlayersConnecting { get; set; }
 
 	Random rndm = new Random();
 
@@ -31,6 +35,15 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 
 
 	public static event Action ChangeRound;
+
+	/*[Sync(SyncFlags.FromHost)]
+	private List<Connection> connectingConnections { get; set; } = new();*/
+
+	
+
+
+	[Sync]
+	private TimeSince TimeSinceGameStarted { get; } = 0;
 
 
 	WeaponManager WeaponManager { get; set; }
@@ -54,9 +67,9 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 	/// A list of points to choose from randomly to spawn the player in. If not set, we'll spawn at the
 	/// location of the NetworkHelper object.
 	/// </summary>
-	[Property] public List<GameObject> SpawnPoints { get; set; }
+	[Property] public List<GameObject> SpawnPoints { get; set; } = new();
 
-	[Property] public List<GameObject> ZombieSpawnPoints { get; set; }
+	[Property] public List<ZombieSpawn> ZombieSpawnPoints { get; set; } = new();
 
 
 	private bool MaxZombiesAtOnce = false;
@@ -70,7 +83,11 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 	[Sync]
 	public bool PowerOn { get; set; } = false;
 
-	NetList<Player> PlayerList { get; set; } = new();
+	
+	public Dictionary<Connection, Player> PlayerList { get; set; } = new();
+
+
+
 
 	CloneConfig ZombieConfig = new CloneConfig();
 
@@ -78,21 +95,63 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 
 	protected override void OnStart()
 	{
+		PlayerPrefab = GameObject.GetPrefab( "playercharacter.prefab" );
+		zombiePrefab = GameObject.GetPrefab( "zombie.prefab" );
+
 		base.OnStart();
 		if ( !GameStarted && Networking.IsHost )
-		{ 
-			GetWeaponManager();
-			StartRound();
-			GameStarted = true;
+		{
+
 			
+			var x = Scene.GetAllComponents<PlayerSpawn>();
+			foreach ( var i in x )
+			{
+				SpawnPoints.Add( i.GameObject );
+			}
+
+			var z = Scene.GetAllComponents<ZombieSpawn>();
+			foreach ( var zspawn in z )
+			{
+				Log.Info( zspawn + " a spawn!");
+				ZombieSpawnPoints.Add( zspawn );
+			}
+
+			
+
+
 		}
-		
+
+		GetWeaponManager();
+
 	}
 
 
+	[Rpc.Host]
+	public void AddToPlayerList(Connection connection, Player player)
+	{
+		PlayerList.TryAdd(connection, player);
+		Log.Info(connection + " | " +  player);
+	}
 
 
+	[Rpc.Host]
+	private void FreezePlayer(Player player)
+	{
+		
+		player.PlayerController.WalkSpeed = 0;
+	}
 
+	[Rpc.Host]
+	private void UnFreezePlayers()
+	{
+		
+		foreach ( var x in PlayerList )
+		{
+			
+			x.Value.PlayerController.WalkSpeed = 110;
+
+		}
+	}
 
 	[Rpc.Host]
 	public void TurnPowerOn()
@@ -107,13 +166,21 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 		if ( Scene.IsEditor )
 			return;
 
-		if ( StartServer && !Networking.IsActive )
-		{
-			LoadingScreen.Title = "Creating Lobby";
-			await Task.DelayRealtimeSeconds( 0.1f );
-			Networking.CreateLobby( new() );
-		}
+
+
+		
 	}
+
+
+
+
+
+	public void OnConnected(Connection connection)
+	{
+		Log.Info( connection.Name + " is connecting" );
+	}
+
+
 
 	/// <summary>
 	/// A client is fully connected to the server. This is called on the host.
@@ -133,13 +200,30 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 		// Spawn this object and make the client the owner
 		var player = PlayerPrefab.Clone( startLocation, name: $"Player - {channel.DisplayName}" );
 
-		GivePlayerStartingWeapon( channel, player );
+
+
+		
+		var playerclass = player.GetComponent<Player>();
+
+
+		AddToPlayerList( channel, playerclass );
+
+		
 
 		player.NetworkSpawn( channel );
 
-		PlayerList.Add( player.GetComponent<Player>() );
-		UpdatePlayersHud();
 
+		
+
+		GivePlayerStartingWeapon( channel, playerclass );
+
+
+
+
+		if(!GameStarted)
+		{
+			FreezePlayer(playerclass);
+		}
 
 	}
 
@@ -150,10 +234,20 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 		foreach ( var i in PlayerList )
 		{
 			//Log.Info( i );
-			i.UpdatePlayerHud();
+			i.Value.UpdatePlayerHud();
 		}
 	}
 
+
+
+	[Rpc.Host]
+	private void GivePlayersStartingWeapons()
+	{
+		foreach(var x in PlayerList)
+		{
+			GivePlayerStartingWeapon( x.Key, x.Value );
+		}
+	}
 
 
 
@@ -198,26 +292,43 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 		ZombiesSpawned = 0;
 		AllZombiesSpawned = false;
 
-	
+		
+
+
 		
 	}
 
-	
+
+
+	private void WaitToStartGame()
+	{
+		if(TimeSinceGameStarted > 7)
+		{
+			UnFreezePlayers();
+			GameStarted = true;
+			StartRound();
+		}
+	}
+
+
 	private GameObject RandomZombieSpawn()
 	{
-		var validChoices = ZombieSpawnPoints.Where( x => x.GetComponent<ZombieSpawn>().activated ).ToList();
-		int randomIndex = rndm.Next( validChoices.Count );
-		GameObject randomSpawn =  validChoices[randomIndex];
-		if ( randomSpawn != null && randomSpawn.GetComponent<ZombieSpawn>().activated)
+		List<GameObject> ValidList = new List<GameObject>();
+		foreach(var x in ZombieSpawnPoints)
 		{
-			
-			return randomSpawn;
-		}
-		else
-		{
-			return null;
+			if(x.activated)
+			{
+				Log.Info( x );
+				ValidList.Add( x.GameObject );
+				
+			}
 		}
 
+		int randomIndex = rndm.Next( ValidList.Count );
+		Log.Info( ValidList[randomIndex] );
+		return ValidList[randomIndex];
+
+		
 	}
 
 	[Rpc.Host]
@@ -254,7 +365,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 	{
 
 		var randomSpawn = RandomZombieSpawn();
-
+		
 		if ( randomSpawn == null ) Log.Info( "wtf!" );
 
 		ZombieConfig.Transform.Position = randomSpawn.WorldPosition;
@@ -301,20 +412,22 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 		foreach ( var i in WeaponManagers )
 		{
 			WeaponManager = i;
+			Log.Info( "weapon manager found!" );
 		}
 	}
 
+
 	
-	public void GivePlayerStartingWeapon(Connection Channel, GameObject Player)
+	public void GivePlayerStartingWeapon(Connection Channel, Player player)
 	{
 
 		Log.Info($"giving { Channel.DisplayName } starting weapon");
 
-		var playerClass = Player.GetComponent<Player>();
+		//var playerClass = Player.GetComponent<Player>();
 
-		WeaponManager.GivePlayerStartingWeapon( "TestPistol", playerClass );
+		WeaponManager.GivePlayerWeapon( "usptesting.prefab", player, 0 );
 
-		//playerClass.CurrentWeaponSlot = 1;
+		//player.ChangeCurrentSlot(1);
 
 	}
 
@@ -349,16 +462,44 @@ public sealed class GameModeManager : Component, Component.INetworkListener
 	protected override void OnUpdate()
 	{
 
-		HandleZombieSpawning();
-		HandleRoundChanging();
+		if ( IsProxy ) return;
+
+		//Log.Info( ZombieSpawnPoints.Count );
+
+		if ( Networking.IsHost )
+		{
+
+			if(!GameStarted)
+			{
+				WaitToStartGame();
+			}
+			
+
+
+
+		/*	foreach ( var x in Connection.All )
+			{
+				if ( x.IsConnecting )
+				{
+					if ( !connectingConnections.Contains( x ) )
+					{
+						Log.Info( x.Name + " is connecting" );
+						connectingConnections.Add( x );
+					}
+										
+				}
+				
+			}*/
+
+
+			if ( !GameStarted ) return;
+
+			HandleZombieSpawning();
+			HandleRoundChanging();
+
+		}
 		
 	}
-
-
-
-
-
-
 
 
 }

@@ -16,7 +16,8 @@ public sealed class Door : Component, IInteraction, IPower
 	[Property]
 	private bool NeedsPower { get; set; }
 
-	private bool Powered = false;
+	[Sync]
+	public bool Powered { get; set; } = false;
 
 	[Property]
 	private List<GameObject> AssociatedWindows;
@@ -57,7 +58,14 @@ public sealed class Door : Component, IInteraction, IPower
 
 	public void OnPowerTurnedOn()
 	{
-		if ( NeedsPower )
+		TurnPowerOn();
+	}
+
+
+	[Rpc.Host]
+	private void TurnPowerOn()
+	{
+		if ( NeedsPower && !Powered )
 		{
 			Powered = true;
 		}

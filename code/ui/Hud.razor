@@ -1,77 +1,124 @@
 @using Sandbox;
 @using Sandbox.UI;
+@using System;
 @inherits PanelComponent
 @namespace Sandbox
 
 
 <root>
-    <div class="player-card-container">
-        @foreach (var player in PlayerList)
-        {
-            <PlayerCard PlayerName="@player.PlayerConnection.DisplayName" Points="@player.Points" PlayerSteamId="@player.PlayerConnection.SteamId" />
-        }
-    </div>
-    <div class="rounds-dissolve-wrap">
-        <div class="rounds-container">
-            <p class="rounds">@Round</p>
+    <div class="hud">
+        <div class="player-card-container">
+            @foreach (var playa in player.PlayerList)
+            {
+                //Log.Info(playa);
+                <PlayerCard PlayerName="@playa.PlayerConnection.DisplayName" Points="@playa.Points" PlayerSteamId="@playa.PlayerConnection.SteamId" />
+            }
         </div>
+        <div class="rounds-dissolve-wrap">
+            <div class="rounds-container">
+                <p class="rounds">@Round</p>
+            </div>
+        </div>
+
+        <div class="crosshair-contain @(!player.isAiming ? "" : "hidden")">
+            <Crosshair isWalking="@player.isWalking" isAiming="@player.isAiming" isShooting="@player.isFiring" isSprinting="@player.isSprinting" />
+        </div>
+
+        <div class="weapon-contain">
+            @if (player is not null) 
+            { 
+                <EquippedWeapon AmmoClip="@player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].CurrentMag" AmmoTotal="@player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].AmmoTotal" WeaponName="@player.CurrentWeaponClass.WeaponName" />
+            }
+
+        </div>
+
     </div>
 </root>
 
 @code
 {
 
-    List<Player> PlayerList { get; set; } = new();
+
 
     int Round { get; set; }
+
+    //bool isAiming { get; set; } = false;
+
+    [Property]
+    public Player player => GameObject.GetComponent<Player>();
+
+    // [Change("hackyasfuck")]
+    // public List<Connection> idek => Connection.All.ToList();
+
+    List<Player> PlayerList { get; set; }
+
+    bool isAiming => player.isAiming;
+
+    int currentMag => player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].CurrentMag;
 
     GameModeManager GameModeManager;
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
     /// </summary>
-    protected override int BuildHash() => System.HashCode.Combine( PlayerList, Round );
+    protected override int BuildHash()
+    {
+        var hash = new HashCode();
+
+
+        hash.Add(Round);
+
+        hash.Add(player);
+        hash.Add(isAiming);
+        hash.Add(player.PlayerList);
+        hash.Add(player.isFiring);
+        hash.Add(player.isWalking);
+        hash.Add(player.isSprinting);
+        hash.Add(player.AmmoInMag);
+        hash.Add(player.AmmoTotal);
+        hash.Add(player.WeaponName);
+
+        return hash.ToHashCode();
+    }
 
     protected override void OnStart()
     {
+
+
         Player.PlayerPointsChanged += HandlePlayerPointsChanged;
 
         Player.UpdateHud += UpdateHud;
 
-        UpdatePlayerList();
 
-        foreach (var x in Scene.GetAllComponents<GameModeManager>())
-        {
-            GameModeManager = x;
-        }
+
+        GameModeManager = Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
         Round = GameModeManager.Round;
+        //PlayerList = GameModeManager.PlayerList;
         GameModeManager.ChangeRound += RoundChanged;
+        //PlayerList = GameModeManager.PlayerList;   
+
+       //hackyasfuck();
 
     }
 
 
 
 
-    private void UpdatePlayerList()
+    public void hackyasfuck()
     {
-        if (PlayerList.Any())
+        PlayerList!.Clear();
+        foreach(var x in Scene.GetAllComponents<Player>())
         {
-            PlayerList.Clear();
-        }
-        if (Scene is null)
-        {
-            return;
-        }
-        foreach (var i in Scene.GetAllComponents<Player>())
-        {
-            PlayerList.Add(i);
+            Log.Info(x);
+            PlayerList.Add(x);
 
         }
     }
+
 
 
     private void UpdateHud()
     {
-        UpdatePlayerList();
+        
     }
 
     private void RoundChanged()

@@ -1,47 +1,47 @@
-.player-card-container {
+.hud {
 	position: absolute;
-	bottom: 250px;
-	left: 75px;
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-}
-
-.weapon-panel-container {
-	position: absolute;
-	bottom: 32px;
-	right: 32px;
-}
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
 
 
 
-@keyframes dissolveIn {
-	0% {
-		mask-position: 0% 0%;
-		mask-size: 200%;
+	.player-card-container {
+		position: absolute;
+		bottom: 30vh;
+		left: 5vw;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		border-color: yellow;
 	}
 
-	100% {
-		mask-position: 100% 100%;
-		mask-size: 100%;
+
+
+	.crosshair-contain {
+		&.hidden {
+			opacity: 0;
+		}
 	}
-}
 
 
-.rounds-container {
-	position: absolute;
-	top: 0px;
-	left: 75px;
-	mask-image: url('textures/unnamed.png'); /* black & white noise texture */
-	mask-mode: alpha;
-	mask-size: cover;
-	animation: dissolveIn 1s forwards;
-}
+	.weapon-contain{
 
-.rounds {
-	font-size: 84px;
-	//font-weight: bold;
-	font-family: Bloody Terror;
-	color: rgb(108, 0, 0);
-	margin: 0 0 4px 0;
+	}
+
+	.rounds-container {
+		position: absolute;
+		top: 0vh;
+		left: 0vw;
+		padding-left: 3vw;
+	}
+
+	.rounds {
+		font-size: 6rem;
+		font-family: Bloody Terror;
+		color: rgb(108, 0, 0);
+		margin: 0 0 4px 0;
+	}
 }

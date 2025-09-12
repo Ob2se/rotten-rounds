@@ -1,0 +1,50 @@
+.weapon-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.95);
+    height: 15%;
+    width: 10%;
+    border-top-left-radius: 20px;
+    padding: 1vh; // scalable padding
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .ammo-row {
+        display: flex;
+        justify-content: center;
+        align-items: baseline; // keeps slash aligned with numbers
+        gap: 0.5vh; // scalable spacing
+        text-align: center;
+
+        .weapon-ammo-clip {
+            color: white;
+            font-size: 5vh;
+            font-weight: bold;
+        }
+
+        .slash {
+            color: white;
+            font-size: 4vh;
+        }
+
+        .weapon-ammo-total {
+            color: white;
+            font-size: 2.5vh;
+        }
+    }
+
+    .weapon-name {
+        text-align: center;
+        color: white;
+        font-size: 5vh;
+        max-width: 95%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        align-self: center; // centers in container
+    }
+}

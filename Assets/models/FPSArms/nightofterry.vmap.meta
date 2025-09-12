@@ -22,7 +22,7 @@
       "IsStandaloneOnly": false,
       "Metadata": {
         "SingleAssetSource": "models/fpsarms/nightofterry.vmap",
-        "ParentPackage": "clickhq.deadmeat",
+        "ParentPackage": "clickhq.rottenrounds",
         "GameSupport": [
           "clickhq.deadmeat"
         ]

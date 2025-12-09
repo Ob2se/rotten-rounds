@@ -1,0 +1,13 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "models/zombie/material/zombieeyes.shader"
+
+	Texture_ps_0 "models/zombie/material/texture/citizen_ref_citizen_eyes_basecolor.png"
+	Texture_ps_1 "models/zombie/material/texture/citizen_ref_citizen_eyes_emissive.png"
+	Texture_ps_2 "models/zombie/material/texture/citizen_ref_citizen_eyes_normal.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

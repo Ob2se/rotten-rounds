@@ -33,11 +33,11 @@
 
 .avatar-container {
 	position: absolute;
-	left: -55px;
+	left: -15%;
 	top: 50%;
 	transform: translateY(-50%);
 	width: 75px;
-	height: 75px;
+	height: 100%;
 	border-radius: 50%;
 	overflow: hidden;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
@@ -56,7 +56,7 @@
 .text {
 	position: relative;
 	z-index: 1;
-	color: white;
+	
 	text-shadow: 0 0 3px black;
 	display: flex;
 	flex-direction: column;
@@ -68,11 +68,27 @@
 .PlayerName {
 	font-size: 18px;
 	font-weight: bold;
+	font-family: 'Geizer';
 	margin: 0 0 4px 0;
+	color: white;
+
+	&.highlight {
+		color: gold;
+	}
 }
 
 .Points {
-	font-size: 16px;
-	margin: 0;
-	opacity: 0.85;
+    font-size: 16px;
+    font-family: 'Geizer';
+    letter-spacing: .14rem;
+    margin: 0;
+    opacity: 0.85;
+    color: white;
+
+    
+
+
+    &.highlight {
+        color: gold;
+    }
 }

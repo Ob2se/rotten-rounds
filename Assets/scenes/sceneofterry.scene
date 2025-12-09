@@ -14,6 +14,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -50,6 +51,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -84,6 +86,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -101,6 +104,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -118,6 +122,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -135,6 +140,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -153,7 +159,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "973.0015,194.386,1.194"
+            "Value": "973.0015,194.5695,1.194"
           },
           {
             "Target": {
@@ -230,7 +236,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "d9025437-301b-45dd-93f6-555e89a3f323",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "f59406cd-5d19-45af-9b59-e8f2faca50cf",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "61c05b6e-8ca9-4c13-81a9-8bde88b6ae62",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "d6b7bf5c-6841-4c5c-80ba-3ca595a9790b",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "a294cfa6-3044-4384-ac0c-94c55bfa3b9b",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "ca66240d-10c8-42ae-baea-4292ceaf7d45",
         "7ab7751d-4e55-4092-b215-742a9d76c688": "aa888536-209e-4881-98a1-ef7ded6796ca",
         "312b05f9-a3df-4cec-be2b-0f0eeac8e736": "15ec33b8-baed-4738-9400-0c699c68ec1d",
@@ -269,7 +275,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "823.9977,-226.7501,-0.8362821"
+            "Value": "823.9977,-226.5666,-0.8362821"
           },
           {
             "Target": {
@@ -354,7 +360,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "4708f82c-2eaa-4f09-b38e-84660e1b5ac6",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "634f22a9-0ab7-491b-bab7-57567554cad8",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "5b94498a-c348-4412-b019-a7dceb8219ec",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "f4eb4259-2dc7-471f-9c65-34258f70884d",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "a49f2ec2-bcc5-4283-827e-e16073f78eb2",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "44e4c338-47f4-414b-9203-d57c66c03f6b",
         "7ab7751d-4e55-4092-b215-742a9d76c688": "9d3a77d9-be12-4bb9-abf8-7e6051bd9395",
         "312b05f9-a3df-4cec-be2b-0f0eeac8e736": "24cce2c0-e7dd-4a5c-a9e7-7948727679b2",
@@ -393,7 +399,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "207.8657,-229.1578,-2.446711"
+            "Value": "207.8657,-228.9743,-2.446711"
           },
           {
             "Target": {
@@ -478,7 +484,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "024d81d0-614a-4c3c-9fcd-0d95b5e332f5",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "8321fff6-8a17-4141-b825-2ef7aef40de3",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "eea8497a-16f5-4163-9571-b77b5195285e",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "4bc60c6b-6342-4500-8e78-7d4865c647dc",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "a6b96606-9ecd-4478-acaa-71c267ffaa79",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "0fffc134-4c5e-431e-bde2-12b21ad68cb1",
         "7ab7751d-4e55-4092-b215-742a9d76c688": "659be02b-0837-4cf9-ac1c-a8b037a7aea5",
         "312b05f9-a3df-4cec-be2b-0f0eeac8e736": "459db6e1-03ae-450a-9546-13afbf8d4ccd",
@@ -517,7 +523,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "-527.4703,-230.6755,-2.446711"
+            "Value": "-527.4703,-230.492,-2.446711"
           },
           {
             "Target": {
@@ -602,7 +608,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "0468f4f7-6ed3-4592-a1c7-29a35d588c56",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "bccb170d-1c62-4be7-8299-b5761ab29448",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "82555e30-3c37-4357-976b-d2a447bd0435",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "c61b1ff6-40c7-4880-bda8-bdd736e91aca",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "092f1fb9-b975-4811-b367-850cf16888c1",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "00422517-0348-4092-8a45-9be70344f223",
         "7ab7751d-4e55-4092-b215-742a9d76c688": "fac0368b-643b-4d80-8a0a-ac479bda98d2",
         "312b05f9-a3df-4cec-be2b-0f0eeac8e736": "3ebf8a0a-97ed-4d27-89d0-a02b3ddd6103",
@@ -641,7 +647,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "276.3877,252.2057,1.194"
+            "Value": "276.3877,252.3892,1.194"
           },
           {
             "Target": {
@@ -726,7 +732,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "36f97cdd-22ad-4ae6-ada0-632c2eb797ae",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "e097477e-70e8-444f-8eef-0daca376ea52",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "eacee377-29c5-4b0b-96a9-e9e1ad813d2f",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "e56f9d42-1d5b-489f-a2c8-c131d46c2365",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "1ca9b04d-f0d3-4c77-9668-6b853e5d4f9d",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "ea841084-c372-4b68-93dc-4b88d97d8bff",
         "7ab7751d-4e55-4092-b215-742a9d76c688": "9df20328-9a29-4070-8ff8-5cce0e8ff83e",
         "312b05f9-a3df-4cec-be2b-0f0eeac8e736": "ffd87d48-c9a9-4862-9e83-af9f371cc587",
@@ -764,6 +770,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -781,6 +788,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -798,6 +806,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -815,6 +824,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -832,6 +842,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -849,6 +860,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -885,6 +897,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -920,6 +933,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -955,6 +969,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1010,6 +1025,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1065,6 +1081,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1120,6 +1137,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1175,6 +1193,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1230,6 +1249,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1285,6 +1305,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1340,6 +1361,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1395,6 +1417,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1450,6 +1473,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1505,6 +1529,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1560,6 +1585,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1615,6 +1641,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1670,6 +1697,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1725,6 +1753,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -1760,6 +1789,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -1878,7 +1908,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "-672.1544,696.9501,-1.916887"
+            "Value": "-672.1544,697.1335,-1.916887"
           }
         ],
         "MovedObjects": []
@@ -1890,7 +1920,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "2b9b9970-7d0e-4a26-b5ef-53ee3506de43",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "cc89479b-ef80-4fb2-b7bd-707dc1609acf",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "1aa3109c-00e7-4c1e-8945-147ff0139383",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "08875382-5ed4-4864-b1fb-241faf380882",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "2ad3b5d0-b8f4-4769-9639-42802455be4b",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "65fcfdce-53bd-4b81-9538-91b2fff48758",
         "909ab02b-b251-47ee-a530-1217fa046081": "b305b6ff-a346-4177-8efd-203446fa2b77",
         "159493ac-d4f6-4cba-b8d8-aa706d48f52d": "a8b18e09-5768-4403-9d5b-2e89c1fbc938",
@@ -1937,7 +1967,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "-981.12,1138.885,0.8580036"
+            "Value": "-981.12,1139.068,0.8580036"
           },
           {
             "Target": {
@@ -1957,7 +1987,7 @@
         "0a24cfc9-3756-4a1e-a1f4-e2b82b0f546a": "74ce7024-ba00-4ad1-9e3d-3d0ae438b87b",
         "3ac02fb1-0ef1-4660-a007-da027aa3497e": "ee323c52-801f-4a05-b3cf-ce45041fbca6",
         "b031b441-5c2b-44c9-bb2f-a2e503c87350": "b8cd561a-de06-4ecf-b685-73b5f5c8d892",
-        "7dbd19ab-b034-4ae3-b857-17dead7d9167": "af5df096-2952-44a9-a667-c98f0f526ea5",
+        "817d359f-ae77-4a23-9635-c66d499ceb98": "a650130f-8469-4dcc-bd7b-7511295ea0fe",
         "ecadf63d-e7d5-40d8-86b7-29ece8835da5": "89862b04-d7b4-430f-8668-4bc7aaaf76a4",
         "909ab02b-b251-47ee-a530-1217fa046081": "86ed4e26-7055-4c56-8cde-769eecd33b40",
         "159493ac-d4f6-4cba-b8d8-aa706d48f52d": "6841a2f7-c028-44e2-a420-3abff618e577",
@@ -2078,14 +2108,6 @@
           },
           {
             "Target": {
-              "Type": "GameObject",
-              "IdValue": "795dda7a-d915-406f-b056-4087c77d45d6"
-            },
-            "Property": "Tags",
-            "Value": "interactable"
-          },
-          {
-            "Target": {
               "Type": "Component",
               "IdValue": "fcc31630-abbf-4e11-90a0-662112941460"
             },
@@ -2107,7 +2129,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Point Light",
-      "Position": "-538.697,28.58767,124.9372",
+      "Position": "-516.7863,28.58767,93.9864",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "light_point,light",
@@ -2115,6 +2137,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -2150,6 +2173,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -2211,474 +2235,37 @@
       }
     },
     {
-      "__guid": "05a4da8c-1436-4566-93d3-0ba8c469163f",
+      "__guid": "12eff19b-da17-47c3-8b3e-f26b8e02d624",
       "__version": 1,
       "Flags": 0,
-      "Name": "perkcan",
-      "Position": "-582.9105,-122.5927,57.15857",
+      "Name": "Point Light",
+      "Position": "-553.399,132.874,110.5466",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
-      "Tags": "",
+      "Tags": "light_point,light",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "e408ca70-00b3-4466-b5f7-bdadf6005497",
+          "__type": "Sandbox.PointLight",
+          "__guid": "ed64e561-fe06-4d26-b5e9-e63b4d4791d4",
           "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
+          "Attenuation": 1,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "fb6b2282-06b8-4228-ac3f-502705d91ff6",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (1)",
-      "Position": "-591.9384,-169.3285,59.85211",
-      "Rotation": "0.270598,0.6532815,0.2705981,0.6532816",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "54f0da2f-07b1-40d1-85fe-54005b691341",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "fc04cc5e-be0a-43af-9b26-8213939d1ba6",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (8)",
-      "Position": "-591.9384,-169.3285,47.37015",
-      "Rotation": "-0.1830126,0.6830127,-0.1830128,0.6830128",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "859f2036-0ebd-45c8-88d9-97af06aeef69",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "41e5575e-5afb-4ae9-a3af-bac1a2216574",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (4)",
-      "Position": "-591.9384,-169.3285,63.98193",
-      "Rotation": "-0.6123723,0.3535534,-0.6123725,0.3535534",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "4328af25-16f5-4a77-9688-b784a20ae94e",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "0d45b32a-9aa4-4c51-a4c1-8c2a81e70979",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "Moveperkcan",
-      "Position": "-591.9384,-169.3285,51.49997",
-      "Rotation": "0.5000001,0.4999999,0.5000001,0.5000001",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "b8811b01-c934-410a-901c-54862d0d72d2",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "9921e5fb-ed12-4563-a99a-a11c2aa9fb51",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (5)",
-      "Position": "-591.9384,-169.3285,68.09918",
-      "Rotation": "-0.270598,0.6532815,-0.2705981,0.6532816",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "1ab2832e-f925-496f-a085-6e59c10a6422",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "b369c906-8a7a-48fc-9be6-d83605a05ca0",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (6)",
-      "Position": "-591.9384,-169.3285,55.61722",
-      "Rotation": "-0.09229595,0.7010573,-0.09229595,0.7010574",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "b2649cf8-9ee8-49e3-87fe-287721047d4d",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "dc597fb9-cf9b-470a-a430-928050f5eb6a",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (9)",
-      "Position": "-591.9384,-169.3285,43.09387",
-      "Rotation": "0.3535533,0.6123724,0.3535534,0.6123725",
-      "Scale": "1.15,1.15,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "6ee95e00-9cf1-488f-b4b4-0b3476fecb24",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "05a7d591-0e27-4846-b36d-c3e94e5c85e5",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (2)",
-      "Position": "-538.7892,-169.4501,54.81035",
-      "Rotation": "0,0,0,1",
-      "Scale": "1.15,1.15,1.15",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "c3e09a54-97c8-4257-887b-66097a778946",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "112d83e7-a867-4574-93ee-9cec37329ca6",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkcan (3)",
-      "Position": "-544.6099,-169.4501,54.81034",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "300fcd07-4c76-46d5-a913-d411c088f476",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/can/perkcan.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "330558b9-8078-48ce-b27c-329ee279133e",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "perkmachine",
-      "Position": "-603.9418,-153.6766,0.7653009",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "cc6481b0-840a-42b8-b9d5-a59be832f9c1",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/perks/machine/perkmachine.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Radius": 400,
+          "Shadows": true
         }
       ],
       "Children": []

@@ -1,0 +1,142 @@
+{
+  "RootObject": {
+    "__guid": "39c13f31-ea07-4ea5-9f6c-86752e181af7",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "basesniper",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "BaseWeapon",
+        "__guid": "b718899e-35cb-439c-9c8e-932ca2cae649",
+        "__enabled": true,
+        "AmmoMax": 0,
+        "Automatic": false,
+        "DontExpandMagSize": false,
+        "FireRate": 0,
+        "FleshImpactEffectPrefab": null,
+        "ImpactEffectPrefab": null,
+        "MagMax": 0,
+        "MuzzleFlashPrefab": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PackedName": null,
+        "ReloadTime": 0,
+        "WeaponDamage": 0,
+        "WeaponModel": {
+          "_type": "component",
+          "component_id": "7911dc85-a739-4b98-8a9f-37f095ed578c",
+          "go": "9550e315-d6b0-4363-a98f-3463fc7f81e2",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "WeaponName": null,
+        "WeaponPower": 0,
+        "WeaponType": "Sniper"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "9550e315-d6b0-4363-a98f-3463fc7f81e2",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "WeaponContainer",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "7911dc85-a739-4b98-8a9f-37f095ed578c",
+            "__enabled": true,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": null,
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Weapons/Sniper",
+  "MenuIcon": "add",
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

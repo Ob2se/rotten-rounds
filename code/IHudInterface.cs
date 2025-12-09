@@ -3,6 +3,6 @@ using Sandbox;
 
 public interface IHudInterface
 {
-	void UpdatePlayerList();
+	void UpdatePlayerListt(List<Player> newList);
 }
 

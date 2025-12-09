@@ -7,11 +7,12 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "",
+    "Tags": "interactable,nopen",
     "Enabled": true,
     "NetworkMode": 2,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
@@ -20,10 +21,11 @@
         "__enabled": true,
         "BodyGroups": 18446744073709551615,
         "CreateAttachments": false,
+        "LodOverride": null,
         "MaterialGroup": null,
         "MaterialOverride": null,
         "Materials": null,
-        "Model": null,
+        "Model": "models/perks/machine/perkmachine.vmdl",
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -40,10 +42,23 @@
         "Tint": "1,1,1,1"
       },
       {
-        "__type": "Sandbox.BoxCollider",
-        "__guid": "38410906-1014-4f07-9c11-ece4efe2892e",
+        "__type": "PerkMachine",
+        "__guid": "5cb8ca0c-86c4-4596-8c43-35956535d241",
         "__enabled": true,
-        "Center": "0,0,0",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PerkType": "QuickRevive"
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "27827cda-f3ae-452b-bbb7-88a6bd0d4665",
+        "__enabled": true,
+        "Center": "0,0,45.34475",
+        "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
         "IsTrigger": false,
@@ -58,13 +73,32 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "50,50,50",
+        "Scale": "50,50,92.4296",
         "Static": false,
         "Surface": null,
         "SurfaceVelocity": "0,0,0"
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "39a12431-adc6-4808-9bd6-c78290d6cd7d",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Collision",
+        "Position": "0,0,41.57988",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
+      }
+    ],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,

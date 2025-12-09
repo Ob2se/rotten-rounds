@@ -2,8 +2,17 @@ using Sandbox;
 
 public sealed class Power : Component, IInteraction
 {
-	[Sync]
+	
 	GameModeManager GameModeManager { get; set; }
+
+	public float HoldTime => 0f;
+
+	public void OnInteractionFailed( Player player )
+	{
+		//could add some feedback here later
+	}
+
+
 
 	public void OnInteract( Player player )
 	{
@@ -15,7 +24,7 @@ public sealed class Power : Component, IInteraction
 
 
 
-	[Rpc.Host]
+	
 	private void TurnPowerOn()
 	{
 		if ( GameModeManager.PowerOn ) return;
@@ -27,10 +36,9 @@ public sealed class Power : Component, IInteraction
 	{
 		base.OnStart();
 
-		if ( Networking.IsHost )
-		{
-			GameModeManager = Scene.GetAllComponents<GameModeManager>().First();
-		}
+	
+		GameModeManager = Scene.GetAllComponents<GameModeManager>().First();
+		
 		
 	}
 

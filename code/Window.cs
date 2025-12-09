@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-public sealed class Window : Component
+public sealed class Window : Component, IInteraction
 {
 
 	[Sync, Change( "OnWindowOpen" )] public bool isOpen { get; set; } = false;
@@ -14,7 +14,18 @@ public sealed class Window : Component
 	[Sync, Property] public bool isBeingAttacked { get; set; } = false;
 
 
+	[Property] public int maxBoards { get; set; } = 6;
+
 	[Property] public GameObject BoardsContainer { get; set; }
+
+
+	[Property] Collider WindowRepairCollider { get; set; }
+
+
+	
+
+	[Property]
+	public float HoldTime => 2f;
 
 	[Property]
 	Collider windowTrigger;
@@ -77,6 +88,24 @@ public sealed class Window : Component
 	}
 
 
+	public void OnInteract( Player player )
+	{
+		if ( boards < 6 )
+		{
+			AddBoard();
+			player.AddPoints( 20 );
+		}
+		
+		Log.Info( "window repair" );
+	}
+
+
+	public void OnInteractionFailed( Player player )
+	{
+		// Optional: Handle interaction failure (e.g., show a message to the player)
+	}
+
+
 	public void ManageZombieLine()
 	{
 		if ( ZombiesInLine.Count == 0 ) return;
@@ -90,7 +119,14 @@ public sealed class Window : Component
 	private void PlayBoardAnimationFall()
 	{
 		var board = GetRandomUnfallenBoard( WindowBoards ).GetComponent<SkinnedModelRenderer>();
-		board.PlaybackRate = 1;
+		board.Set( "b_fall", true );
+	}
+
+	private void PlayBoardAnimationRepair()
+	{
+		var board = GetRandomFallenBoard( WindowBoards ).GetComponent<SkinnedModelRenderer>();
+		board.Set( "b_repair", true );
+		//board.PlaybackRate = 1;
 	}
 
 	private static void PlaySoundAtLocation( Vector3 Location )
@@ -105,8 +141,13 @@ public sealed class Window : Component
 		PlayBoardAnimationFall();
 	}
 
+	[Rpc.Broadcast]
+	private void PlayRepairEffects( Vector3 Location )
+	{
+		PlaySoundAtLocation( Location );
+		PlayBoardAnimationRepair();
+	}
 
-	
 	[Rpc.Host]
 	private void OnWindowOpen()
 	{
@@ -164,33 +205,36 @@ public sealed class Window : Component
 	[Rpc.Host]
 	private void OnTriggerEnter(GameObject obj)
 	{
-		//Log.Info( obj.ToString() + " entered the trigger box" );
+		Log.Info( obj.ToString() + " entered the trigger box" );
 
-
-		var zombieController = obj.Components.Get<SimpleZombieController>();
-
-
-		if ( zombieController != null && !isOpen && isBeingAttacked == false )
+		if ( obj.Parent.Tags.Has( "zombie" ) )
 		{
-			isBeingAttacked = true;
-			AttackingZombie = zombieController;
-			zombieController.ChangeState(SimpleZombieController.ZomState.AttackWindow);
-		}
+
+			var zombieController = obj.Parent.Components.Get<SimpleZombieController>();
 
 
-		if ( zombieController != null && !isOpen && isBeingAttacked == true && AttackingZombie != zombieController)
-		{
-			zombieController.ChangeState( SimpleZombieController.ZomState.WaitInLine );
-			ZombiesInLine.Add( zombieController );
-		}
+			if ( zombieController != null && !isOpen && isBeingAttacked == false )
+			{
+				isBeingAttacked = true;
+				AttackingZombie = zombieController;
+				zombieController.ChangeState( SimpleZombieController.ZomState.AttackWindow );
+			}
+
+
+			if ( zombieController != null && !isOpen && isBeingAttacked == true && AttackingZombie != zombieController )
+			{
+				zombieController.ChangeState( SimpleZombieController.ZomState.WaitInLine );
+				ZombiesInLine.Add( zombieController );
+			}
 
 
 
 
-		if ( zombieController != null && isOpen )
-		{
-			
-			zombieController.ChangeState( SimpleZombieController.ZomState.EnterWindow );
+			if ( zombieController != null && isOpen )
+			{
+
+				zombieController.ChangeState( SimpleZombieController.ZomState.EnterWindow );
+			}
 		}
 	}
 
@@ -223,7 +267,22 @@ public sealed class Window : Component
 	}
 
 
+	public GameObject GetRandomFallenBoard( NetDictionary<GameObject, bool> boards )
+	{
+		var available = boards
+			.Where( kv => kv.Value == true )
+			.Select( kv => kv.Key )
+			.ToList();
 
+		if ( available.Count == 0 )
+			return null;
+
+		var rand = new Random();
+		var selected = available[rand.Next( available.Count )];
+
+		boards[selected] = false;
+		return selected;
+	}
 
 
 	[Rpc.Host]
@@ -244,13 +303,32 @@ public sealed class Window : Component
 		if ( boards != 6 )
 		{
 			boards++;
+			PlayRepairEffects( this.WorldPosition );
 		}
 	}
 
 
 	protected override void OnUpdate()
 	{
-		if ( AttackingZombie == null && NeedLineChange && !isOpen)
+
+		if ( boards < maxBoards )
+		{
+			WindowRepairCollider.Tags.Add("interactable");
+			WindowRepairCollider.Tags.Add( "interactablehold" );
+		} else if ( boards >= maxBoards )
+		{
+			if ( WindowRepairCollider.Tags.Contains( "interactable" ) )
+			{
+				WindowRepairCollider.Tags.Remove( "interactable" );
+			}
+			if( WindowRepairCollider.Tags.Contains( "interactablehold" ) )
+			{
+				WindowRepairCollider.Tags.Remove( "interactablehold" );
+			}
+		}
+
+
+		if ( AttackingZombie == null && NeedLineChange && !isOpen )
 		{
 			if ( ZombiesInLine.Count == 0 )
 			{

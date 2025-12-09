@@ -1,0 +1,24 @@
+.player-slot {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .player-pos {
+        font-size: 3rem;
+        font-family: AngryChalk;
+        color: lightgrey;
+    }
+
+    .player-name {
+        font-size: 3rem;
+        font-family: AngryChalk;
+        color: lightgrey;
+    }
+
+    .player-score {
+        font-size: 3rem;
+        font-family: AngryChalk;
+        color: lightgrey;
+    }
+}

@@ -1,18 +1,22 @@
 using Sandbox;
-using System.Threading.Tasks;
-using System;
-using System.Runtime.Intrinsics.Arm;
-using System.Numerics;
-using System.Threading.Channels;
-using System.Data;
 using Sandbox.Movement;
+using System;
 using System.ComponentModel.Design;
+using System.Data;
 using System.IO;
+using System.Numerics;
+using System.Runtime.Intrinsics.Arm;
+using System.Threading.Channels;
+using System.Threading.Tasks;
+using static Sandbox.VideoWriter;
+using static System.Net.WebRequestMethods;
 
 public sealed class GameModeManager : Component, Component.INetworkListener, IZombieHandler
 {
 
 	[Sync( SyncFlags.FromHost ), Change("RoundChanged")] public int Round { get; set; }
+
+	[Sync, Change( "PlayerListChange" )] public List<PlayerListInfo> PlayersList { get; set; } = new();
 
 	[Sync] int zombieCount { get; set; }
 
@@ -33,18 +37,37 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	//List<GameObject> zombieSpawnPointsList;
 	//List<(GameObject, bool)> zombieSpawns;
 
+	[Property]
+	private bool editortesting { get; set; } = false;
+
+	public static event Action PlayerListChange;
 
 	public static event Action ChangeRound;
 
 	/*[Sync(SyncFlags.FromHost)]
 	private List<Connection> connectingConnections { get; set; } = new();*/
 
-	
 
+	public bool Restarting { get; set; } = false;
 
+	private float CurrentZombiesHealth = 50f;
+
+	//????? 
 	[Sync]
 	private TimeSince TimeSinceGameStarted { get; } = 0;
 
+
+	private TimeSince TimeSinceInstaKillStarted = 0;
+	private TimeSince TimeSinceFireSaleStarted = 0;
+	private TimeSince TimeSinceDoublePointsStarted = 0;
+
+	private float InstaKillTime = 30f;
+	private float FireSaleTime = 30f;
+	private float DoublePointsTime = 30f;
+
+	private bool InstaKillStarted = false;
+	private bool FireSaleStarted = false;
+	private bool DoublePointsStarted = false;
 
 	WeaponManager WeaponManager { get; set; }
 
@@ -84,7 +107,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	public bool PowerOn { get; set; } = false;
 
 	
-	public Dictionary<Connection, Player> PlayerList { get; set; } = new();
+	[Change("PlayerListChanged")] public Dictionary<Connection, Player> PlayerList { get; set; } = new();
 
 
 
@@ -99,6 +122,23 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		zombiePrefab = GameObject.GetPrefab( "zombie.prefab" );
 
 		base.OnStart();
+
+		if ( editortesting )
+		{
+			if ( !Networking.IsActive )
+			{
+				Networking.CreateLobby(  );
+
+				//await Task.DelayRealtimeSeconds( 1 );
+
+				/*SceneFile lobbyScene;
+
+				ResourceLibrary.TryGet<SceneFile>( "scenes/lobby.scene", out lobbyScene );
+				Scene.Load( lobbyScene );*/
+			}
+		}
+	
+
 		if ( !GameStarted && Networking.IsHost )
 		{
 
@@ -122,16 +162,53 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		}
 
 		GetWeaponManager();
-
+		//GameStarted = true;
 	}
+
+
+	
+	private void PlayerListChanged(List<Player> playerList)
+	{
+		Log.Info( "playerlist changed" );
+		foreach ( var player in playerList )
+		{
+			Log.Info( "hello" );
+			player.UpdatePlayerList( playerList );
+		}
+	}
+
+
 
 
 	[Rpc.Host]
-	public void AddToPlayerList(Connection connection, Player player)
+	public void AddToPlayerList( Connection connection, Player player )
 	{
-		PlayerList.TryAdd(connection, player);
-		Log.Info(connection + " | " +  player);
+		var x = PlayersList;
+		var y = new PlayerListInfo() { PlayerName = connection.DisplayName, PlayerSteamID = connection.SteamId.ToString(), player = player };
+		x.Add( y );
+		PlayersList = x;
+
+		//foreach ( var y in PlayerList )
+		//{
+		//	Log.Info( y.Key.DisplayName );
+		//}
+
+		//PlayerListChanged(PlayerList.Values.ToList());
+		//Log.Info(connection + " | " +  player);
 	}
+
+	[Rpc.Host]
+	public void RemoveFromPlayerList(Connection connection)
+	{
+		/*var list = PlayersList;
+		if ( list.Contains( connection ) )
+		{
+			list.Remove( connection );
+			PlayersList = list;
+			Log.Info( $"connection {connection.DisplayName} removed" );
+		}*/
+	}
+
 
 
 	[Rpc.Host]
@@ -153,7 +230,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		}
 	}
 
-	[Rpc.Host]
+	[Rpc.Broadcast]
 	public void TurnPowerOn()
 	{
 		PowerOn = true;
@@ -175,9 +252,24 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 
 
+
+
+
+	public void OnDisconnected( Connection connection )
+	{
+		Log.Info($"Disconnected: {connection}");
+		
+		RemoveFromPlayerList(connection);
+	}
+
 	public void OnConnected(Connection connection)
 	{
 		Log.Info( connection.Name + " is connecting" );
+
+		/*if ( connection.SteamId.ToString() == "76561198214368983" || connection.SteamId.ToString() == "76561198125023690" || connection.SteamId.ToString() == "76561198081081329" )
+		{
+			connection.Kick("fucking dumb idiot stinky pants");
+		}*/
 	}
 
 
@@ -215,20 +307,20 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 		
 
-		GivePlayerStartingWeapon( channel, playerclass );
+		GivePlayerStartingWeapon( playerclass );
 
 
 
 
-		if(!GameStarted)
-		{
-			FreezePlayer(playerclass);
-		}
+		//if(!GameStarted && !editortesting)
+		//{
+		//	FreezePlayer(playerclass);
+		//}
 
 	}
 
 
-	private void UpdatePlayersHud()
+	/*private void UpdatePlayersHud()
 	{
 		Log.Info( "private void updatephud" );
 		foreach ( var i in PlayerList )
@@ -237,17 +329,9 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 			i.Value.UpdatePlayerHud();
 		}
 	}
+*/
 
 
-
-	[Rpc.Host]
-	private void GivePlayersStartingWeapons()
-	{
-		foreach(var x in PlayerList)
-		{
-			GivePlayerStartingWeapon( x.Key, x.Value );
-		}
-	}
 
 
 
@@ -280,13 +364,89 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	}
 
 
+
+	private IEnumerable<Zombie> GetAllZombies()
+	{
+		return Scene.GetAllComponents<Zombie>();
+	}
+
+
+	[Rpc.Host]
+	public void DoublePointsStart()
+	{
+		Log.Info( "double points started" );
+		TimeSinceDoublePointsStarted = 0f;
+		DoublePointsStarted = true;
+		var x = GetAllZombies();
+		foreach ( var zombie in x )
+		{
+			zombie.DoublePointsActivated = true;
+		}
+	}
+
+	[Rpc.Host]
+	public void DoublePointsEnd()
+	{
+		Log.Info( "double points ended" );
+		DoublePointsStarted = false;
+		var x = GetAllZombies();
+		foreach ( var zombie in x )
+		{
+			zombie.DoublePointsActivated = false;
+		}
+	}
+
+
+	[Rpc.Host]
+	public void InstaKillStart()
+	{
+		Log.Info( "insta kill started" );
+		TimeSinceInstaKillStarted = 0f;
+		InstaKillStarted = true;
+		var x = GetAllZombies();
+		foreach ( var zombie in x )
+		{
+			zombie.Health = 0f;
+			zombie.InstaKillActivated = true;
+		}
+	}
+
+
+
+
+
+	[Rpc.Host]
+	public void InstaKillEnd()
+	{
+		Log.Info( "insta kill ended" );
+		InstaKillStarted = false;
+		var x = GetAllZombies();
+		foreach ( var zombie in x )
+		{
+			zombie.Health = CurrentZombiesHealth;
+			zombie.InstaKillActivated = true;
+		}
+	}
+
+	[Rpc.Host]
+	public void MaxAmmo()
+	{
+		foreach ( var x in Scene.GetAllComponents<Player>() )
+		{
+			Log.Info( "giving a player max ammo" );
+			x.Inventory.ServerGiveMaxAmmo();
+		}
+	}
+
+
+
 	[Rpc.Host]
 	private void StartRound()
 	{
 		Round++;
 		Log.Info( Round );
 
-		maxZombies = maxZombies + 10 * (int)Math.Ceiling( (double)Round / 2 );
+		maxZombies = maxZombies + 5 * (int)Math.Ceiling( (double)Round / 2 );
 		Log.Info( maxZombies );
 
 		ZombiesSpawned = 0;
@@ -298,7 +458,15 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		
 	}
 
-
+	[Rpc.Host]
+	public void KillAllZombies()
+	{
+		var x = Scene.GetAllComponents<Zombie>();
+		foreach ( var y in x )
+		{
+			y.ZombieDead();
+		}
+	}
 
 	private void WaitToStartGame()
 	{
@@ -325,7 +493,10 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		}
 
 		int randomIndex = rndm.Next( ValidList.Count );
-		Log.Info( ValidList[randomIndex] );
+		//Log.Info( ValidList[randomIndex] );
+		if ( ValidList[randomIndex] == null ) return null;
+
+
 		return ValidList[randomIndex];
 
 		
@@ -341,6 +512,13 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	{
 		Log.Info( "round changed" );
 		ChangeRound?.Invoke();
+	}
+
+
+	private void PlayerListChanged()
+	{
+		Log.Info( "player list changed" );
+		PlayerListChange?.Invoke();
 	}
 
 
@@ -365,8 +543,12 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	{
 
 		var randomSpawn = RandomZombieSpawn();
-		
-		if ( randomSpawn == null ) Log.Info( "wtf!" );
+
+		if ( randomSpawn == null )
+		{
+			Log.Info( "spawn null" );
+			return;
+		}
 
 		ZombieConfig.Transform.Position = randomSpawn.WorldPosition;
 		
@@ -418,14 +600,16 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 
 	
-	public void GivePlayerStartingWeapon(Connection Channel, Player player)
+	public void GivePlayerStartingWeapon(Player player)
 	{
 
-		Log.Info($"giving { Channel.DisplayName } starting weapon");
+		//Log.Info($"giving { Channel.DisplayName } starting weapon");
 
 		//var playerClass = Player.GetComponent<Player>();
 
-		WeaponManager.GivePlayerWeapon( "usptesting.prefab", player, 0 );
+		player.SetHealthToMax();
+		player.AddPoints( 500 );
+		WeaponManager.GivePlayerWeapon( "spaghellim-rottenrounds.prefab", player, 0 );
 
 		//player.ChangeCurrentSlot(1);
 
@@ -459,6 +643,17 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	}
 
 
+
+
+	[Rpc.Host]
+	private void RestartGame()
+	{
+		Restarting = true;
+		KillAllZombies();
+	}
+
+
+
 	protected override void OnUpdate()
 	{
 
@@ -469,12 +664,27 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		if ( Networking.IsHost )
 		{
 
+
+			/*if ( editortesting )
+			{
+				GameStarted = true;
+				return;
+			}*/
+
 			if(!GameStarted)
 			{
 				WaitToStartGame();
 			}
-			
 
+			if ( PlayersList.All( (p => p.player.Downed) ) && !Restarting && GameStarted)
+			{
+				Log.Info( "ALL DEAD! D::::" );
+				RestartGame();
+			}
+
+
+
+			if ( Restarting ) return;
 
 
 		/*	foreach ( var x in Connection.All )
@@ -494,7 +704,26 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 			if ( !GameStarted ) return;
 
-			HandleZombieSpawning();
+
+			if ( InstaKillStarted )
+			{
+				if ( TimeSinceInstaKillStarted >= InstaKillTime )
+				{
+					InstaKillEnd();
+				}
+			}
+
+			if ( DoublePointsStarted )
+			{
+				if ( TimeSinceDoublePointsStarted >= DoublePointsTime )
+				{
+					DoublePointsEnd();
+				}
+			}
+
+
+
+			//HandleZombieSpawning();
 			HandleRoundChanging();
 
 		}

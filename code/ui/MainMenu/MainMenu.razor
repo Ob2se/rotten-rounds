@@ -3,9 +3,29 @@
 @inherits MainMenuPanelComponent
 @namespace Sandbox
 
+
 <div class="menu @(IsMenuVisible ? "" : "hidden")">
+    <div class="title">@GameTitle</div>
+
+    <div class="buttons-container">
+        <button class="button-play" @onclick="@OnPlayClicked" @onmouseover="@OnPlayHovered" @onmouseout="@OnPlayUnHovered"></button>
+        <button class="button-leaderboards" @onclick="OnLeaderboardClicked" @onmouseover="@OnLeaderboardHovered" @onmouseout="@OnLeaderboardUnHovered"></button>
+        <button class="button-customize" @onclick="OnCustomizeClicked" @onmouseover="@OnCustomizeHovered" @onmouseout="@OnCustomizeUnHovered"></button>
+        <div class="esc-hint">[ESC] Menu</div>
+    </div>
+
+    <div class="motd">
+        @*@<Motd @ref="MotdPanel" ImagePath="@NewsImagePath" Title="@NewsTitle" ShortDescription="@NewsShortDescription" />*@
+    </div>
+</div>
+
+
+
+
+
+@* <div class="menu @(IsMenuVisible ? "" : "hidden")">
     <div class="left-side-container">
-        <div class="title">@GameTitle</div>
+        <div class="bg-strip"></div>
         <div class="buttons-container">
             <button class="button-play" @onclick="@OnPlayClicked">Play</button>
             <button class="button-customize" @onclick="OnCustomizeClicked">Customize</button>
@@ -17,11 +37,12 @@
             <Motd @ref="MotdPanel" ImagePath="@NewsImagePath" Title="@NewsTitle" ShortDescription="@NewsShortDescription" />
         </div>
     </div>
+    <div class="title">@GameTitle</div>
 </div>
 
 <div class="back-button-container @(IsBackVisible ? "" : "hidden")">
     <button class="back-button" @onclick="@OnBackClicked">Back</button>
-</div>
+</div> *@
 
 @code
 {
@@ -36,8 +57,19 @@
     public string NewsShortDescription;
 
     [Property]
+    List<GameObject> ObjectsForPlay { get; set; }
+
+    [Property]
+    List<GameObject> ObjectsForLeaderboards { get; set; }
+
+    [Property]
+    List<GameObject> ObjectsForCustomize { get; set; }
+
+    [Property]
     public CreateLobby LobbyCreator { get; set; }
 
+    [Property]
+    LightFlickerPlaySign PlaySign { get; set; }
 
     PlayMenu PlayPanel { get; set; }
     //Panel CustomizePanel;
@@ -62,7 +94,7 @@
         IsMenuVisible = true;
 
         PlayPanel = Panel.AddChild<PlayMenu>();
-        
+
 
 
         var json = FileSystem.Mounted.ReadAllText("/ui/mainmenu/motd.json");
@@ -81,6 +113,60 @@
 
 
     }
+
+
+    public void OnPlayHovered()
+    {
+        PlaySign.isHovered = true;
+        foreach (var x in ObjectsForPlay)
+        {
+            x.AddComponent<HighlightOutline>();    
+        }
+        
+    }
+
+    public void OnLeaderboardHovered()
+    {
+        foreach (var x in ObjectsForLeaderboards)
+        {
+            x.AddComponent<HighlightOutline>();
+        }
+    }
+
+    public void OnCustomizeHovered()
+    {
+        foreach (var x in ObjectsForCustomize)
+        {
+            x.AddComponent<HighlightOutline>();
+        }
+    }
+
+    public void OnPlayUnHovered()
+    {
+        PlaySign.isHovered = false;
+        foreach (var x in ObjectsForPlay)
+        {
+            x.GetComponent<HighlightOutline>().Destroy();
+        }
+        
+    }
+
+    public void OnLeaderboardUnHovered()
+    {
+        foreach (var x in ObjectsForLeaderboards)
+        {
+            x.GetComponent<HighlightOutline>().Destroy();
+        }
+    }
+
+    public void OnCustomizeUnHovered()
+    {
+        foreach (var x in ObjectsForCustomize)
+        {
+            x.GetComponent<HighlightOutline>().Destroy();
+        }
+    }
+
 
     public void OnBackClicked()
     {

@@ -4,8 +4,6 @@ using Sandbox.UI;
 using System;
 using System.Net.Http.Headers;
 using System.Numerics;
-
-//using rrcustomcontent;
 using System.Reflection;
 using System.Threading.Tasks;
 using static Sandbox.Package;
@@ -13,21 +11,26 @@ using static Sandbox.PhysicsContact;
 
 
 
-public sealed class Player : Component, IHudInterface
+public sealed class Player : Component, IHudInterface, IInteraction
 {
 	[RequireComponent]
 	[Sync]
 	public PlayerController PlayerController { get; set; }
 
+	public float HoldTime => 0f;
+
+	bool HoldingInteraction { get; set; } = false;
 	ClothingContainer ClothingContainer { get; set; }
 
-	[Property] SkinnedModelRenderer Body { get; set; }
+	[Property] public SkinnedModelRenderer Body { get; set; }
 
 	[Property] public SkinnedModelRenderer fpsArms { get; set; }
 
 	[Property] GameObject WeaponContainer { get; set; }
 
-	[Property] public GameObject ThirdPersonWeaponModelContainer {get; set;}
+	[Property, Sync] public GameObject ThirdPersonWeaponModelContainer {get; set;}
+
+	public float BaseHeight { get; } = 72f; 
 
 	public ModelRenderer ThirdPersonWeaponModel { get; set; }
 
@@ -35,7 +38,7 @@ public sealed class Player : Component, IHudInterface
 
 	CitizenAnimationHelper HandsAnimationHelper;
 
-	public Connection PlayerConnection { get; set; }
+	public Connection PlayerConnection => Connection.Local;
 
 	public CitizenAnimationHelper PlayerAnimationHelper { get; set; }
 	
@@ -46,7 +49,12 @@ public sealed class Player : Component, IHudInterface
 	[Sync]
 	public CitizenAnimationHelper.HoldTypes HoldType { get; set; }
 
+	[Property]
 	private float BaseRunSpeed { get; set; } = 200f;
+
+
+	[Property]
+	private float BaseWalkSpeed { get; set; } = 200f;
 	public int CurrentWeaponType { get; set; }
 
 	GameObject WeaponPrefab { get; set; }
@@ -54,15 +62,24 @@ public sealed class Player : Component, IHudInterface
 
 	[Sync] SkinnedModelRenderer WeaponModel { get; set; }
 
-	[Sync] float Health { get; set; }
+	[Sync] public float Health { get; set; }
+
+	[Sync] public float MaxHealth { get; set; } = 100f;
 
 	[Sync, Change("PointsChanged")] public float Points { get; set; }
 
-	public static event Action PlayerPointsChanged;
 
-	public static event Action UpdateHud;
+	public event Action<float> PlayerPointsChanged;
 
-	[Sync] public bool Downed { get; set; }
+	public event Action PerkListChanged;
+
+
+	public static event Action AnyPlayerPointsChanged;
+
+
+	public bool isReviving { get; set; } = false;
+
+	[Sync] public bool Downed { get; set; } = false;
 
 	[Property]
 	public InventoryComponent Inventory {  get; set; }
@@ -94,10 +111,51 @@ public sealed class Player : Component, IHudInterface
 
 	Rotation lastViewRot;
 
+	public List<string> PerkIcons { get; set; } = new();
+
+
+	public bool LookingAtInteractable { get; set; } = false;
+	public bool LookingAtInteractableRevive { get; set; } = false;
+	public bool LookingAtInteractableHold { get; set; } = false;
+
+	public float CurrentInterHoldTime { get; set; } = 0f;
+	private IInteraction CurrentInteraction { get; set; }
+
+	[Sync]
+	public float ReviveTime { get; set; } = 7f;
+
+	[Sync]
+	public bool Reviving { get; set; } = false;
+
+	[Sync]
+	private Player ReviveTarget { get; set; }
+
+	public TimeSince TimeSinceInteractHeld { get; set; }
+
+	TimeSince TimeSinceDamagedLast { get; set; }
+
+	TimeSince TimeSinceLastRegen { get; set; }
+
 	[Rpc.Owner]
 	private void SetWeaponPosition()
 	{
+		if ( IsProxy ) return;
 		Log.Info( "set wepaonpos " );
+
+		var weap = GameObject.GetPrefab( Inventory.Weapons[CurrentWeaponSlot] );
+		var weapon = weap.Clone();
+		CurrentWeapon = weapon;
+		CurrentWeapon.NetworkMode = NetworkMode.Never;
+		CurrentWeaponClass = weapon.GetComponentInChildren<BaseWeapon>();
+
+		CurrentWeaponClass.WeaponModel.RenderType = ModelRenderer.ShadowRenderType.Off;
+
+
+		CurrentWeapon.SetParent( fpsArms.GameObject, false );
+
+		Scene.RunEvent<IWeaponHandler>( x => x.WeaponEquipped( CurrentWeapon ) );
+
+
 		var boneObject = fpsArms.GetBoneObject( "weapon_IK_hand_R" );
 		var bw = CurrentWeapon.GetComponentInChildren<BaseWeapon>();
 		
@@ -107,16 +165,26 @@ public sealed class Player : Component, IHudInterface
 		
 	}
 
-
-	public void UpdatePlayerHud()
+	public void UpdatePlayerListt( List<Player> newList )
 	{
-		UpdateHud?.Invoke();
+		
 	}
 
 
-	public void PointsChanged()
+	public async Task PerkListIconsChanged(  )
 	{
-		PlayerPointsChanged?.Invoke();
+		
+		await Task.Delay( 100 );
+		Log.Info( "what the nickel" );
+		PerkListChanged?.Invoke();
+	}
+
+	public void PointsChanged(float oldValue, float newValue)
+	{
+		var changeAmount = newValue - oldValue;
+		Log.Info("hello " + changeAmount);
+		PlayerPointsChanged?.Invoke(changeAmount);
+		AnyPlayerPointsChanged?.Invoke();
 	}
 
 
@@ -132,11 +200,39 @@ public sealed class Player : Component, IHudInterface
 	}
 
 
+
+	[Rpc.Host]
+	public void RemoveHealth(float amount)
+	{
+		ChangeHealthNeg( amount );
+		TakenDamageFeedback();
+		if ( this.Health <= 0 )
+		{
+			PlayerDowned();
+		}
+		Log.Info( Health );
+	}
+
+	[Rpc.Broadcast]
+	private void ChangeHealthNeg( float amount )
+	{
+		this.Health = Math.Clamp( this.Health - amount, 0, this.MaxHealth );
+		this.Body.Set( "hit_strength", 1f );
+		this.Body.Set( "hit", true );
+		TimeSinceDamagedLast = 0f;
+	}
+
+	[Rpc.Broadcast]
+	private void ChangeHealthPos( float amount )
+	{
+		this.Health = Math.Clamp( this.Health + amount, 0, this.MaxHealth );
+	}
+
 	[Rpc.Host]
 	public void AddPoints( int points )
 	{
 		ChangePointsPos( points );
-		Log.Info( Points );
+		
 	}
 
 	[Rpc.Broadcast]
@@ -144,6 +240,13 @@ public sealed class Player : Component, IHudInterface
 	{
 		this.Points += points;
 	}
+
+	[Rpc.Broadcast]
+	private void ChangeHealthToMax()
+	{
+		this.Health = this.MaxHealth;
+	}
+
 
 	[Rpc.Host]
 	public void RemovePoints( int points )
@@ -172,14 +275,15 @@ public sealed class Player : Component, IHudInterface
 
 
 
-	
+	[Rpc.Owner]
 	private void SpawnWeapon()
 	{
-
+		//if ( CurrentWeapon == null ) return;
+		
 		CurrentWeapon?.Destroy();
 
 
-		var weap = GameObject.GetPrefab( Inventory.Weapons[CurrentWeaponSlot] );
+		/*var weap = GameObject.GetPrefab( Inventory.Weapons[CurrentWeaponSlot] );
 		var weapon = weap.Clone();
 		CurrentWeapon = weapon;
 		
@@ -190,15 +294,18 @@ public sealed class Player : Component, IHudInterface
 
 		CurrentWeapon.SetParent( fpsArms.GameObject, false );
 
-		ClientWeaponEquipped();
+		Scene.RunEvent<IWeaponHandler>( x => x.WeaponEquipped( CurrentWeapon ) );*/
+
+
+		//ClientWeaponEquipped();
 
 		SetWeaponPosition();
 
-		ChangeThirdPersonChar( this );
+		ChangeThirdPersonChar( this, CurrentWeapon );
 
-		int holdtype = ((int)CurrentWeaponClass.WeaponType) + 1;
+		/*int holdtype = ((int)CurrentWeaponClass.WeaponType) + 1;
 
-		ManageHoldType(holdtype);
+		ManageHoldType(holdtype);*/
 
 		Log.Info("current weapon slot: " + CurrentWeaponSlot );
 	}
@@ -207,6 +314,7 @@ public sealed class Player : Component, IHudInterface
 	[Rpc.Owner]
 	private void ClientWeaponEquipped()
 	{
+		//fpsArms.AnimationGraph = CurrentWeapon.GetComponentInChildren<BaseWeapon>().WeaponModel.AnimationGraph;
 		Scene.RunEvent<IWeaponHandler>( x => x.WeaponEquipped( CurrentWeapon ) );
 
 	}
@@ -215,29 +323,37 @@ public sealed class Player : Component, IHudInterface
 	private void ServerChangeThidPersonChar()
 	{
 		Log.Info( Connection.Local.DisplayName + " changing weapon" );
-		ChangeThirdPersonChar(this);
+		ChangeThirdPersonChar(this, CurrentWeapon);
 	}
 
 
 
 	//this is for changing the weapon that appears for other players, purely cosmetic for others, not seen by owner[[[
-			
-	public void ChangeThirdPersonChar(Player player)
+	//[Rpc.Broadcast]
+	public void ChangeThirdPersonChar(Player player, GameObject weapon)
 	{
 		if ( CurrentWeapon != null )
 		{
 			Thefuckifiknow(CurrentWeapon.GetComponentInChildren<BaseWeapon>().WeaponModel.Model );
-			ManageHoldType(1);
+			//ManageHoldType(1);
 		}
 	}
 
-	[Rpc.Host]
+	[Rpc.Broadcast]
 	private void Thefuckifiknow(Model currentWeapon)
 	{
 		
 		ThirdPersonWeaponModel?.Destroy();
-		ThirdPersonWeaponModel = ThirdPersonWeaponModelContainer.AddComponent<ModelRenderer>();
-		
+		if ( ThirdPersonWeaponModelContainer.GetComponent<ModelRenderer>() == null )
+		{
+			ThirdPersonWeaponModel = ThirdPersonWeaponModelContainer.AddComponent<ModelRenderer>();
+		}
+		/*else
+		{
+			ThirdPersonWeaponModel = ThirdPersonWeaponModelContainer.GetComponent<SkinnedModelRenderer>();
+		}*/
+
+
 		ThirdPersonWeaponModel.CreateAttachments = true;
 		//ThirdPersonWeaponModel.UseAnimGraph = false;
 
@@ -260,33 +376,17 @@ public sealed class Player : Component, IHudInterface
 	}
 
 
-	private void GetWeaponManager()
-	{
-		var WeaponManagers = Scene.GetAllComponents<WeaponManager>();
-
-		if ( WeaponManagers == null || WeaponManagers.Count() != 1 )
-		{
-			Log.Info( "ERROR: Weapon manager null or theres more than 1!" );
-		}
-
-		foreach ( var i in WeaponManagers )
-		{
-			WeaponManager = i;
-			Log.Info( "weapon manager found!" );
-		}
-	}
-
-	public void UpdatePlayerList()
+	[Rpc.Broadcast]
+	public void UpdatePlayerList(List<Player> newList)
 	{
 		PlayerList?.Clear();
-		foreach ( var i in Scene.GetAllComponents<Player>() )
-		{
-			Log.Info( "adding player" );
-			AddToPlayerList( i.PlayerConnection, i );
-		}
-
+		PlayerList = newList;
+		Log.Info( "but why" );
+		Log.Info( PlayerList );
 	}
 
+
+	
 
 	protected override void OnStart()
 	{
@@ -295,21 +395,21 @@ public sealed class Player : Component, IHudInterface
 		PlayerAnimationHelper = new CitizenAnimationHelper();
 		PlayerAnimationHelper.Target = PlayerController.Renderer;
 
+
+
+		
+
 		
 
 		
 
-		PlayerConnection = Connection.Local;
-
-		
-
-		ClothingContainer = ClothingContainer.CreateFromLocalUser();
-		ClothingContainer.Apply( PlayerController.Renderer );
-		foreach ( var i in Scene.GetAllComponents<Player>() )
+		/*ClothingContainer = ClothingContainer.CreateFromLocalUser();
+		ClothingContainer.Apply( PlayerController.Renderer );*/
+		/*foreach ( var i in Scene.GetAllComponents<Player>() )
 		{
 			//if ( i == this ) continue;
 			AddToPlayerList( i.PlayerConnection, i );
-		}
+		}*/
 
 
 		if ( IsProxy )
@@ -322,11 +422,12 @@ public sealed class Player : Component, IHudInterface
 		}
 		else
 		{
+			
 			playerCamera.Enabled = true;
 			fpsArms.Enabled = true;
 			Hud.Enabled = true;
 			Log.Info( PlayerList.Count );
-
+			SetHealthToMax();
 			
 			//PlayerAnimationHelper.Target = PlayerController.Renderer;
 
@@ -334,14 +435,20 @@ public sealed class Player : Component, IHudInterface
 
 		Log.Info( "player spawned" );
 
-		Scene.RunEvent<IHudInterface>( x => x.UpdatePlayerList() );
+		//Scene.RunEvent<IHudInterface>( x => x.UpdatePlayerList() );
 
 
 		StartingValues();
 	}
 
 
-	
+	[Rpc.Host]
+	public void SetHealthToMax()
+	{
+		ChangeHealthToMax();
+	}
+
+
 	public void ChangeCurrentSlot(int slot)
 	{
 		CurrentWeaponSlot = slot;
@@ -349,15 +456,14 @@ public sealed class Player : Component, IHudInterface
 	}
 
 
-	[Rpc.Owner]
+	[Rpc.Host]
 	private void StartingValues()
 	{
 
-		if ( Points != 0 || Health != 0 ) return;
-		AddPoints( 500 );
+		if ( Points != 0 && Health != 0 ) return;
+		/*SetHealthToMax();
+		AddPoints( 500 );*/
 		
-		Downed = false;
-		Health = 100f;
 	}
 
 
@@ -374,7 +480,7 @@ public sealed class Player : Component, IHudInterface
 	}
 
 
-	private void LineTrace()
+	private SceneTraceResult? LineTrace()
 	{
 		var cameraPos = playerCamera.WorldPosition;
 		var direction = playerCamera.WorldRotation.Forward;
@@ -382,23 +488,52 @@ public sealed class Player : Component, IHudInterface
 		var endPosition = cameraPos + direction * 100;
 
 		var traceResult = Scene.Trace.Ray( cameraPos, endPosition ).IgnoreGameObject( GameObject ).WithTag( "interactable" ).Run();
-		
+
 		if ( traceResult.Hit )
 		{
-			var inter = traceResult.GameObject.Components.GetAll<IInteraction>().FirstOrDefault();
-			inter.OnInteract( this );
-
+			return traceResult;
+		}
+		else
+		{
+			return null;
 		}
 	}
-
-
-	
-	public void ServerManageTPV()
+	public void OnInteractionFailed( Player player )
 	{
-
-		//ManageHoldType();
+		//could add some feedback here later
 	}
 
+	public void OnInteract( Player player )
+	{
+		if ( !Downed ) return;
+		Log.Info( "oninteract2" );
+		//RevivePlayer();
+		
+	}
+	
+
+
+	[Rpc.Host]
+	public void RevivePlayer()
+	{
+		if ( !Downed ) {  return; }
+		SetPlayerUps();
+		
+	}
+
+	[Rpc.Broadcast]
+	private void SetPlayerUps()
+	{
+		
+		this.Downed = false;
+		this.Body.Set( "special_movement_states", 4 );
+		this.PlayerController.IsDucking = false;
+		this.PlayerController.WalkSpeed = BaseWalkSpeed;
+		this.PlayerController.RunSpeed = BaseRunSpeed;
+		this.PlayerController.BodyHeight = BaseHeight;
+		this.GameObject.Tags.Remove( "interactable" );
+		this.GameObject.Tags.Remove( "downed" );
+	}
 
 
 	public static byte ClampToByte( float value, float min, float max )
@@ -409,7 +544,33 @@ public sealed class Player : Component, IHudInterface
 	}
 
 
+	[Rpc.Owner]
+	private void TakenDamageFeedback()
+	{
+		Sound.Play( "sound/hits/hitsounds.sound", GameObject.WorldPosition);
+		playerCamera.WorldRotation = new Rotation( -100, -100, -100, 1);
+	}
 
+
+	[Rpc.Host]
+	private void PlayerDowned()
+	{
+		SetPlayerDowns();
+	}
+
+	[Rpc.Broadcast]
+	private void SetPlayerDowns()
+	{
+		
+		this.Downed = true;
+		Body.Set( "special_movement_states", 3 );
+		PlayerController.WalkSpeed = 25f;
+		PlayerController.DuckedSpeed = 25f;
+		PlayerController.IsDucking = true;
+		this.PlayerController.BodyHeight = 30;
+		GameObject.Tags.Add( "interactable" );
+		GameObject.Tags.Add( "downed" );
+	}
 
 	public void UpdateWeaponSway( )
 	{
@@ -444,15 +605,106 @@ public sealed class Player : Component, IHudInterface
 		//float moveBobFloat = moveBobFloat.LerpTo( target, Time.Delta * 5f );
 
 		CurrentWeaponClass.WeaponModel.Set( "move_bob", normalizedSpeed );
+		if ( isReviving )
+		{
+			CurrentWeaponClass.WeaponModel.Set( "b_grab", true );
+		}
+		if ( !isReviving )
+		{
+			CurrentWeaponClass.WeaponModel.Set( "b_grab", false);
+		}
+
 		if ( isSprinting )
 		{
 			CurrentWeaponClass.WeaponModel.Set( "b_sprint", true );
 		}
-		else
+		if ( !isSprinting )
 		{
 			CurrentWeaponClass.WeaponModel.Set( "b_sprint", false );
-		}	
+		}
 
+	}
+
+
+	[Rpc.Host]
+	private void RegenHealth()
+	{
+
+		ChangeHealthPos( .5f );
+		//Log.Info( Connection.Local.DisplayName + Health );
+			
+		
+	}
+
+
+	[Rpc.Host]
+	public void DownedAnimControlHost()
+	{
+		DownedAnimControl();
+	}
+
+	[Rpc.Broadcast]
+	private void DownedAnimControl()
+	{
+		
+		Body.Set( "move_direction",250 );
+		Body.Set( "move_groundspeed", 1000 );
+		Body.Set( "move_speed", 1000 );
+	}
+
+
+
+	private void InteractionTags(SceneTraceResult traceResult)
+	{
+		var inter = traceResult.GameObject.Components.GetAll<IInteraction>().FirstOrDefault();
+		if ( traceResult.GameObject.Tags.Has( "downed" ) )
+		{
+			inter.OnInteract( traceResult.GameObject.GetComponent<Player>() );
+			return;
+		}
+
+
+		inter.OnInteract( this );
+	}
+
+	[Rpc.Host]
+	private void RevivingPlayer(Player player)
+	{
+		player.RevivePlayer();
+	}
+
+
+	private void ConstInterTrace()
+	{
+		var useTrace = LineTrace();
+		if ( useTrace == null )
+		{
+			LookingAtInteractable = false;
+			LookingAtInteractableRevive = false;
+			LookingAtInteractableHold = false;
+			/*HoldingInteraction = false;
+			if(Input.Down( "use" ) )
+			{
+				Input.ReleaseAction( "use" );
+			}*/
+			return;
+		}
+		if(useTrace.HasValue)
+		{
+			if(useTrace.Value.Tags.Contains( "downed" ) )
+			{
+				LookingAtInteractableRevive = true;
+				return;
+			}
+			if(useTrace.Value.Tags.Contains( "interactablehold" ) )
+			{
+				LookingAtInteractableHold = true;
+				return;
+			}
+			LookingAtInteractable = true;
+			return;
+		}
+		return;
 	}
 
 
@@ -462,23 +714,40 @@ public sealed class Player : Component, IHudInterface
 		
 		
 		if ( IsProxy ) return;
-		
-		/*if(CurrentWeapon == null)
-		{
-			ChangeCurrentSlot( 0 );
-		}*/	
 
-		if ( Input.Down( "attack2" ) )
+		ConstInterTrace();
+
+		if(CurrentWeapon != null)
 		{
-			//Log.Info( ThirdPersonWeaponModel.Model.Attachments. );
-			/*foreach ( var x in ThirdPersonWeaponModel.Model.Attachments.All )
-			{
-				Log.Info( x.Name );
-			}*/
+			int holdtype = ((int)CurrentWeaponClass.WeaponType) + 1;
+
+			ManageHoldType( holdtype );
+		}
+
+		if ( Input.Down( "attack2" ) && CurrentWeapon != null )
+		{
+			
+		}
+
+		if ( Health < MaxHealth && TimeSinceDamagedLast >= 5f)
+		{
+			RegenHealth();
+		}
+
+		if ( Downed )
+		{
+			//Log.Info( "downed" );
+			SetPlayerDowns();
+			DownedAnimControl();
+		}
+		if ( !Downed && Reviving )
+		{
+			SetPlayerUps();
 		}
 
 		if ( isSprinting && (isAiming || isFiring) )
 		{
+			//if ( !CurrentWeaponClass.Automatic ) return;
 			PlayerController.RunSpeed = PlayerController.WalkSpeed;
 			isSprinting = false;
 		}
@@ -539,8 +808,96 @@ public sealed class Player : Component, IHudInterface
 
 		if ( Input.Pressed( "use" ) )
 		{
-			LineTrace();
+			TimeSinceInteractHeld = 0;
+			var useTrace = LineTrace();
+			if ( useTrace != null )
+			{
+				var inter = useTrace.Value.GameObject.Components.GetAll<IInteraction>().FirstOrDefault();
+				if ( !useTrace.Value.GameObject.Tags.Has( "downed" ) )
+				{
+					Log.Info(useTrace.Value.GameObject);
+					if(useTrace.Value.GameObject.Tags.Has( "interactablehold" ) )
+					{
+						Log.Info( "interactable hold" );
+						HoldingInteraction = true;
+						CurrentInterHoldTime = inter.HoldTime;
+						CurrentInteraction = inter;
+						return;
+					}
+					inter.OnInteract( this );
+					if ( useTrace.Value.GameObject.Tags.Has( "door" ) )
+					{
+						CurrentWeaponClass.WeaponModel.Set( "speed_grab", .5f);
+						CurrentWeaponClass.WeaponModel.Set( "grab_action", 4 );
+					}
+					else 
+					{
+						CurrentWeaponClass.WeaponModel.Set( "speed_grab", .75f );
+						CurrentWeaponClass.WeaponModel.Set( "grab_action", 2 );
+					}
+				}
+				if ( useTrace.Value.GameObject.Tags.Has( "downed" ) )
+				{
+					ReviveTarget = useTrace.Value.GameObject.GetComponent<Player>();
+				}
+				
+			}
+			
 		}
+
+		if ( Input.Down( "use" ) )
+		{
+			Log.Info( "holding use" );
+			
+			
+			if ( isWalking )
+			{
+				Input.ReleaseAction( "use" );
+				return;
+			}
+
+			TimeSinceInteractHeld += Time.Delta;
+
+			if ( HoldingInteraction )
+			{
+				if ( TimeSinceInteractHeld >= CurrentInterHoldTime )
+				{
+					CurrentInteraction.OnInteract( this );
+					TimeSinceInteractHeld = 0;
+				}
+			}
+
+
+			if ( ReviveTarget != null )
+			{
+				isReviving = true;
+			}
+			if(ReviveTarget == null)
+			{
+				isReviving = false;
+			}
+			if ( isReviving )
+			{
+				if ( TimeSinceInteractHeld > ReviveTime )
+				{
+					RevivingPlayer( ReviveTarget );
+				}
+			}
+		}
+
+		if(Input.Released( "use" ) )
+		{
+			TimeSinceInteractHeld = 0;
+			HoldingInteraction = false;
+			isReviving = false;
+			ReviveTarget = null;
+
+		}
+		if ( !Input.Down( "use" ) )
+		{
+			TimeSinceInteractHeld = 0;
+		}
+
 
 	}
 }

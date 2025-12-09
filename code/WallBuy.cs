@@ -11,7 +11,7 @@ public sealed class WallBuy : Component, IInteraction
 	public int Cost { get; set; }
 
 	WeaponManager WeaponManager { get; set; }
-
+	public float HoldTime => 0f;
 	protected override void OnUpdate()
 	{
 
@@ -56,7 +56,10 @@ public sealed class WallBuy : Component, IInteraction
 		}
 	}
 
-
+	public void OnInteractionFailed( Player player )
+	{
+		//could add some feedback here later
+	}
 	public void OnInteract( Player player )
 	{
 		BuyWeapon( player );

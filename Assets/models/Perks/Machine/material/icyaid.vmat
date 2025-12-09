@@ -1,0 +1,12 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "models/perks/machine/material/perkmachine.shader"
+
+	Texture_ps_0 "textures/perks/icyaid/machine/perkmachine_explode_low_uv_basecolor.jpg"
+	Texture_ps_1 "textures/perks/icyaid/machine/perkmachine_explode_low_uv_normal.jpg"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

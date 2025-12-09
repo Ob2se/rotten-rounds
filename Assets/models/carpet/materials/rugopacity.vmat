@@ -1,0 +1,17 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "models/carpet/materials/rugopacity.shader"
+
+	Texture_ps_0 "models/carpet/textures/rug_low_opacity_basecolor.png"
+	Texture_ps_1 "models/carpet/textures/rug_low_opacity_normal.png"
+	Texture_ps_2 "models/carpet/textures/rug_low_opacity_occlusionroughnessmetallic.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Translucent ----
+	g_flAlphaTestReference "0.500"
+	g_flAntiAliasedEdgeStrength "1.000"
+}

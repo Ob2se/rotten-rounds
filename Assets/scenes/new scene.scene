@@ -1,0 +1,96 @@
+{
+  "__guid": "eea6b450-1c27-45cf-86c8-ee73cee611c9",
+  "GameObjects": [
+    {
+      "__guid": "aa78da77-bbb2-4bb0-9abd-fda6f7b85d69",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "119.0526,132.2933,-45.34211",
+      "Rotation": "0,0,0,1",
+      "Scale": "1272.18,412.9255,0.4914725",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "dfc9c5df-186a-435c-84bd-272c13541077",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "28a4301c-c596-4846-945f-30a8311abae6",
+      "__version": 1,
+      "__Prefab": "playerspawn.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7"
+            },
+            "Property": "Position",
+            "Value": "-24.44695,1.30835,2"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "73a3d1a5-8155-49a2-95d7-d4897ca7dfb7": "28a4301c-c596-4846-945f-30a8311abae6",
+        "1dca0a5e-f358-4622-bea2-23edfd545716": "042e36c4-14a5-410c-b969-d77d6aca97cc"
+      }
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 3
+}

@@ -1,0 +1,13 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "models/carpet/materials/rugbase.shader"
+
+	Texture_ps_0 "models/zombie/material/texture/wooooooooooooooooo3_citizen_skin_basecolor.png"
+	Texture_ps_1 "models/zombie/material/texture/wooooooooooooooooo3_citizen_skin_normal.png"
+	Texture_ps_2 "models/zombie/material/texture/wooooooooooooooooo3_citizen_skin_occlusionroughnessmetallic.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

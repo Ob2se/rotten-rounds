@@ -1,0 +1,44 @@
+.points-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.points-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #ffd966;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    /* Start fully visible so animation can run */
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: none;
+}
+
+.points-container.show {
+    /* Hardcode duration, ease-out, forwards to keep final state */
+    animation: float-up 1s ease-out forwards;
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(-1.5rem) scale(1.04);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-2.5rem) scale(1.08);
+    }
+}

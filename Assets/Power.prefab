@@ -7,11 +7,12 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "",
+    "Tags": "interactable",
     "Enabled": true,
     "NetworkMode": 1,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 1,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
@@ -30,6 +31,7 @@
         "__guid": "78925896-6b27-41e5-8d35-23d7883c2e40",
         "__enabled": true,
         "Center": "0,0,0",
+        "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
         "IsTrigger": false,

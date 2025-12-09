@@ -32,7 +32,6 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "ReloadTime": 0,
-        "WeaponContainer": null,
         "WeaponDamage": 0,
         "WeaponModel": {
           "_type": "component",
@@ -40,6 +39,7 @@
           "go": "bcec702a-4812-4f9d-94bc-c9a54a866fa9",
           "component_type": "SkinnedModelRenderer"
         },
+        "WeaponName": null,
         "WeaponRange": 0,
         "WeaponType": "Rifle"
       }
@@ -64,11 +64,12 @@
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "3e8c7e33-05fa-42eb-b8f1-7475fc832913",
             "__enabled": true,
-            "AnimationGraph": "baseweapons/sbox_assault_m4a1/v_m4a1.vanmgrph",
+            "AnimationGraph": null,
             "BodyGroups": 18446744073709551615,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
+            "LodOverride": null,
             "MaterialGroup": null,
             "MaterialOverride": null,
             "Materials": null,

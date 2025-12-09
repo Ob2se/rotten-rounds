@@ -56,7 +56,7 @@
     }
 
     private void OnStartClick(){
-        LobbyCreator.StartMap(SelectedMap);
+        LobbyCreator.ChooseMap(SelectedMap);
     }
 
     private async Task GetLobbyCreator()
@@ -76,7 +76,7 @@
     {
         var mapSelector = Camera.AddComponent<MapSelector>();
         mapSelector.TheLobbyMenu = this;
-        mapSelector.MapList = LobbyCreator.mapList;
+        mapSelector.MapList = LobbyCreator.MapList;
 
     }
 

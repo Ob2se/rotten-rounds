@@ -6,6 +6,8 @@ using System;
 public sealed class MysteryBox : Component, IInteraction
 {
 
+	public float HoldTime => 0f;
+
 	[Sync, Property]
 	public float Cost { get; set; }
 
@@ -301,7 +303,10 @@ public sealed class MysteryBox : Component, IInteraction
 	}
 
 
-
+	public void OnInteractionFailed( Player player )
+	{
+		//could add some feedback here later
+	}
 
 	public void OnInteract( Player player )
 	{

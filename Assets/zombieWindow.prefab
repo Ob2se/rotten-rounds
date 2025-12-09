@@ -7,11 +7,12 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "",
+    "Tags": "noplayer,winder",
     "Enabled": true,
     "NetworkMode": 1,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
@@ -23,7 +24,9 @@
           "_type": "gameobject",
           "go": "d8ad6336-0583-4928-bd4f-719a15ca8507"
         },
+        "HoldTime": 2,
         "isBeingAttacked": false,
+        "maxBoards": 6,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -45,6 +48,12 @@
           "go": "7ab7751d-4e55-4092-b215-742a9d76c688"
         },
         "WindowEntryNavLink": null,
+        "WindowRepairCollider": {
+          "_type": "component",
+          "component_id": "817d359f-ae77-4a23-9635-c66d499ceb98",
+          "go": "7727ced1-badd-44bb-abe0-379c743e2f9e",
+          "component_type": "BoxCollider"
+        },
         "windowTrigger": {
           "_type": "component",
           "component_id": "48111a25-02cf-417c-bb30-fc99fb8cb06e",
@@ -61,6 +70,7 @@
         "__guid": "48111a25-02cf-417c-bb30-fc99fb8cb06e",
         "__enabled": true,
         "Center": "40,0,0",
+        "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
         "IsTrigger": true,
@@ -135,6 +145,31 @@
           "Id": "80e5db6e-cd2d-4e73-b94b-08edd158ec0f"
         },
         "Volume": 1
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "817d359f-ae77-4a23-9635-c66d499ceb98",
+        "__enabled": true,
+        "Center": "1.328546,0,62.40207",
+        "ColliderFlags": 0,
+        "Elasticity": null,
+        "Friction": null,
+        "IsTrigger": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnObjectTriggerEnter": null,
+        "OnObjectTriggerExit": null,
+        "OnTriggerEnter": null,
+        "OnTriggerExit": null,
+        "RollingResistance": null,
+        "Scale": "15.50836,73.63957,65.66124",
+        "Static": false,
+        "Surface": null,
+        "SurfaceVelocity": "0,0,0"
       }
     ],
     "Children": [
@@ -146,11 +181,12 @@
         "Position": "0,0,30.27431",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
-        "Tags": "noplayer,winder",
+        "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -159,6 +195,7 @@
             "__enabled": false,
             "BodyGroups": 18446744073709551615,
             "CreateAttachments": false,
+            "LodOverride": null,
             "MaterialGroup": null,
             "MaterialOverride": null,
             "Materials": null,
@@ -177,30 +214,6 @@
             },
             "RenderType": "On",
             "Tint": "1,1,1,1"
-          },
-          {
-            "__type": "Sandbox.BoxCollider",
-            "__guid": "7dbd19ab-b034-4ae3-b857-17dead7d9167",
-            "__enabled": true,
-            "Center": "1.328546,0,33.7121",
-            "Elasticity": null,
-            "Friction": null,
-            "IsTrigger": false,
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "OnObjectTriggerEnter": null,
-            "OnObjectTriggerExit": null,
-            "OnTriggerEnter": null,
-            "OnTriggerExit": null,
-            "RollingResistance": null,
-            "Scale": "10.96833,50,65.66124",
-            "Static": false,
-            "Surface": null,
-            "SurfaceVelocity": "0,0,0"
           }
         ],
         "Children": []
@@ -218,6 +231,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -254,6 +268,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -290,6 +305,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -326,6 +342,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -334,6 +351,7 @@
             "__enabled": true,
             "BodyGroups": 18446744073709551615,
             "CreateAttachments": false,
+            "LodOverride": null,
             "MaterialGroup": null,
             "MaterialOverride": null,
             "Materials": null,
@@ -358,6 +376,7 @@
             "__guid": "995ca638-4694-45b5-a947-016e30aab3be",
             "__enabled": true,
             "Center": "-0.489851,0.1716232,24.6317",
+            "ColliderFlags": "IgnoreTraces",
             "Elasticity": null,
             "Friction": null,
             "IsTrigger": false,
@@ -393,6 +412,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [],
         "Children": [
@@ -409,17 +429,19 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "f9e776c3-03e6-4e03-ae94-5564bec096ec",
                 "__enabled": true,
-                "AnimationGraph": null,
+                "AnimationGraph": "models/window/windowanimation.vanmgrph",
                 "BodyGroups": 18446744073709551615,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -438,7 +460,7 @@
                   "vectors": {},
                   "rotations": {}
                 },
-                "PlaybackRate": 0,
+                "PlaybackRate": 1,
                 "RenderOptions": {
                   "GameLayer": true,
                   "OverlayLayer": false,
@@ -452,7 +474,7 @@
                   "Blending": false
                 },
                 "Tint": "1,1,1,1",
-                "UseAnimGraph": false
+                "UseAnimGraph": true
               }
             ],
             "Children": []
@@ -470,17 +492,19 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "4ee4aa44-3006-4ea3-9223-307fa56b3abd",
                 "__enabled": true,
-                "AnimationGraph": null,
+                "AnimationGraph": "models/window/windowanimation.vanmgrph",
                 "BodyGroups": 18446744073709551615,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -499,7 +523,7 @@
                   "vectors": {},
                   "rotations": {}
                 },
-                "PlaybackRate": 0,
+                "PlaybackRate": 1,
                 "RenderOptions": {
                   "GameLayer": true,
                   "OverlayLayer": false,
@@ -513,7 +537,7 @@
                   "Blending": false
                 },
                 "Tint": "1,1,1,1",
-                "UseAnimGraph": false
+                "UseAnimGraph": true
               }
             ],
             "Children": []
@@ -531,17 +555,19 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "cf43d2c9-93f1-4516-bebc-75cc63c407cc",
                 "__enabled": true,
-                "AnimationGraph": null,
+                "AnimationGraph": "models/window/windowanimation.vanmgrph",
                 "BodyGroups": 18446744073709551615,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -560,7 +586,7 @@
                   "vectors": {},
                   "rotations": {}
                 },
-                "PlaybackRate": 0,
+                "PlaybackRate": 1,
                 "RenderOptions": {
                   "GameLayer": true,
                   "OverlayLayer": false,
@@ -574,7 +600,7 @@
                   "Blending": false
                 },
                 "Tint": "1,1,1,1",
-                "UseAnimGraph": false
+                "UseAnimGraph": true
               }
             ],
             "Children": []
@@ -592,17 +618,19 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "e0ee1cd1-35a8-43db-a1f1-fb7c35ce459c",
                 "__enabled": true,
-                "AnimationGraph": null,
+                "AnimationGraph": "models/window/windowanimation.vanmgrph",
                 "BodyGroups": 18446744073709551615,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -621,7 +649,7 @@
                   "vectors": {},
                   "rotations": {}
                 },
-                "PlaybackRate": 0,
+                "PlaybackRate": 1,
                 "RenderOptions": {
                   "GameLayer": true,
                   "OverlayLayer": false,
@@ -635,7 +663,7 @@
                   "Blending": false
                 },
                 "Tint": "1,1,1,1",
-                "UseAnimGraph": false
+                "UseAnimGraph": true
               }
             ],
             "Children": []
@@ -653,17 +681,19 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "f03ea851-6e60-4fa2-8cfa-b53620f4c044",
                 "__enabled": true,
-                "AnimationGraph": null,
+                "AnimationGraph": "models/window/windowanimation.vanmgrph",
                 "BodyGroups": 18446744073709551615,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -682,7 +712,7 @@
                   "vectors": {},
                   "rotations": {}
                 },
-                "PlaybackRate": 0,
+                "PlaybackRate": 1,
                 "RenderOptions": {
                   "GameLayer": true,
                   "OverlayLayer": false,
@@ -696,7 +726,7 @@
                   "Blending": false
                 },
                 "Tint": "1,1,1,1",
-                "UseAnimGraph": false
+                "UseAnimGraph": true
               }
             ],
             "Children": []
@@ -714,17 +744,19 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "554d85a7-3e1f-468a-a3c2-61511090ce9c",
                 "__enabled": true,
-                "AnimationGraph": null,
+                "AnimationGraph": "models/window/windowanimation.vanmgrph",
                 "BodyGroups": 18446744073709551615,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -743,7 +775,7 @@
                   "vectors": {},
                   "rotations": {}
                 },
-                "PlaybackRate": 0,
+                "PlaybackRate": 1,
                 "RenderOptions": {
                   "GameLayer": true,
                   "OverlayLayer": false,
@@ -757,7 +789,7 @@
                   "Blending": false
                 },
                 "Tint": "1,1,1,1",
-                "UseAnimGraph": false
+                "UseAnimGraph": true
               }
             ],
             "Children": []

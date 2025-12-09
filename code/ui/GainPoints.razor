@@ -1,0 +1,43 @@
+@using Sandbox
+@using Sandbox.UI
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+
+
+
+
+<root>
+    <div class="points-container show">
+        <p class="points-text">+@PointValue</p>
+    </div>
+</root>
+
+@code
+{
+    [Parameter] public float PointValue { get; set; }
+
+    private Panel textEl;
+    TimeSince timeSinceCreated = 0;
+
+    protected override int BuildHash() => System.HashCode.Combine(PointValue);
+
+    public override void Tick()
+    {
+        if (timeSinceCreated >= 1f)
+        {
+            Delete();   
+        }
+    }
+
+    protected override void OnEvent(PanelEvent e)
+    {
+        base.OnEvent(e);
+
+        if (e.Name == "animationend" && e.Target == textEl)
+        {
+            Delete();
+        }
+    }
+}
+

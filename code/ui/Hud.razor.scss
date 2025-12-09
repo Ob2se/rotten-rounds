@@ -1,47 +1,192 @@
 .hud {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+
+    .hurt-border {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        transition: background 0.2s ease;
+
+        &.hidden {
+            opacity: 0;
+        }
+    }
+
+    .look-interactable {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        font-size: 2rem;
+        text-align: center;
+        font-family: Geizer;
+        color: whitesmoke;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+
+        .use-glyph {
+            font-size: 1.25rem;
+            line-height: 1;
+            margin-top: 0;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        &.hidden {
+            opacity: 0;
+        }
+    }
+
+    .look-interactable-revive {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        font-size: 2rem;
+        text-align: center;
+        font-family: Geizer;
+        color: whitesmoke;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+
+        .hold-glyph-wrapper {
+            position: relative;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .hold-use-glyph {
+            font-size: 1.25rem;
+            line-height: 1;
+            margin-top: 0;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        &.hidden {
+            opacity: 0;
+        }
+    }
+
+    .look-interactable-hold {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        font-size: 2rem;
+        text-align: center;
+        font-family: Geizer;
+        color: whitesmoke;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+
+        .hold-glyph-wrapper {
+            position: relative;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+
+            .hold-fill {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: black; /* progress color */
+                pointer-events: none;
+            }
+        }
+
+        .hold-use-glyph {
+            font-size: 1.25rem;
+            line-height: 1;
+            margin-top: 0;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        &.hidden {
+            opacity: 0;
+        }
+    }
+
+
+    .player-card-container {
+        position: absolute;
+        bottom: 30vh;
+        left: 5vw;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        border-color: yellow;
+
+        .points-popup {
+            border-radius: 40px;
+            position: relative;
+            left: 5%;
+            top: 55%;
+        }
+    }
 
 
 
-	.player-card-container {
-		position: absolute;
-		bottom: 30vh;
-		left: 5vw;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		border-color: yellow;
-	}
+    .crosshair-contain {
+        &.hidden {
+            opacity: 0;
+        }
+    }
 
 
+    .weapon-contain {
+    }
 
-	.crosshair-contain {
-		&.hidden {
-			opacity: 0;
-		}
-	}
+    .rounds-container {
+        position: absolute;
+        top: 0vh;
+        left: 0vw;
+        padding-left: 3vw;
+    }
+
+    .rounds {
+        font-size: 6rem;
+        font-family: Bloody Terror;
+        color: rgb(108, 0, 0);
+        margin: 0 0 4px 0;
+    }
 
 
-	.weapon-contain{
-
-	}
-
-	.rounds-container {
-		position: absolute;
-		top: 0vh;
-		left: 0vw;
-		padding-left: 3vw;
-	}
-
-	.rounds {
-		font-size: 6rem;
-		font-family: Bloody Terror;
-		color: rgb(108, 0, 0);
-		margin: 0 0 4px 0;
-	}
+    .perk-icon-container {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        bottom: 10%;
+        right: 50%;
+    }
 }

@@ -1,0 +1,19 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+<root>
+	<img class="perk-image" src="@PerkIconImage" />
+</root>
+
+@code
+{
+
+    [Parameter] public string PerkIconImage { get; set; }
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( PerkIconImage );
+}

@@ -2,7 +2,7 @@
   "publish": {
     "Enabled": true,
     "ProjectConfig": {
-      "Title": "Sceneofterry (rr_sceneot)",
+      "Title": "Sceneofterry",
       "Type": "map",
       "Org": "clickhq",
       "Ident": "sceneofterry",

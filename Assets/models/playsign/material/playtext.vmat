@@ -1,0 +1,6 @@
+
+Layer0
+{
+	shader "models/playsign/material/playtext.shader_c"
+
+}

@@ -1,0 +1,89 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanelComponent
+@namespace Sandbox
+
+<root>
+	<div class="board-container">
+	    <div class="title">
+		    <text class="leaderboard-text">Leaderboards</text>
+	    </div>
+        <div class="leaderboard-header">
+            <text class="leaderboard-header-text">Pos.</text>
+            <text class="leaderboard-header-text">Name</text>
+            <text class="leaderboard-header-text">Score</text>
+        </div>
+        
+	    <div class="first-five">
+            
+		    @foreach(var x in LeaderboardDataVar)
+		    {
+                
+                <LeaderboardSlot @playerpos="@x.PlayerPOS" @playername ="@x.PlayerName" @playerscore="@x.PlayerScore"></LeaderboardSlot>
+                count += 1;
+                <div class="leaderboard-spacer">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </div>
+		    }
+	    </div>
+	</div>
+</root>
+
+@code
+{
+
+    [Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
+
+    List<LeaderboardData> LeaderboardDataVar { get; set; } = new();
+
+    int count { get; set; } = 0;
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( LeaderboardDataVar );
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        //Log.Info(LeaderboardDataVar[0].PlayerName);
+    }
+
+
+    protected override void OnStart()
+    {
+        LeaderboardDataVar.Add(new LeaderboardData()
+        {
+            PlayerPOS=1,
+            PlayerName="stinky tyler",
+            PlayerScore=42069
+        });
+
+        LeaderboardDataVar.Add(new LeaderboardData()
+        {
+            PlayerPOS = 2,
+            PlayerName = "Stinky tom",
+            PlayerScore = 32142
+        });
+
+        LeaderboardDataVar.Add(new LeaderboardData()
+        {
+            PlayerPOS = 3,
+            PlayerName = "Stinky bosth",
+            PlayerScore = 23424
+        });
+
+        LeaderboardDataVar.Add(new LeaderboardData()
+        {
+            PlayerPOS = 4,
+            PlayerName = "Stinky eman",
+            PlayerScore = 14253
+        });
+
+        LeaderboardDataVar.Add(new LeaderboardData()
+        {
+            PlayerPOS = 5,
+            PlayerName = "Stinky rick",
+            PlayerScore = 4253
+        });
+    }
+
+}

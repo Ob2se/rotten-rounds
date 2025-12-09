@@ -10,7 +10,7 @@
             <img src="/blood-smear.png" class="hud-background" />
 
             <div class="text">
-                <p class="PlayerName">@PlayerName</p>
+                <p class="PlayerName @(IsLocalPlayer ? "highlight" : "")">@PlayerName</p>
                 <p class="Points">$@Points</p>
             </div>
         </div>
@@ -26,12 +26,13 @@
 
     [Parameter] public string PlayerName { get; set; }
     [Parameter] public float Points { get; set; }
-    [Parameter] public SteamId PlayerSteamId { get; set; }
+    [Parameter] public string PlayerSteamId { get; set; }
+    [Parameter] public bool IsLocalPlayer { get; set; }
 
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
     /// </summary>
     protected override int BuildHash() => System.HashCode.Combine(PlayerName, Points, PlayerSteamId);
 
-    
+
 }

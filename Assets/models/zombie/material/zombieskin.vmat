@@ -1,0 +1,14 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "models/zombie/material/zombieskin.shader"
+
+	Texture_ps_0 "models/zombie/material/texture/citizen_ref_citizen_skin_basecolor.png"
+	Texture_ps_1 "models/zombie/material/texture/citizen_ref_citizen_skin_normal.png"
+	Texture_ps_2 "models/zombie/material/texture/citizen_ref_citizen_skin_roughness.png"
+	Texture_vs_0 "models/zombie/material/texture/citizen_ref_citizen_skin_height.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

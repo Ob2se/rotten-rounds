@@ -25,6 +25,9 @@ public sealed class Door : Component, IInteraction, IPower
 	[Property]
 	private List<GameObject> AssociatedSpawns;
 
+	public float HoldTime => 0f;
+
+
 	private void OnDoorOpened()
 	{
 		//change to animation eventually
@@ -71,6 +74,10 @@ public sealed class Door : Component, IInteraction, IPower
 		}
 	}
 
+	public void OnInteractionFailed( Player player )
+	{
+		//could add some feedback here later
+	}
 
 	public void OnInteract(Player player)
 	{

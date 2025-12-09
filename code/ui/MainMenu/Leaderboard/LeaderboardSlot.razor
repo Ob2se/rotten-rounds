@@ -1,0 +1,25 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanel;
+@namespace Sandbox
+
+<root>
+	<div class="player-slot">
+        <text class="player-pos">@playerpos.</text>
+        <text class="player-name">@playername</text>
+        <text class="player-score">@playerscore</text>
+    </div>
+</root>
+
+@code
+{
+
+    public int playerpos {get; set;}
+    public string playername { get; set; }
+    public float playerscore { get; set; }
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( playerpos, playername, playerscore );
+}

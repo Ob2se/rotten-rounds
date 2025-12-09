@@ -1,6 +1,8 @@
 using Sandbox;
 using Sandbox.Citizen;
 using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using static Sandbox.PhysicsContact;
@@ -9,6 +11,7 @@ using static Sandbox.PhysicsContact;
 public sealed class SimpleZombieController : Component
 {
 
+	[Property] bool testing { get; set; }
 
 	[Property] NavMeshAgent zombieAgent;
 
@@ -16,8 +19,8 @@ public sealed class SimpleZombieController : Component
 	[Sync] public bool attackingWindow { get; set; } = false;
 
 
-	[Sync] GameObject targetWindow { get; set; }
-	[Sync] Window targetWindowClass { get; set; }
+	[Property, Sync] GameObject targetWindow { get; set; }
+	[Property, Sync] Window targetWindowClass { get; set; }
 
 	[Sync] Player targetPlayer { get; set; }
 
@@ -52,6 +55,10 @@ public sealed class SimpleZombieController : Component
 	
 	TimeSince TimeToEnterWindow;
 
+	TimeSince TimeSinceLastAttack = 0f;
+
+	bool Attacking = false;
+
 
 	bool StuckCheck = false;
 
@@ -77,9 +84,11 @@ public sealed class SimpleZombieController : Component
 		{
 			ZombieStart();
 		}
+
+		
 	}
 
-
+	
 
 	[Rpc.Host]
 	private void ZombieStart()
@@ -96,41 +105,104 @@ public sealed class SimpleZombieController : Component
 
 
 	[Rpc.Broadcast]
-	private void MoveZombieTo( Vector3 targetLoc )
+	private void MoveZombieTo( Vector3? targetLoc )
 	{
-		TargetPosition = targetLoc;
-		zombieAgent.MoveTo( targetLoc );
+		if(targetLoc.HasValue)
+		{
+			TargetPosition = targetLoc.Value;
+			//Log.Info( targetLoc.Value );
+			zombieAgent.MoveTo( targetLoc.Value );
+		}
+		
+
 	}
 
 
 
-
+	[Rpc.Host]
 	private void GetClosestPlayer()
 	{
-		//create a dict distance, playerGO
-		Dictionary<float, Player> indexs = [];
+	
 
-		//for each player in the playerlist get the distance from the zombie to the player then add their distances and corresponding GO to the dict
-		foreach ( Player player in players )
+		Player closestPlayer = null;
+		float closestDistance = float.MaxValue;
+
+		foreach ( var player in players )
 		{
-			
-			var distance = Scene.Trace.FromTo( GameObject.WorldPosition, player.WorldPosition ).Run().Distance;
-			indexs.TryAdd( distance, player );
+			if ( player.Downed ) continue;
+			var distance = (GameObject.WorldPosition - player.WorldPosition).Length;
+
+			if ( distance < closestDistance )
+			{
+				closestDistance = distance;
+				closestPlayer = player;
+			}
 		}
 
-		//set the target player to the player that has the min distance
-		if ( indexs.TryGetValue( indexs.Keys.Min(), out var tPlayer ) )
+		if ( closestPlayer != null )
 		{
-			targetPlayer = tPlayer;
+			targetPlayer = closestPlayer;
+			//Log.Info( closestPlayer );
 		}
+
+		if ( players.All( p => p.Downed ) )
+		{
+			ChangeState( ZomState.Idle );
+		}
+
 	}
 
 
 
+	private bool NearPlayer()
+	{
+		//Log.Info( GameObject.WorldPosition.Distance( targetPlayer.WorldPosition ) );
+		if(GameObject.WorldPosition.Distance(targetPlayer.WorldPosition) <= 34)
+		{
+			//Log.Info( "near player" );
+			return true;
+		}
+		return false;
+	}
+
+
+	private void DoMeleeTrace()
+	{
+		var hand = ZombieClass.zombieModel.GetAttachmentObject( "hold_R" );
+
+		var tr = Scene.Trace.Sphere( 20f, new Vector3(hand.WorldPosition.x, hand.WorldPosition.y + 5, hand.WorldPosition.z ), hand.WorldPosition + hand.WorldRotation.Forward * 60f )
+			.WithTag( "player" )
+			.Run();
+
+		
+		//DebugOverlay.Trace( tr, 2f );
+		//Log.Info( tr.GameObject );
+
+		tr.GameObject.GetComponent<Player>().RemoveHealth( 34 );
+			
+	}
+
+	private async Task ZombieMeleeAttack()
+	{
+		TimeSinceLastAttack = 0f;
+		ZombieAttackAnim();
+		
+		ZombieClass.PlayAttackSound();
+		await Task.DelayRealtime( 250 );
+		DoMeleeTrace();
+		
+	}
+
+
+	[Rpc.Broadcast]
+	private void ZombieAttackAnim()
+	{
+		ZombieClass.zombieModel.Set( "b_attack", true );
+	}
 	private void DestroyWindow()
 	{
 
-		GameObject.GetComponent<SkinnedModelRenderer>().Set( "b_attack", true );
+		GameObject.GetComponentInChildren<SkinnedModelRenderer>().Set( "b_attack", true );
 		targetWindowClass.RemoveBoard();
 		
 	}
@@ -156,6 +228,20 @@ public sealed class SimpleZombieController : Component
 
 
 
+	public Vector3? GetNearbyAttackPoint( Vector3 origin, float radius = 50f, int maxAttempts = 8 )
+	{
+
+		float angle = Game.Random.Float( 0f, 360f );
+
+		// Convert polar coordinates to Cartesian (XZ plane)
+		float x = MathF.Cos( angle.DegreeToRadian() ) * radius;
+		float y = MathF.Sin( angle.DegreeToRadian() ) * radius;
+
+		// Return a flat position at same height as target
+		return origin + new Vector3( x, 0f, y );
+	}
+
+
 	[Rpc.Host]
 	private void ZombieState()
 	{
@@ -173,10 +259,16 @@ public sealed class SimpleZombieController : Component
 				
 				break;
 			case ZomState.TargetPlayer:
+				
+				
 				GetClosestPlayer();
 				flatDirection = (targetPlayer.WorldPosition - WorldPosition).WithZ( 0 ).Normal;
 				WorldRotation = Rotation.LookAt( flatDirection );
-				MoveZombieTo( targetPlayer.WorldPosition );
+				if ( NearPlayer() && TimeSinceLastAttack >= 2f)
+				{
+					_ = ZombieMeleeAttack();
+				}
+				MoveZombieTo( GetNearbyAttackPoint(targetPlayer.WorldPosition, 50f) );
 				break;
 			case ZomState.AttackPlayer:
 				attackingWindow = false;
@@ -187,7 +279,7 @@ public sealed class SimpleZombieController : Component
 				targetWindowClass.AttackingZombie = this;
 				MoveZombieTo( targetWindowClass.WindowDestroyPointPos );
 
-				if ( attackingWindow && TimeSinceLastHit >= 3.5f)
+				if ( attackingWindow && TimeSinceLastHit >= 2f)
 				{
 					TimeSinceLastHit = 0f;
 					DestroyWindow();
@@ -198,7 +290,11 @@ public sealed class SimpleZombieController : Component
 				}
 				break;
 			case ZomState.EnterWindow:
-				if ( !targetWindowClass.isOpen ) Log.Info( "wtf" );
+				if ( !targetWindowClass.isOpen )
+				{
+					ChangeState( ZomState.AttackWindow );
+					break;
+				}
 				if ( targetWindowClass.isOpen )
 				{
 
@@ -241,7 +337,7 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Host]
 	private void CheckIfStuck()
 	{
-
+		if ( testing ) return;
 		if ( zombieAgent.Velocity.LengthSquared <= 0.2f )
 		{
 

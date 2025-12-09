@@ -1,9 +1,131 @@
 .menu {
-    display: flex;
-    flex-direction: row;
+    .title {
+        position: absolute;
+        top: 0%;
+        left: 31.5%;
+        font-family: Mostly Ghostly;
+        font-size: 6vw;
+        color: red;
+        overflow: visible;
+        padding: 0 1vw;
+        text-shadow: .75px .75px 1.1px red;
+        justify-content: center;
+    }
+
+    .buttons-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; // only children will interact
+
+        .button-play {
+            position: absolute;
+            top: 22%; // adjust so it lines up with your gate
+            left: 40%; // adjust horizontally
+            width: 20%; // span across gate
+            height: 38%; // fill vertically
+            //background-color: red; // debug red tint, remove later
+           /* border-color: red;
+            border-width: 1rem;*/
+            pointer-events: all;
+            cursor: pointer;
+            font-size: 2vw;
+            font-family: Mostly Ghostly;
+            transition: transform 0.2s, color 0.2s;
+            justify-content: center;
+            color: gray;
+
+            &:hover {
+                color: white;
+            }
+        }
+
+        .button-leaderboards {
+            position: absolute;
+            left: 1vw;
+            top: 30vh;
+            height: 68%;
+            width: 34%;
+            font-size: 2vw;
+            font-family: Mostly Ghostly;
+            color: gray;
+            pointer-events: all;
+            cursor: pointer;
+            /*border-color: red;
+            border-width: 1rem;*/
+            transition: transform 0.2s, color 0.2s;
+            justify-content: center;
+
+            &:hover {
+                color: white;
+            }
+        }
+
+        .button-customize {
+            position: absolute;
+            bottom: 11%; // adjust so it lines up with your gate
+            right: 1%; // adjust horizontally
+            width: 40%; // span across gate
+            height: 45%; // fill vertically
+            //background-color: red; // debug red tint, remove later
+            /*border-color: red;
+            border-width: .5rem;*/
+            pointer-events: all;
+            cursor: pointer;
+            font-size: 2vw;
+            font-family: Mostly Ghostly;
+            transition: transform 0.2s, color 0.2s;
+            color: gray;
+
+            &:hover {
+                color: white;
+            }
+
+            justify-content: center;
+        }
+
+
+
+
+
+        .esc-hint {
+            position: absolute;
+            bottom: 2vh;
+            right: 3vw;
+            font-size: 1.5vw;
+            font-family: Mostly Ghostly;
+            color: gray;
+            pointer-events: none;
+        }
+
+        .button-options,
+        .button-quit {
+            display: none; // hidden, replaced by [ESC] Menu
+        }
+    }
+
+    .motd {
+        position: absolute;
+        right: 46vw;
+        bottom: 4vh;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-bottom: 1vh;
+    }
+}
+
+
+
+
+
+/*.menu {
+    //display: flex;
+    //flex-direction: row;
     justify-content: space-between;
-    padding: 1.75vw;
-    width: 100vw;
+    //padding: 1.75vw;
+    width: 67vw;
     height: 100vh;
     opacity: 1;
     pointer-events: all;
@@ -13,6 +135,17 @@
         opacity: 0;
     }
 
+    .title {
+        font-family: Mostly Ghostly;
+        font-size: 6vw;
+        color: red;
+        overflow: visible;
+        padding: 0 1vw;
+        text-shadow: .75px .75px 1.1px red;
+        justify-content: center;
+    }
+
+
     .left-side-container {
         display: flex;
         flex-direction: column;
@@ -20,20 +153,31 @@
         align-items: flex-start;
         pointer-events: all;
         height: 100%;
-        width: 100%;
+        //width: 25%;
         justify-content: space-between;
         overflow: visible;
 
 
-        .title {
-            font-family: Scream Blood;
-            font-size: 6vw;
-            color: red;
-            overflow: visible;
-            padding: 0 1vw;
-            text-shadow: .75px .75px 1.1px red;
-            
+        .bg-strip {
+            background-color: black;
+            //width: 10vw;
+            //background-color: black;
+
+            &::after {
+                //content: "";
+                //position: absolute;
+                position: absolute;
+                //top: 0;
+                //left: 0vw;
+                width: 25%;
+                height: 100%;
+                background: linear-gradient(to right, black 0%, black 60%, transparent 80%, transparent 100%);
+                pointer-events: none;
+            }
         }
+
+
+
 
         .buttons-container {
             display: flex;
@@ -43,7 +187,7 @@
 
             .button {
                 font-size: 2vw;
-                font-family: HEROLD;
+                font-family: Mostly Ghostly;
                 color: white;
                 cursor: pointer;
                 transition: background 0.3s;
@@ -78,6 +222,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            padding-bottom: 1vh;
         }
     }
 }
@@ -122,3 +267,4 @@
 
 
 
+*/

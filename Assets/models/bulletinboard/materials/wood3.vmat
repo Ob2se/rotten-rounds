@@ -1,0 +1,13 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "models/carpet/materials/rugbase.shader"
+
+	Texture_ps_0 "models/bulletinboard/textures/wood3/bulletinboard_wood_basecolor.png"
+	Texture_ps_1 "models/bulletinboard/textures/wood3/bulletinboard_wood_normal.png"
+	Texture_ps_2 "models/bulletinboard/textures/wood3/bulletinboard_wood_occlusionroughnessmetallic.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

@@ -1,0 +1,75 @@
+{
+  "UI": false,
+  "Volume": "0.5",
+  "Pitch": "1",
+  "Decibels": 70,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sound/zombies/wav_ui_zombies_sfx_running_01.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_02.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_03.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_04.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_05.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_06.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_07.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_08.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_09.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_10.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_11.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_12.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_13.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_14.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_15.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_16.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_17.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_18.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_19.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_20.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_21.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_22.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_23.vsnd",
+    "sound/zombies/wav_ui_zombies_sfx_running_24.vsnd"
+  ],
+  "Occlusion": true,
+  "AirAbsorption": true,
+  "Transmission": true,
+  "OcclusionRadius": 64,
+  "DistanceAttenuation": true,
+  "Distance": 7000,
+  "Falloff": [
+    {
+      "x": 0,
+      "y": 1,
+      "in": 0,
+      "out": -1.8,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.05,
+      "y": 0.22,
+      "in": 3.5,
+      "out": -3.5,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.2,
+      "y": 0.04,
+      "in": 0.16,
+      "out": -0.16,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "in": 0,
+      "out": 0,
+      "mode": "Mirrored"
+    }
+  ],
+  "DefaultMixer": {
+    "Name": "unknown",
+    "Id": "00000000-0000-0000-0000-000000000000"
+  },
+  "__references": [],
+  "__version": 1
+}

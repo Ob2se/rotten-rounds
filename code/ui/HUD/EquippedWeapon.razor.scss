@@ -3,11 +3,12 @@
     bottom: 0;
     right: 0;
     pointer-events: none;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgb(0, 0, 0);
     height: 15%;
     width: 10%;
-    border-top-left-radius: 20px;
-    padding: 1vh; // scalable padding
+    border-top-left-radius: 10rem;
+    
+    padding: 1.75vh; // scalable padding
 
     display: flex;
     flex-direction: column;
@@ -24,26 +25,31 @@
             color: white;
             font-size: 5vh;
             font-weight: bold;
+            font-family: 'Geizer';
         }
 
         .slash {
             color: white;
             font-size: 4vh;
+            font-weight: bold;
+            font-family: 'Geizer';
         }
 
         .weapon-ammo-total {
-            color: white;
-            font-size: 2.5vh;
+            color: ghostwhite;
+            font-family: 'Geizer';
+            font-size: 2.75vh;
         }
     }
 
     .weapon-name {
         text-align: center;
-        color: white;
-        font-size: 5vh;
+        color: ghostwhite;
+        font-size: 5rem;
         max-width: 95%;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-family: 'Geizer';
         white-space: nowrap;
         align-self: center; // centers in container
     }

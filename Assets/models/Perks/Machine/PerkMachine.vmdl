@@ -15,11 +15,11 @@
 						[
 							{
 								from = "machinebody.vmat"
-								to = "textures/perks/icyaid/machine/icyaidmachinebody.vmat"
+								to = "models/perks/machine/material/icyaid.vmat"
 							},
 							{
 								from = "glass.vmat"
-								to = "textures/perks/icyaid/machine/icyaidmachineglass.vmat"
+								to = "models/perks/machine/material/perkmachineglass.vmat"
 							},
 						]
 						use_global_default = false

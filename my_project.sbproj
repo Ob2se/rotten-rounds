@@ -5,7 +5,7 @@
   "Ident": "rottenrounds",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "models/fpsarms/nightofterry.vmap\ncode/ui/*",
+  "Resources": "models/fpsarms/nightofterry.vmap\ncode/ui/*\nAssets\\fonts\\*",
   "PackageReferences": [],
   "EditorReferences": null,
   "Mounts": null,

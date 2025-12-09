@@ -1,0 +1,6 @@
+
+Layer0
+{
+	shader "models/tv/materials/tvfront.shader_c"
+
+}

@@ -12,6 +12,7 @@
     "NetworkMode": 1,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 1,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
@@ -86,7 +87,8 @@
         "__type": "Sandbox.BoxCollider",
         "__guid": "3cdb1e0c-10b1-4c0d-9b33-ec25710f18c0",
         "__enabled": true,
-        "Center": "-10.0914,-0.008872986,-7.047832",
+        "Center": "-10.0914,-0.008872986,9.492208",
+        "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
         "IsTrigger": false,
@@ -101,7 +103,7 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "24.73785,91.94755,19.52415",
+        "Scale": "24.73785,91.94755,50",
         "Static": false,
         "Surface": null,
         "SurfaceVelocity": "0,0,0"
@@ -121,6 +123,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -165,6 +168,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [],
         "Children": []
@@ -182,6 +186,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [],
         "Children": []

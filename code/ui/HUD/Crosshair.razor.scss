@@ -1,3 +1,7 @@
+﻿$crosshair-color: lightgrey;
+
+
+
 .crosshair-container {
     position: absolute;
     top: 50%;
@@ -15,7 +19,7 @@
         .crosshair-bottom {
             width: 0.28rem; // thickness
             height: 1vh; // length
-            background-color: lightgrey;
+            background-color: $crosshair-color;
             border: 0.1rem solid black;
             border-radius: 10rem;
             position: absolute;
@@ -27,7 +31,7 @@
         .crosshair-right {
             width: 1vh; // length
             height: 0.28rem; // thickness
-            background-color: lightgrey;
+            background-color: $crosshair-color;
             border: 0.1rem solid black;
             border-radius: 10rem;
             position: absolute;

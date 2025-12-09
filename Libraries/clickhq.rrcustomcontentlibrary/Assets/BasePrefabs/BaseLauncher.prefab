@@ -1,0 +1,142 @@
+{
+  "RootObject": {
+    "__guid": "c26ef92c-9554-419b-8798-d96b22f7f34e",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "baselauncher",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "BaseWeapon",
+        "__guid": "720df5a3-9759-46d3-9218-2b47353fab2b",
+        "__enabled": true,
+        "AmmoMax": 0,
+        "Automatic": false,
+        "DontExpandMagSize": false,
+        "FireRate": 0,
+        "FleshImpactEffectPrefab": null,
+        "ImpactEffectPrefab": null,
+        "MagMax": 0,
+        "MuzzleFlashPrefab": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PackedName": null,
+        "ReloadTime": 0,
+        "WeaponDamage": 0,
+        "WeaponModel": {
+          "_type": "component",
+          "component_id": "ea399111-ee2b-47e3-a527-b9b97f8d062c",
+          "go": "6c9571d6-bf12-41d0-a893-193ddf50eb1b",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "WeaponName": null,
+        "WeaponPower": 0,
+        "WeaponType": "Launcher"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "6c9571d6-bf12-41d0-a893-193ddf50eb1b",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "WeaponContainer",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "ea399111-ee2b-47e3-a527-b9b97f8d062c",
+            "__enabled": true,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": null,
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Weapons/Launcher",
+  "MenuIcon": "add",
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

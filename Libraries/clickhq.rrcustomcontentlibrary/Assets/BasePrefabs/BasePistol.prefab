@@ -12,6 +12,7 @@
     "NetworkMode": 2,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
@@ -20,6 +21,7 @@
         "__enabled": true,
         "AmmoMax": 0,
         "Automatic": false,
+        "DontExpandMagSize": false,
         "FireRate": 0,
         "FleshImpactEffectPrefab": null,
         "ImpactEffectPrefab": null,
@@ -31,8 +33,8 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "PackedName": null,
         "ReloadTime": 0,
-        "WeaponContainer": null,
         "WeaponDamage": 0,
         "WeaponModel": {
           "_type": "component",
@@ -40,7 +42,8 @@
           "go": "bcec702a-4812-4f9d-94bc-c9a54a866fa9",
           "component_type": "SkinnedModelRenderer"
         },
-        "WeaponRange": 0,
+        "WeaponName": null,
+        "WeaponPower": 0,
         "WeaponType": "Pistol"
       }
     ],
@@ -58,17 +61,19 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "3e8c7e33-05fa-42eb-b8f1-7475fc832913",
             "__enabled": true,
-            "AnimationGraph": "baseweapons/sbox_pistol_usp/v_usp.vanmgrph",
+            "AnimationGraph": null,
             "BodyGroups": 18446744073709551615,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
+            "LodOverride": null,
             "MaterialGroup": null,
             "MaterialOverride": null,
             "Materials": null,

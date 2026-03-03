@@ -73,12 +73,17 @@ VS
 PS
 {
 	#include "common/pixel.hlsl"
-	
+	RenderState( CullMode, F_RENDER_BACKFACES ? NONE : DEFAULT );
+		
 	SamplerState g_sSampler0 < Filter( ANISO ); AddressU( WRAP ); AddressV( WRAP ); >;
-	CreateInputTexture2D( Texture_ps_0, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "textures/perks/icyaid/machine/perkmachine_explode_low_uv_basecolor.jpg" ) );
-	CreateInputTexture2D( Texture_ps_1, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "textures/perks/icyaid/machine/perkmachine_explode_low_uv_normal.jpg" ) );
+	CreateInputTexture2D( Texture_ps_0, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "models/perks/machine/material/perkmachine_explode_low_uv_basecolor.jpg" ) );
+	CreateInputTexture2D( Texture_ps_1, Linear, 8, "Inverse", "_normal", ",0/,0/0", DefaultFile( "models/perks/machine/material/perkmachine_explode_low_uv_normal.jpg" ) );
+	CreateInputTexture2D( Texture_ps_2, Linear, 8, "None", "_rough", ",0/,0/0", DefaultFile( "models/perks/machine/material/perkmachine_explode_low_uv_roughness.jpg" ) );
+	CreateInputTexture2D( Texture_ps_3, Linear, 8, "None", "_metal", ",0/,0/0", DefaultFile( "models/perks/machine/material/perkmachine_explode_low_uv_metallic.jpg" ) );
 	Texture2D g_tTexture_ps_0 < Channel( RGBA, Box( Texture_ps_0 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
-	Texture2D g_tTexture_ps_1 < Channel( RGBA, Box( Texture_ps_1 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
+	Texture2D g_tTexture_ps_1 < Channel( RGBA, Box( Texture_ps_1 ), Linear ); OutputFormat( DXT5 ); SrgbRead( False ); >;
+	Texture2D g_tTexture_ps_2 < Channel( RGBA, Box( Texture_ps_2 ), Linear ); OutputFormat( DXT5 ); SrgbRead( False ); >;
+	Texture2D g_tTexture_ps_3 < Channel( RGBA, Box( Texture_ps_3 ), Linear ); OutputFormat( DXT5 ); SrgbRead( False ); >;
 	TextureAttribute( LightSim_DiffuseAlbedoTexture, g_tTexture_ps_0 )
 	TextureAttribute( RepresentativeTexture, g_tTexture_ps_0 )
 	
@@ -98,12 +103,14 @@ PS
 		
 		float4 l_0 = Tex2DS( g_tTexture_ps_0, g_sSampler0, i.vTextureCoords.xy );
 		float4 l_1 = Tex2DS( g_tTexture_ps_1, g_sSampler0, i.vTextureCoords.xy );
+		float4 l_2 = Tex2DS( g_tTexture_ps_2, g_sSampler0, i.vTextureCoords.xy );
+		float4 l_3 = Tex2DS( g_tTexture_ps_3, g_sSampler0, i.vTextureCoords.xy );
 		
 		m.Albedo = l_0.xyz;
 		m.Opacity = 1;
 		m.Normal = l_1.xyz;
-		m.Roughness = 1;
-		m.Metalness = 0;
+		m.Roughness = l_2.x;
+		m.Metalness = l_3.x;
 		m.AmbientOcclusion = 1;
 		
 		

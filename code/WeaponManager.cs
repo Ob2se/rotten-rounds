@@ -7,7 +7,7 @@ using static Sandbox.PhysicsContact;
 
 public sealed class WeaponManager : Component
 {
-	
+
 
 	[Property, Sync( SyncFlags.FromHost )]
 	public List<string> WeaponPaths { get; set; } = new();
@@ -25,17 +25,17 @@ public sealed class WeaponManager : Component
 
 
 	[Rpc.Host]
-	public void GivePlayerWeapon(string Weapon, Player player, int slot)
+	public void GivePlayerWeapon( string Weapon, Player player, int slot )
 	{
-	
-		if ( WeaponPaths.Contains(Weapon) )
+
+		if ( WeaponPaths.Contains( Weapon ) )
 		{
-			player.Inventory.AddWeapon( Weapon, slot );
+			player.Inventory.AddWeapon( Weapon );
 		}
-		
+
 	}
 
-	private async Task DownloadWeapons(List<string> WeaponIndents)
+	private async Task DownloadWeapons( List<string> WeaponIndents )
 	{
 		foreach ( var weaponIndent in WeaponIndents )
 		{
@@ -62,14 +62,14 @@ public sealed class WeaponManager : Component
 
 	protected override void OnUpdate()
 	{
-		if ( WeaponPaths.Count() <= 0 && !DownloadingWeapons)
+		if ( WeaponPaths.Count() <= 0 && !DownloadingWeapons )
 		{
 			DownloadingWeapons = true;
 			var json = Sandbox.FileSystem.Mounted.ReadAllText( "resources/tempweaponlist.json" );
 			var deser = Json.Deserialize<List<string>>( json );
 			List<string> weapono = new();
 			weapono.AddRange( deser );
-			_ = DownloadWeapons(weapono);
+			_ = DownloadWeapons( weapono );
 		}
 	}
 }

@@ -1,0 +1,6 @@
+
+Layer0
+{
+	shader "models/moon/moon.shader_c"
+
+}

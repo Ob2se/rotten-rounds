@@ -1,71 +1,170 @@
-.create-menu-container {
-    display: flex;
+.fullscreen-blur {
     position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px);
+    
+    z-index: 0;
+}
+.screen-blocker {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0);
+    z-index: 0;
     pointer-events: all;
-    //justify-content: space-between;
-    width: 30%;
-    height: 50%;
-    opacity: 1;
-    top: 25%;
-    left: 25%;
-    overflow: visible;
-    background-color: black;
-    border-radius: 2rem;
-    padding: 16px;
+}
 
+.create-menu-container {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    top: 15%;
+    left: 15%;
+    padding: 16px;
+    background-image: url("ui/imagebackground4.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 
     .menu-options-container {
         display: flex;
         position: relative;
         flex-direction: column;
-        width: 100%;
-        //margin:
+        left: 13%;
+        top: 5%;
+        width: 75%;
+        height: 90%;
         justify-content: space-evenly;
-        //pointer-events: all;
-        //justify-content: center;
-        //background-color: orange;
+        pointer-events: all;
 
-        .inputs-line {
+
+        .inputs-line-players {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: row;
+            width: 65%;
+            height: 20%;
+            font-size: 24px;
+            font-family: 'Montserrat';
             color: white;
-            font-size: 32px;
-            font-family: HEROLD;
-            margin-right: 1rem;
+            justify-content: space-between;
 
-            .player-slider {
+            .inputs-players {
+                display: flex;
+                align-self: center;
+                text-align: center;
+                font-size: 46px;
+                color: white;
+                font-family: 'Montserrat';
+            }
+
+
+
+            .slider-maxplayer {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+                color: black;
+
+
+
+
+
+                .player-slider {
+                    width: 100%;
+                    color: black;
+                }
+
+
+                .inputs-maxplayers {
+                    text-align: center;
+                    align-self: center;
+                    font-size: 32px;
+                    color: white;
+                    font-family: 'Montserrat';
+                }
+            }
+        }
+
+        .inputs-line-invite {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 40%;
+            justify-content: space-between;
+            font-size: 32px;
+            color: white;
+            gap: 5rem;
+
+            .inputs-text {
+                font-size: 46px;
+                font-family: 'Montserrat';
             }
 
             .inputs-checkbox {
-                border-width: 1px;
-                border-radius: 1rem;
-                //padding-left: 10px;
-                max-width: 50%;
+                border-radius: .5rem;
+                border-color: white;
+                border-width: .15rem;
 
                 &:hover {
-                    color: gold;
-                    border-color: gold;
+                    color: red;
+                    border-color: red;
+                }
+            }
+        }
+
+        .inputs-line-friends {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 40%;
+            color: white;
+            gap: 5rem;
+            font-size: 32px;
+            justify-content: space-between;
+
+
+            .inputs-text {
+                font-size: 46px;
+                font-family: 'Montserrat';
+            }
+
+            .inputs-checkbox {
+                border-radius: .5rem;
+                border-color: white;
+                border-width: .15rem;
+
+                &:hover {
+                    color: red;
+                    border-color: red;
+                }
+            }
+        }
+
+
+
+
+        .create-button-wrapper {
+            display: flex;
+            justify-content: center;
+            color: darkgray;
+            font-size: 64px;
+            font-family: Mostly Ghostly;
+
+            .create-lobby-button {
+                border-radius: 1rem;
+                transition: transform 0.08s ease-out, color 0.05s linear;
+
+                &:hover {
+                    color: white;
                 }
             }
         }
     }
-
-    .create-button-wrapper {
-        display: flex;
-        justify-content: center;
-        color: white;
-        font-size: 32px;
-        font-family: HEROLD;
-
-        .create-lobby-button {
-            border-radius: 1rem;
-            border-width: .2rem;
-
-            &:hover {
-                color: gold;
-                border-color: gold;
-            }
-        }
-    }
 }
+

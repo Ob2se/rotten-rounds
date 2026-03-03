@@ -3,6 +3,7 @@ using System;
 using System.Dynamic;
 using System.Numerics;
 using System.Threading.Tasks;
+using static Sandbox.ModelPhysics;
 
 public sealed class Zombie : Component
 {
@@ -11,7 +12,7 @@ public sealed class Zombie : Component
 
 	[Sync, Property] public SimpleZombieController SimpleZombieController { get; set; }
 
-	[Sync, Property, Change("TookDamage")] public float Health { get; set; }
+	[Sync, Property, Change( "TookDamage" )] public float Health { get; set; }
 
 	public bool InstaKillActivated = false;
 
@@ -21,7 +22,7 @@ public sealed class Zombie : Component
 	public List<GameObject> ZombieLimbs { get; set; }
 
 	[Property]
-	public SkinnedModelRenderer MasterModel {  get; set; }
+	public SkinnedModelRenderer MasterModel { get; set; }
 
 	[Property]
 	SoundEvent ZombieMoans { get; set; }
@@ -33,11 +34,17 @@ public sealed class Zombie : Component
 	Collider ZombieCollider { get; set; }
 
 	[Property]
+	Collider ZombieCollider2 { get; set; }
+
+	[Sync, Property]
 	ModelPhysics rag { get; set; }
 
 	[Property]
 	public Dictionary<string, GameObject> Gibbin { get; set; }
 
+
+	[Property]
+	public PrefabFile zombieRagdollPrefab { get; set; }
 
 	private Random Rand { get; set; } = new Random();
 
@@ -72,10 +79,36 @@ public sealed class Zombie : Component
 
 
 	[Rpc.Host]
-	public void TakeDamage( DamageInfo DamageInfo, Vector3 hitPos, int hitBone, Vector3 Direction, Vector3 LocalDirection, Vector3 startPos, Vector3 hitNormal, GameObject hitObject )
+	public void TakeKnifeDamage( Player player, Vector3 hitPos, Vector3 impulseDir, string hitBone, float WeaponPower )
+	{
+		Log.Info( "knife dmaaaagegeagag" );
+		if ( SimpleZombieController.CurrentState != SimpleZombieController.ZomState.Dead )
+		{
+			RemoveHealth( 50 );
+			if ( Health <= 0 )
+			{
+				GivePlayerPoints( player.GameObject, 120 );
+				ZombieDead();
+				RagdollIt( hitPos, impulseDir, hitBone ?? string.Empty, WeaponPower );
+				ControlZombieController();
+			}
+			else
+			{
+				if ( DoublePointsActivated )
+				{
+					GivePlayerPoints( player.GameObject, 20 );
+					return;
+				}
+				GivePlayerPoints( player.GameObject, 10 );
+			}
+		}
+	}
+
+	[Rpc.Host]
+	public void TakeDamage( DamageInfo DamageInfo, Vector3 hitPos, int hitBone, Vector3 Direction, Vector3 startPos, Vector3 hitNormal, GameObject hitObject, float WeaponPower )
 	{
 		if ( SimpleZombieController.CurrentState != SimpleZombieController.ZomState.Dead )
-		{ 
+		{
 			RemoveHealth( DamageInfo.Damage );
 
 			var incDir = (hitPos - startPos).Normal;
@@ -83,11 +116,9 @@ public sealed class Zombie : Component
 
 			zombieModel.Set( "hit_bone", hitBone );
 			zombieModel.Set( "hit_direction", dir );
-			
+
 			zombieModel.Set( "hit_strength", .2f );
 			zombieModel.Set( "hit", true );
-
-			
 
 			if ( Health <= 0 )
 			{
@@ -95,7 +126,7 @@ public sealed class Zombie : Component
 				{
 					GibbedUp( hitObject, hitBone, hitPos, Direction );
 				}
-				switch(hitObject.Name)
+				switch ( hitObject.Name )
 				{
 					case "head":
 						if ( DoublePointsActivated )
@@ -113,14 +144,25 @@ public sealed class Zombie : Component
 						}
 						GivePlayerPoints( DamageInfo.Attacker, 60 );
 						break;
+					default:
+						if ( DoublePointsActivated )
+						{
+							GivePlayerPoints( DamageInfo.Attacker, 120 );
+							break;
+						}
+						GivePlayerPoints( DamageInfo.Attacker, 60 );
+						break;
 				}
-
 
 				ZombieDead();
 				Log.Info( "hitbone: " + hitObject );
-				ZombieRagdoll(hitObject, hitPos, dir);
+
 				ControlZombieController();
-				
+
+
+				RagdollIt( hitPos, dir, hitObject?.Name ?? string.Empty, WeaponPower );
+
+
 			}
 			else
 			{
@@ -131,7 +173,6 @@ public sealed class Zombie : Component
 				}
 				GivePlayerPoints( DamageInfo.Attacker, 10 );
 			}
-			
 		}
 	}
 
@@ -140,22 +181,16 @@ public sealed class Zombie : Component
 	{
 		if ( player != null )
 		{
-			
 			var PlayerClass = player.GetComponentInChildren<Player>();
 			PlayerClass.AddPoints( points );
 			Log.Info( PlayerClass.Points );
-		}	
-		
-		
+		}
 	}
 
 
 	[Rpc.Host]
 	private void GibbedUp( GameObject hitObject, int hitBone, Vector3 HitPos, Vector3 Direction )
 	{
-		
-		
-		
 		var gibMap = new Dictionary<string, int>
 		{
 			{ "head", 1 },
@@ -163,19 +198,15 @@ public sealed class Zombie : Component
 			{ "rarm", 3 },
 			{ "lleg", 6 },
 			{ "rleg", 7 }
-
 		};
 
 		foreach ( var kvp in gibMap )
 		{
 			if ( hitObject.Tags.Has( kvp.Key ) )
 			{
-
 				zombieModel.SetBodyGroup( "Dismemberment", kvp.Value );
 				if ( kvp.Key == "head" ) return;
 				var c = Gibbin.FirstOrDefault( gib => gib.Key == kvp.Key ).Value;
-
-				
 
 				c.Enabled = true;
 
@@ -183,17 +214,11 @@ public sealed class Zombie : Component
 				foreach ( var m in z )
 				{
 					m.CopyBonesFrom( zombieModel, false );
-					
 					m.Bodies.ForEach( body => body.Component.ApplyImpulseAt( HitPos, Direction * 1000f ) );
-
 				}
-
-				
-
 				break;
 			}
 		}
-
 	}
 
 
@@ -206,12 +231,9 @@ public sealed class Zombie : Component
 
 	private void TookDamage()
 	{
-		if ( Health <= 0 && isAlive)
+		if ( Health <= 0 && isAlive )
 		{
-			
-			
 		}
-
 	}
 
 
@@ -220,51 +242,29 @@ public sealed class Zombie : Component
 	{
 		isAlive = false;
 		Scene.RunEvent<IZombieHandler>( x => x.ZombieDeath() );
-		//ZombieRagdoll();
 		if ( zombieMoanHandle != null )
 		{
-			zombieMoanHandle.Stop(0);
+			zombieMoanHandle.Stop( 0 );
 		}
 
 		if ( zombieAttackHandle != null )
 		{
 			zombieAttackHandle.Stop( 0 );
 		}
-		if ( OneIn( 1 ) )
+		if ( OneIn( 100 ) )
 		{
 			var pUp = Scene.GetPrefab( "prefabs/powerups/powerup.prefab" );
-			var powerup = pUp.Clone( new Vector3(GameObject.WorldPosition.x, GameObject.WorldPosition.y, GameObject.WorldPosition.z + 30) );
+			var powerup = pUp.Clone( new Vector3( GameObject.WorldPosition.x, GameObject.WorldPosition.y, GameObject.WorldPosition.z + 30 ) );
+			powerup.AddComponent<TemporaryEffect>().DestroyAfterSeconds = 30;
 			powerup.NetworkSpawn();
 		}
-		DestroyZombieMS( 6500 );
-		
+		DestroyZombieMS( 2000 );
 	}
 
-	
 
-
-	[Rpc.Broadcast]
-	private async void DestroyZombieMS(int ms)
-	{
-		await Task.Delay( ms );
-		GameObject.Destroy();
-	}
-
-	//use new networked ragdolls ig 
-	[Rpc.Broadcast]
-	public void ZombieRagdoll(GameObject hitBone, Vector3 hitPos, Vector3 impulseDir)
-	{
-
-		ZombieCollider.Enabled = false;
-
-		_ = RagdollIt( hitPos, impulseDir, hitBone );
-
-	}
-
-	private async Task RagdollIt(Vector3 hitPos, Vector3 impulseDir, GameObject hitBone)
+	private async Task MeleeRagdoll()
 	{
 		await Task.Delay( 50 );
-
 
 		rag.Enabled = true;
 
@@ -273,32 +273,105 @@ public sealed class Zombie : Component
 		var x = GameObject.Children.FirstOrDefault( child => child.Name == "Capsule" );
 		var y = x.AddComponent<Rigidbody>();
 
+		rag.MotionEnabled = true;
+
+		zombieModel.UseAnimGraph = false;
+
+		GameObject.Tags.Remove( "zombie" );
+		GameObject.Tags.Add( "zombieDead" );
+	}
 
 
-		foreach(var body in rag.Bodies)
+	[Rpc.Broadcast]
+	private async void DestroyZombieMS( int ms )
+	{
+		await Task.Delay( ms );
+		GameObject.Destroy();
+	}
+
+
+	[Rpc.Broadcast]
+	public void ZombieRagdoll( string hitBoneName, Vector3 hitPos, Vector3 impulseDir, float WeaponPower )
+	{
+
+
+		// disable collider locally
+		try
 		{
-			if ( hitBone != null )
+			if ( ZombieCollider != null ) ZombieCollider.Enabled = false;
+		}
+		catch ( Exception e )
+		{
+			Log.Warning( "Failed to disable ZombieCollider: " + e );
+		}
+
+
+		//zombrag.NetworkSpawn();
+
+	}
+
+	[Rpc.Broadcast]
+	public void EnabledRag()
+	{
+
+	}
+
+
+	[Rpc.Broadcast]
+	private void RagdollIt( Vector3 hitPos, Vector3 impulseDir, string hitBoneName, float WeaponPower )
+	{
+		ZombieCollider.Enabled = false;
+		ZombieCollider2.Enabled = false;
+
+		foreach ( var hitbox in GameObject.GetComponentsInChildren<ManualHitbox>() )
+		{
+			hitbox.GameObject.Enabled = false;
+		}
+
+
+		var zombrag = GameObject.GetPrefab( zombieRagdollPrefab.ResourcePath );
+		var ragdollClone = zombrag.Clone( this.GameObject.WorldPosition );
+		var rago = ragdollClone.GetComponentInChildren<ModelPhysics>();
+
+		zombieModel.UseAnimGraph = false;
+		MasterModel.UseAnimGraph = false;
+		rago.CopyBonesFrom( zombieModel, true );
+
+		//await Task.Delay(50);
+
+		zombieModel.Enabled = false;
+		GameObject.GetComponent<Dresser>().Clear();
+		rago.MotionEnabled = true;
+
+		// await Task.Delay(50);
+
+		if ( rago.Bodies.Count == 0 )
+		{
+			Log.Warning( "RagdollIt: No ragdoll bodies found" );
+			return;
+		}
+
+		var impulseApplied = false;
+		foreach ( var body in rago.Bodies )
+		{
+			Log.Info( $"RagdollIt: body found: {body.Component.GameObject.Name}" );
+
+			if ( !string.IsNullOrEmpty( hitBoneName ) && body.Component.GameObject.Name == hitBoneName )
 			{
-				
-				if ( body.Component.GameObject.Name == hitBone.Name )
-				{
-					Log.Info("match found applying impulse");
-					var force = impulseDir * 20000f;
-					body.Component.ApplyImpulseAt( hitPos, force );
-				}
-			}
-			else if ( hitBone == null )
-			{
-				MasterModel.AddComponent<Rigidbody>().ApplyImpulseAt( hitPos, impulseDir * 20000f );
+				Log.Info( "RagdollIt: match found applying impulse to " + hitBoneName );
+				var force = impulseDir * 6500;
+				body.Component.ApplyImpulseAt( hitPos, force );
+				impulseApplied = true;
+				break;
 			}
 		}
 
-		rag.MotionEnabled = true;
-
-		
-		zombieModel.UseAnimGraph = false;
-
-
+		if ( !impulseApplied && rago.Bodies.Count > 0 )
+		{
+			Log.Info( "RagdollIt: no specific bone matched — applying impulse to first body" );
+			var force = impulseDir * WeaponPower;
+			rago.Bodies[0].Component.ApplyImpulseAt( hitPos, force );
+		}
 
 		GameObject.Tags.Remove( "zombie" );
 		GameObject.Tags.Add( "zombieDead" );
@@ -306,7 +379,16 @@ public sealed class Zombie : Component
 	}
 
 
-	private async Task DisableRagdoll(ModelPhysics ragdoll)
+
+	[Rpc.Broadcast]
+	public void ApplyImpulseOnZombie( Vector3 hitPos, Vector3 force, int Boneindex )
+	{
+
+
+	}
+
+
+	private async Task DisableRagdoll( ModelPhysics ragdoll )
 	{
 		await Task.Delay( 2000 );
 		//ragdoll.Enabled = false;
@@ -325,11 +407,11 @@ public sealed class Zombie : Component
 
 	private void SyncAnimations()
 	{
-		foreach(var x in ZombieLimbs)
+		foreach ( var x in ZombieLimbs )
 		{
-			if(MasterModel.GetBoneObject(x.Name) != null )
+			if ( MasterModel.GetBoneObject( x.Name ) != null )
 			{
-				x.SetParent(MasterModel.GetBoneObject(x.Name), true);
+				x.SetParent( MasterModel.GetBoneObject( x.Name ), true );
 			}
 		}
 	}
@@ -344,20 +426,13 @@ public sealed class Zombie : Component
 	[Rpc.Broadcast]
 	public void PlayMoanSound()
 	{
-		zombieMoanHandle = Sound.Play(ZombieMoans, GameObject.WorldPosition );
+		zombieMoanHandle = Sound.Play( ZombieMoans, GameObject.WorldPosition );
 	}
 
 
 	protected override void OnStart()
 	{
-
-		
-
-
 		if ( !Networking.IsHost ) return;
-
-		
-		//GameModeManaga = Scene.Directory.FindByName( "GameModeManager" ).First().GetComponent<GameModeManager>();
 	}
 
 
@@ -365,13 +440,11 @@ public sealed class Zombie : Component
 	{
 		//SyncAnimations();
 
-		if(TimeSinceLastMoan >= TimeTillNextMoan && isAlive)
+		if ( TimeSinceLastMoan >= TimeTillNextMoan && isAlive )
 		{
-			//PlayMoanSound();
+			PlayMoanSound();
 			TimeTillNextMoan = Rand.Int( 10, 18 );
 			TimeSinceLastMoan = 0;
 		}
-
-
 	}
 }

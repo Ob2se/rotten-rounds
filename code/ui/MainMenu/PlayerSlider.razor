@@ -1,0 +1,23 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel
+@namespace Sandbox
+
+
+@code
+{
+
+	[Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
+
+    bool dragging;
+    float value;
+    float min = 0f;
+    float max = 8f;
+
+    //Sandbox.UI.Eleme TrackRef;
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MyStringValue );
+
+} 

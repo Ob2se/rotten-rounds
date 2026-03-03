@@ -2,16 +2,42 @@
 
 Layer0
 {
-	shader "models/carpet/materials/rugopacity.shader"
+	shader "shaders/complex.shader"
 
-	Texture_ps_0 "models/carpet/textures/rug_low_opacity_basecolor.png"
-	Texture_ps_1 "models/carpet/textures/rug_low_opacity_normal.png"
-	Texture_ps_2 "models/carpet/textures/rug_low_opacity_occlusionroughnessmetallic.png"
+	//---- Translucent ----
+	F_TRANSLUCENT 1
+
+	//---- Ambient Occlusion ----
+	g_flAmbientOcclusionDirectDiffuse "0.000"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "models/carpet/textures/rug_low_opacity_basecolor.png"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
 
 	//---- Fog ----
 	g_bFogEnabled "1"
 
+	//---- Metalness ----
+	g_flMetalness "0.000"
+
+	//---- Normal ----
+	TextureNormal "models/carpet/textures/rug_low_opacity_normal.png"
+
+	//---- Roughness ----
+	g_flRoughnessScaleFactor "1.000"
+	TextureRoughness "models/carpet/textures/rug_low_opacity_roughness.png"
+
+	//---- Texture Coordinates ----
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
+
 	//---- Translucent ----
-	g_flAlphaTestReference "0.500"
-	g_flAntiAliasedEdgeStrength "1.000"
+	g_flOpacityScale "1.000"
+	TextureTranslucency "models/carpet/textures/opacity_1.png"
 }

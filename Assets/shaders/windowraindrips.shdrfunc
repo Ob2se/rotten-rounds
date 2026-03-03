@@ -1,0 +1,61 @@
+{
+  "IsSubgraph": true,
+  "Path": "shaders/windowraindrips.shdrfunc",
+  "Model": null,
+  "Title": "RainDripEffects",
+  "Description": "",
+  "Category": null,
+  "Icon": null,
+  "AddToNodeLibrary": false,
+  "BlendMode": "Translucent",
+  "ShadingModel": "Lit",
+  "Domain": "Surface",
+  "PreviewSettings": {
+    "RenderBackfaces": false,
+    "EnableShadows": true,
+    "ShowGround": false,
+    "ShowSkybox": true,
+    "BackgroundColor": "0,0,0,1",
+    "Tint": "1,1,1,1"
+  },
+  "Version": 1,
+  "nodes": [
+    {
+      "_class": "FunctionResult",
+      "FunctionOutputs": [
+        {
+          "Id": "ec8b659a-dd53-4f3c-976f-8bf224c353da",
+          "Name": "normal",
+          "Type": "Vector2",
+          "Preview": "None",
+          "Priority": 0
+        },
+        {
+          "Id": "ce48411a-0e5e-4fc8-a4a2-9295966c0ee7",
+          "Name": "mask",
+          "Type": "float",
+          "Preview": "None",
+          "Priority": 0
+        }
+      ],
+      "Identifier": "0",
+      "Position": "588,-240",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "SubgraphInput",
+      "InputName": "TextureCoords",
+      "InputDescription": "",
+      "InputType": "Float2",
+      "DefaultFloat": 0,
+      "DefaultFloat2": "0,0",
+      "DefaultFloat3": "0,0,0",
+      "DefaultColor": "1,1,1,1",
+      "IsRequired": true,
+      "PortOrder": 0,
+      "Identifier": "1",
+      "Position": "-1740,-432",
+      "HandleOffsets": {}
+    }
+  ]
+}

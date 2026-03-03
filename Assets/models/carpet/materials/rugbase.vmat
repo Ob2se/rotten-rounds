@@ -2,12 +2,47 @@
 
 Layer0
 {
-	shader "models/carpet/materials/rugbase.shader"
+	shader "shaders/complex.shader"
 
-	Texture_ps_0 "models/carpet/textures/rug_low_main_basecolor.png"
-	Texture_ps_1 "models/carpet/textures/rug_low_main_normal.png"
-	Texture_ps_2 "models/carpet/textures/rug_low_main_occlusionroughnessmetallic.png"
+	//---- Detail Texture ----
+	F_DETAIL_TEXTURE 1 // Mod2X
+
+	//---- Ambient Occlusion ----
+	g_flAmbientOcclusionDirectDiffuse "0.000"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "models/carpet/textures/rug_low_main_basecolor.png"
+
+	//---- Detail Texture ----
+	g_flDetailBlendFactor "1.000"
+	g_flDetailBlendToFull "0.000"
+	g_flDetailTexCoordRotation "0.000"
+	g_vDetailTexCoordOffset "[0.000 0.000]"
+	g_vDetailTexCoordScale "[1.000 1.000]"
+	TextureDetail "models/carpet/textures/rug_low_main_height.png"
+	TextureDetailMask "materials/default/default_detailmask.tga"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
 
 	//---- Fog ----
 	g_bFogEnabled "1"
+
+	//---- Metalness ----
+	g_flMetalness "0.000"
+
+	//---- Normal ----
+	TextureNormal "models/carpet/textures/rug_low_main_normal.png"
+
+	//---- Roughness ----
+	g_flRoughnessScaleFactor "1.000"
+	TextureRoughness "materials/default/default_rough.tga"
+
+	//---- Texture Coordinates ----
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
 }

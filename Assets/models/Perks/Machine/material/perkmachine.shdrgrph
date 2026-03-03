@@ -30,17 +30,25 @@
       "Position": "156,-96",
       "HandleOffsets": {},
       "Albedo": {
-        "Identifier": "3",
+        "Identifier": "1",
         "Output": "Result"
       },
       "Normal": {
+        "Identifier": "4",
+        "Output": "Result"
+      },
+      "Roughness": {
         "Identifier": "2",
+        "Output": "Result"
+      },
+      "Metalness": {
+        "Identifier": "5",
         "Output": "Result"
       }
     },
     {
       "_class": "TextureSampler",
-      "Image": "textures/perks/icyaid/machine/perkmachine_explode_low_uv_occlusionroughnessmetallic.jpg",
+      "Image": "models/perks/machine/material/perkmachine_explode_low_uv_basecolor.jpg",
       "Sampler": {
         "Filter": "Aniso",
         "AddressU": "Wrap",
@@ -68,12 +76,12 @@
         }
       },
       "Identifier": "1",
-      "Position": "-156,120",
+      "Position": "-600,-300",
       "HandleOffsets": {}
     },
     {
       "_class": "TextureSampler",
-      "Image": "textures/perks/icyaid/machine/perkmachine_explode_low_uv_normal.jpg",
+      "Image": "models/perks/machine/material/perkmachine_explode_low_uv_roughness.jpg",
       "Sampler": {
         "Filter": "Aniso",
         "AddressU": "Wrap",
@@ -83,13 +91,13 @@
         "Name": null,
         "IsAttribute": false,
         "Default": "1,1,1,1",
-        "Extension": "Color",
+        "Extension": "Rough",
         "CustomExtension": null,
         "ShowExtension": true,
         "Processor": "None",
-        "ColorSpace": "Srgb",
+        "ColorSpace": "Linear",
         "ImageFormat": "DXT5",
-        "SrgbRead": true,
+        "SrgbRead": false,
         "Priority": 0,
         "PrimaryGroup": {
           "Name": null,
@@ -101,12 +109,12 @@
         }
       },
       "Identifier": "2",
-      "Position": "-168,-108",
+      "Position": "-612,120",
       "HandleOffsets": {}
     },
     {
       "_class": "TextureSampler",
-      "Image": "textures/perks/icyaid/machine/perkmachine_explode_low_uv_basecolor.jpg",
+      "Image": "models/perks/machine/material/perkmachine_explode_low_uv_height.jpg",
       "Sampler": {
         "Filter": "Aniso",
         "AddressU": "Wrap",
@@ -134,7 +142,73 @@
         }
       },
       "Identifier": "3",
-      "Position": "-156,-312",
+      "Position": "-612,552",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "models/perks/machine/material/perkmachine_explode_low_uv_normal.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": null,
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Normal",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "Inverse",
+        "ColorSpace": "Linear",
+        "ImageFormat": "DXT5",
+        "SrgbRead": false,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "4",
+      "Position": "-624,-96",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "models/perks/machine/material/perkmachine_explode_low_uv_metallic.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": null,
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Metal",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "None",
+        "ColorSpace": "Linear",
+        "ImageFormat": "DXT5",
+        "SrgbRead": false,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "5",
+      "Position": "-624,336",
       "HandleOffsets": {}
     }
   ]

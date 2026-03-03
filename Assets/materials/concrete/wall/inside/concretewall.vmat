@@ -1,0 +1,15 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "materials/concrete/pillarfun.shader"
+
+	Texture_ps_0 "materials/concrete/wall/inside/wall_insidemat_basecolor.png"
+	Texture_ps_1 "materials/concrete/wall/inside/wall_insidemat_normal.png"
+	Texture_ps_2 "materials/concrete/wall/inside/wall_insidemat_roughness.png"
+	Texture_ps_3 "materials/concrete/wall/inside/wall_insidemat_metallic.png"
+	Texture_vs_0 "materials/concrete/wall/inside/wall_insidemat_height.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

@@ -12,7 +12,7 @@ public sealed class QuickRevivePerk : Component
 		base.OnStart();
 		if ( targetPlayer != null )
 		{
-			targetPlayer.ReviveTime = 4.0f;
+			targetPlayer.HasQuickRevive = true;
 			targetPlayer.PerkIcons.Add(PerkDatabase.GetData(PerkID.QuickRevive).PerkIcon);
 			Log.Info( PerkDatabase.GetData( PerkID.QuickRevive ).PerkIcon );
 			Log.Info( "ICON EXISTS => " + FileSystem.Mounted.FileExists( PerkDatabase.GetData( PerkID.QuickRevive ).PerkIcon ) );

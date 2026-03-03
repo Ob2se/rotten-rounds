@@ -21,6 +21,10 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 	private bool LaunchingMap = false;
 
+	public bool isHost => Networking.IsHost;
+
+	public List<Connection> Connections;
+
 	protected override void OnStart()
 	{
 		base.OnStart();
@@ -41,6 +45,9 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		}
 	}
 
+
+
+
 	private async Task LoadMapsAndWeapons()
 	{
 		await GetMaps();
@@ -57,10 +64,14 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		{
 			try
 			{
+				Log.Info( item.Title );
 				var pkg = await Package.FetchAsync( item.FullIdent, false );
-				var supports = pkg.GetMeta<string[]>( "GameSupport" ) ?? Array.Empty<string>();
-				if ( supports.Contains( "clickhq.rottenrounds" ) )
+				
+				var supports = pkg.GetMeta<List<string>>( "ParentPackage" );
+				Log.Info( "package: " + supports );
+				if ( pkg.PackageReferences.Contains( "clickhq.rottenrounds" ) )
 				{
+					Log.Info( "oi" );
 					return new MapData
 					{
 						Author = pkg.Org?.Title,
@@ -86,6 +97,24 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 	{
 		try
 		{
+
+			var search = await Package.FindAsync( "game:clickhq.rottenrounds" );
+
+			var tasks = search.Packages.Select( async item =>
+			{
+				try
+				{
+					var pkg = await Package.FetchAsync( item.FullIdent, false );
+					Log.Info( pkg.Title );
+					return item;
+				}
+				catch { }
+				return null;
+			} );
+
+
+
+
 			var json = Sandbox.FileSystem.Mounted.ReadAllText( "resources/tempweaponlist.json" );
 			var deser = Json.Deserialize<List<string>>( json );
 			WeaponIndents.AddRange( deser );
@@ -623,37 +652,30 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 		DownloadFinishedWeapons( Connection.Local.SteamId );
 
+	}*/
+
+	private async Task testing()
+	{
+		var search = await Package.FindAsync( "type:prefab" );
+
+		foreach ( var item in search.Packages )
+		{
+			foreach ( var itemo in item.Tags )
+			{
+				
+			}
+		}
+
 	}
-
-
 	protected override void OnUpdate()
 	{
-		if ( Networking.IsHost )
-		{
-			if ( LaunchingMap )
-			{
-				CheckIfMapDownloaded();
-				if( MapDownloaded )
-				{
-					CheckIfWeaponsDownloaded();
-				}
-			}
-
-		}
-		
-
-
-
 
 
 		if ( Input.Pressed( "reload" ) )
 		{
-			foreach ( var item in mapList )
-			{
-				Log.Info( item.Author );
-			}
+			_ = testing();
 		}
 
-
-	}*/
+		Connections = Connection.All.ToList();
+	}
 }

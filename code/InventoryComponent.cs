@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices.Marshalling;
 
 public sealed class InventoryComponent : Component, IInventoryInterface
@@ -13,25 +14,30 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 
 
 
-	public NetList<string> Weapons { get; set; } = new();
+	[Sync] public NetList<string> Weapons { get; set; } = new();
 
 	//currentmag | ammo total
-	public NetList<WeaponAmmo> WeaponsAmmo { get; set; } = new();
+	[Sync] public NetList<WeaponAmmo> WeaponsAmmo { get; set; } = new();
+
 
 	public struct WeaponAmmo
 	{
+
 		public int CurrentMag { get; set; }
+
 
 		public int MagMax { get; set; }
 
+
 		public int AmmoTotal { get; set; }
+
 
 		public int MaxAmmoTotal { get; set; }
 	}
 
-	//[Rpc.Owner]
+
 	[Rpc.Host]
-	public void AddWeapon( string weapon, int slot )
+	public void AddWeapon( string weapon )
 	{
 
 		if ( this.Weapons.Count < 2 )
@@ -40,13 +46,14 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 			ClientAddWeapon( weapon );
 			var temp = GameObject.Clone( weapon );
 			//Log.Info( "is it not giving" );
-			GiveAmmo( slot, temp.GetComponentInChildren<BaseWeapon>().AmmoMax, temp.GetComponentInChildren<BaseWeapon>().MagMax );
+			GiveAmmo( 1, temp.GetComponentInChildren<BaseWeapon>().AmmoMax, temp.GetComponentInChildren<BaseWeapon>().MagMax );
 			temp.Destroy();
 			this.Player.ChangeCurrentSlot( Weapons.Count - 1 );
 
 		}
 		else if ( this.Weapons.Count >= 2 )
 		{
+			var slot = this.Player.CurrentWeaponSlot;
 			this.Weapons[slot] = weapon;
 			ClientAddWeaponSlot( weapon, slot );
 			var temp = GameObject.Clone( weapon );
@@ -69,7 +76,10 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ClientAddWeaponSlot( string weapon, int slot )
 	{
 		if ( Networking.IsHost ) return;
-		this.Weapons[slot] = weapon;
+		//Log.Info( "weapon: " + weapon + " slot: " + slot );
+		var idek = this.Weapons[slot];
+		idek = weapon;
+		this.Weapons[slot] = idek;
 		this.Player.ChangeCurrentSlot( slot );
 	}
 
@@ -88,7 +98,7 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 		this.Weapons.RemoveAt( slot );
 	}
 
-	
+
 	[Rpc.Host]
 	public void GiveAmmo( int slot, int amount, int magMax )
 	{
@@ -101,7 +111,7 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 		else if ( WeaponsAmmo.Count >= 2 )
 		{
 			this.WeaponsAmmo[slot] = new WeaponAmmo() { CurrentMag = magMax, AmmoTotal = amount, MagMax = magMax, MaxAmmoTotal = amount };
-			ClientGiveAmmo( amount, magMax );
+			ClientGiveAmmoSlot( slot, amount, magMax );
 		}
 	}
 
@@ -116,7 +126,9 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ClientGiveAmmoSlot( int slot, int amount, int magMax )
 	{
 		if ( Networking.IsHost ) return;
-		this.WeaponsAmmo[slot] = new WeaponAmmo() { CurrentMag = magMax, AmmoTotal = amount, MagMax = magMax, MaxAmmoTotal = amount };
+		var x = this.WeaponsAmmo;
+		x[slot] = new WeaponAmmo() { CurrentMag = magMax, AmmoTotal = amount, MagMax = magMax, MaxAmmoTotal = amount };
+		this.WeaponsAmmo = x;
 	}
 
 	//[Rpc.Owner]
@@ -135,10 +147,10 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ClientReduceCurrentMag( int amount, int ammoslot )
 	{
 		if ( Networking.IsHost ) return;
-		var ammo = this.WeaponsAmmo[ammoslot];
+		var ammo = this.WeaponsAmmo[this.Player.CurrentWeaponSlot];
 		//Log.Info( this.WeaponsAmmo );
 		ammo.CurrentMag -= amount;
-		this.WeaponsAmmo[ammoslot] = ammo;
+		this.WeaponsAmmo[this.Player.CurrentWeaponSlot] = ammo;
 	}
 
 	//[Rpc.Owner]
@@ -146,12 +158,12 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ReduceAmmo( int amount )
 	{
 
-		var ammo = WeaponsAmmo[Player.CurrentWeaponSlot];
+		var ammo = WeaponsAmmo[this.Player.CurrentWeaponSlot];
 
 		ammo.AmmoTotal = Math.Clamp( ammo.AmmoTotal - amount, 0, ammo.AmmoTotal );
 		//Log.Info( ammo.AmmoTotal );
-		WeaponsAmmo[Player.CurrentWeaponSlot] = ammo;
-		ClientReduceAmmo( ammo.AmmoTotal, Player.CurrentWeaponSlot );
+		WeaponsAmmo[this.Player.CurrentWeaponSlot] = ammo;
+		ClientReduceAmmo( ammo.AmmoTotal, this.Player.CurrentWeaponSlot );
 	}
 
 	[Rpc.Owner]
@@ -159,11 +171,11 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	{
 		if ( Networking.IsHost ) return;
 		//Log.Info( amount );
-		var ammo = WeaponsAmmo[slot];
+		var ammo = WeaponsAmmo[this.Player.CurrentWeaponSlot];
 
 		ammo.AmmoTotal = amount;
 		//Log.Info( ammo.AmmoTotal );
-		WeaponsAmmo[slot] = ammo;
+		WeaponsAmmo[this.Player.CurrentWeaponSlot] = ammo;
 	}
 
 
@@ -220,9 +232,9 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ClientAddAmmoToMag( int amount, int slot )
 	{
 		if ( Networking.IsHost ) return;
-		var ammo = WeaponsAmmo[slot];
+		var ammo = WeaponsAmmo[Player.CurrentWeaponSlot];
 		ammo.CurrentMag += amount;
-		WeaponsAmmo[slot] = ammo;
+		WeaponsAmmo[Player.CurrentWeaponSlot] = ammo;
 	}
 
 
@@ -230,7 +242,7 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ClientGiveMaxAmmo()
 	{
 		if ( Networking.IsHost ) return;
-		for ( int ammoslot = 0; ammoslot < WeaponsAmmo.Count; ammoslot++  )
+		for ( int ammoslot = 0; ammoslot < WeaponsAmmo.Count; ammoslot++ )
 		{
 			//Log.Info( "setting ammo to " + WeaponsAmmo[ammoslot].MaxAmmoTotal + " in slot " + ammoslot );
 			var x = WeaponsAmmo[ammoslot];
@@ -251,20 +263,41 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 			x.AmmoTotal = WeaponsAmmo[ammoslot].MaxAmmoTotal;
 			x.CurrentMag = WeaponsAmmo[ammoslot].MagMax;
 			WeaponsAmmo[ammoslot] = x;
-			
+
 		}
 		ClientGiveMaxAmmo();
 	}
 
 
 
+	[Rpc.Host]
+	public void ServerGiveCertainMaxAmmo( int slot )
+	{
+		var x = WeaponsAmmo[slot];
+		x.AmmoTotal = WeaponsAmmo[slot].MaxAmmoTotal;
+		x.CurrentMag = WeaponsAmmo[slot].MagMax;
+		WeaponsAmmo[slot] = x;
+	}
+
+	[Rpc.Owner]
+	public void ClientGiveCertainMaxAmmo( int slot )
+	{
+		if ( Networking.IsHost ) return;
+		var x = WeaponsAmmo[slot];
+		x.AmmoTotal = WeaponsAmmo[slot].MaxAmmoTotal;
+		x.CurrentMag = WeaponsAmmo[slot].MagMax;
+		WeaponsAmmo[slot] = x;
+	}
+
+
 	protected override void OnUpdate()
 	{
 		//Log.Info(Weapons.Count);
+		if ( IsProxy ) return;
 		if ( Weapons.Count <= 0 )
 		{
 			var weaponmanager = Scene.GetAllComponents<WeaponManager>().FirstOrDefault();
-			weaponmanager.GivePlayerWeapon( "spaghellim-rottenrounds.prefab", Player, 0 );
+			weaponmanager.GivePlayerWeapon( "usp-rottenrounds.prefab", Player, 0 );
 		}
 	}
 }

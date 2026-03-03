@@ -1,120 +1,175 @@
-.map-selector-container {
+.fullscreen-blur {
     position: absolute;
-    display: flex;
-    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.2);
+    backdrop-filter: blur(2px);
+    z-index: 0;
+}
+
+.map-selector-container-root {
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    background-image: url("ui/imagebackground4.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     pointer-events: all;
-    align-items: flex-start;
-    top: 11vh;
-    left: 11vw;
-    max-width: 75vw;
-    max-height: 80vh;
-    opacity: 1;
-    overflow: hidden;
-    background-color: grey;
-    //margin: 2vh;
-    padding: 1vh;
 
-    .map-filters {
+    .map-selector-container {
+        position: absolute;
+        top: 10%;
+        left: 12%;
+        height: 100%;
+        flex-direction: row;
+        pointer-events: all;
+        align-items: flex-start;
         display: flex;
-        flex-direction: column;
-        //justify-content: center;
-        //align-self: center;
-        color: white;
-        width: 10vw;
-        //border-width: .2rem;
-        //background-color: red;
+        width: 77%;
+        gap: 1rem;
 
-        .map-filters-wrapper {
-            //display: flex;
+        .map-filters {
+            display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
             color: white;
+            height: 100%;
+            width: 30%;
+            font-family: 'Montserrat';
+            text-align: center;
+            gap: 1rem;
+            font-weight:bold;
+            font-size: 24px;
 
-            .filter-line {
-                font-size: 1.5vh;
-                justify-content: space-between;
+            .map-filters-wrapper {
+                flex-direction: column;
+                justify-content: space-evenly;
+                color: white;
+                font-family: 'Montserrat';
 
-                .inputs-checkbox {
-                    border-width: .05vw;
-                    border-radius: 1vh;
+                .filter-line {
+                    font-size: 1.5vh;
+                    justify-content: space-between;
+
+                    .inputs-checkbox {
+                        border-width: .05vw;
+                        border-radius: 1vh;
+                    }
                 }
             }
         }
-    }
 
-    .map-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1vh;
-        padding: 1vh;
-        overflow: scroll;
-        //border-width: .1vw;
-        height: 75vh;
-        width: 44vw;
-        //background-color: orange;
-
-        .map-card {
-            width: 10.3vw;
-            height: 17.5vh;
-            flex: 0 0 10.3vw;
-            background-size: cover;
-            background-position: center;
-            overflow: hidden;
-            position: relative;
-        }
-    }
-
-    .chosen-map-container {
-        //background-color: green;
-        //border-width: .1vw;
-        width: 20vw;
-        height: 75vh;
-        max-height: 75vh;
-        display: flex;
-        flex-direction: column;
-        //background-color: blue;
-        color: white;
-        gap: 1vh;
-        padding: 1vh;
-        overflow: hidden;
-        flex-shrink: 0;
-
-        .the-map-title {
-            font-size: 3vh;
-            align-self: center;
-            flex-shrink: 0;
-        }
-
-        .the-map-thumbnail {
-            height: 256px;
-            width: 256px;
-            align-self: center;
-        }
-
-        .author-vote-wrapper {
-            flex-direction: row;
-            justify-content: space-between;
-        }
-
-        .the-map-description {
-            flex-shrink: 0;
-            font-size: 1.2vw;
-            overflow: scroll;
-            //background-color: green;
-        }
-
-        .select-map-button {
-            margin-top: 2vh;
+        .map-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1vh;
             padding: 1vh;
-            flex-shrink: 0;
-            align-self: center;
-            font-size: 4vh;
-            border-width: .2vh;
-            //background-color: yellow;
+            overflow: scroll;
+            //border-width: .1vw;
+            height: 100%;
+            width: 100%;
 
-            &:hover {
-                color: gold;
-                border-color: gold;
+            .map-card {
+                width: 10.3vw;
+                height: 17.5vh;
+                flex: 0 0 10.3vw;
+                background-size: cover;
+                background-position: center;
+                overflow: hidden;
+                position: relative;
+            }
+        }
+
+        .chosen-map-container {
+            display: flex;
+            flex-direction: column;
+            color: white;
+            gap: 1rem;
+            padding: 1vh;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+            height: 100%;
+            width: 50%;
+
+            .the-map-title {
+                font-family: 'Montserrat';
+                font-size: 3vh;
+                align-self: center;
+                flex-shrink: 0;
+                text-decoration: underline;
+            }
+
+            .the-map-thumbnail {
+                height: 256px;
+                width: 256px;
+                align-self: center;
+            }
+
+            .author-vote-wrapper {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-align: center;
+
+
+                .the-map-author {
+                    font-family: 'Montserrat';
+                    font-weight: bold;
+                }
+
+                .map-votes {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 1rem;
+                    align-items: center;
+
+
+                    .map-vote-ups {
+                        color: limegreen;
+                        gap: .25rem;
+
+                        .the-map-up {
+                            font-family: 'Material Icons';
+                        }
+                    }
+
+                    .map-vote-downs {
+                        color: red;
+                        gap: .25rem;
+
+                        .the-map-down {
+                            font-family: 'Material Icons';
+                        }
+                    }
+                }
+
+                .the-map-description {
+                    flex-shrink: 0;
+                    font-size: 1.2vw;
+                    overflow: scroll;
+                    //background-color: green;
+                }
+
+                .select-map-button {
+                    margin-top: 2vh;
+                    padding: 1vh;
+                    flex-shrink: 0;
+                    align-self: center;
+                    font-size: 4vh;
+                    border-width: .2vh;
+                    //background-color: yellow;
+
+                    &:hover {
+                        color: gold;
+                        border-color: gold;
+                    }
+                }
             }
         }
     }

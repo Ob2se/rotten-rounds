@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "2bffec3b-0f38-45eb-91c9-191c4e860ac5",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "mysterybox",
     "Position": "0,0,0",
@@ -10,7 +10,7 @@
     "Tags": "interactable",
     "Enabled": true,
     "NetworkMode": 1,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 1,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
@@ -19,75 +19,51 @@
         "__type": "MysteryBox",
         "__guid": "fb90c175-faaf-45bc-9e88-c247e7061e87",
         "__enabled": true,
-        "BoxLid": {
-          "_type": "gameobject",
-          "go": "8348c6f5-883d-4a3a-a419-2e34711a8d6f"
+        "Flags": 0,
+        "BoxSpinSound": {
+          "_type": "component",
+          "component_id": "44423678-3333-4b36-8558-221c994df8b1",
+          "go": "498744c0-5a69-4bf3-9733-44320b532b25",
+          "component_type": "SoundPointComponent"
         },
         "Cost": 5,
+        "Hold": false,
+        "InteractionTriggerbox": {
+          "_type": "component",
+          "component_id": "aac27780-6c42-4347-9a3f-67799d711ed9",
+          "go": "09acf07f-b0a5-496a-bbbc-4226b4bf8231",
+          "component_type": "BoxCollider"
+        },
+        "LatchOpenSoundPoint": {
+          "_type": "component",
+          "component_id": "1c3560f0-62b8-401c-a9d6-d9552a8bebfa",
+          "go": "4183b5cf-7ffb-498e-9d8f-5fe81b8a4b39",
+          "component_type": "SoundPointComponent"
+        },
+        "MysteryBoxMesh": {
+          "_type": "component",
+          "component_id": "363becf7-441d-4050-bcdb-0d528572e145",
+          "go": "8348c6f5-883d-4a3a-a419-2e34711a8d6f",
+          "component_type": "SkinnedModelRenderer"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "WeaponEndPoint": {
-          "_type": "gameobject",
-          "go": "462bd3dc-3fa6-4e44-a502-2504d9237810"
-        },
+        "WeaponEndPoint": null,
         "WeaponStartPoint": {
           "_type": "gameobject",
           "go": "85a4c2b8-4cd2-40b8-9bfc-512058e9d770"
         }
       },
       {
-        "__type": "Sandbox.SkinnedModelRenderer",
-        "__guid": "ecd75176-de06-4206-b6c2-9e4e84db6467",
-        "__enabled": true,
-        "AnimationGraph": null,
-        "BodyGroups": 18446744073709551615,
-        "BoneMergeTarget": null,
-        "CreateAttachments": false,
-        "CreateBoneObjects": false,
-        "LodOverride": null,
-        "MaterialGroup": null,
-        "MaterialOverride": null,
-        "Materials": null,
-        "Model": "models/mysterybox/mystery_box_test_box1.vmdl",
-        "Morphs": {},
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "Parameters": {
-          "bools": {},
-          "ints": {},
-          "floats": {},
-          "vectors": {},
-          "rotations": {}
-        },
-        "PlaybackRate": 1,
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": false,
-          "AfterUILayer": false
-        },
-        "RenderType": "On",
-        "Sequence": {
-          "Name": null,
-          "Looping": true,
-          "Blending": false
-        },
-        "Tint": "1,1,1,1",
-        "UseAnimGraph": true
-      },
-      {
         "__type": "Sandbox.BoxCollider",
         "__guid": "3cdb1e0c-10b1-4c0d-9b33-ec25710f18c0",
         "__enabled": true,
-        "Center": "-10.0914,-0.008872986,9.492208",
+        "Flags": 0,
+        "Center": "0,0,68.23945",
         "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
@@ -103,7 +79,7 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "24.73785,91.94755,50",
+        "Scale": "24.73785,91.94755,140",
         "Static": false,
         "Surface": null,
         "SurfaceVelocity": "0,0,0"
@@ -112,37 +88,50 @@
     "Children": [
       {
         "__guid": "8348c6f5-883d-4a3a-a419-2e34711a8d6f",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
-        "Name": "MysteryBoxLid",
+        "Name": "MysteryBox",
         "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
+        "Rotation": "0,0,-0.7071069,-0.7071066",
         "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkMode": 1,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Sandbox.ModelRenderer",
-            "__guid": "104ab5a2-a058-4b3d-889e-38b9a971f403",
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "363becf7-441d-4050-bcdb-0d528572e145",
             "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
             "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
             "CreateAttachments": false,
+            "CreateBoneObjects": false,
             "LodOverride": null,
             "MaterialGroup": null,
             "MaterialOverride": null,
             "Materials": null,
-            "Model": "models/mysterybox/mystery_box_test_lid1.vmdl",
+            "Model": "models/mysterybox/new/mysterybox_r.vmdl",
+            "Morphs": {},
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -150,23 +139,29 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
-            "Tint": "1,1,1,1"
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
           }
         ],
         "Children": []
       },
       {
         "__guid": "85a4c2b8-4cd2-40b8-9bfc-512058e9d770",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "WeaponStartPoint",
-        "Position": "-10.45883,2.740469,-10.46218",
+        "Position": "0,3.43138,10.917",
         "Rotation": "0,0,-0.7071067,0.7071068",
         "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkMode": 1,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
@@ -174,22 +169,206 @@
         "Children": []
       },
       {
-        "__guid": "462bd3dc-3fa6-4e44-a502-2504d9237810",
-        "__version": 1,
+        "__guid": "09acf07f-b0a5-496a-bbbc-4226b4bf8231",
+        "__version": 2,
         "Flags": 0,
-        "Name": "WeaponEndPoint",
-        "Position": "-10.45883,2.740469,16.77462",
-        "Rotation": "0,0,-0.7071067,0.7071068",
+        "Name": "InteractionBox",
+        "Position": "-11.16166,0,17.23078",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "interbox",
+        "Enabled": true,
+        "NetworkMode": 1,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "aac27780-6c42-4347-9a3f-67799d711ed9",
+            "__enabled": true,
+            "Flags": 0,
+            "Center": "0,-0.06452179,0",
+            "ColliderFlags": "IgnoreMass",
+            "Elasticity": null,
+            "Friction": null,
+            "IsTrigger": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
+            "Scale": "50,88.26851,50",
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "860bf1eb-5dfe-42f4-91d4-b80597bc022b",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Sounds",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkMode": 1,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [],
-        "Children": []
+        "Children": [
+          {
+            "__guid": "4183b5cf-7ffb-498e-9d8f-5fe81b8a4b39",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "BoxOpen",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 1,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SoundPointComponent",
+                "__guid": "1c3560f0-62b8-401c-a9d6-d9552a8bebfa",
+                "__enabled": true,
+                "Flags": 0,
+                "Distance": 512,
+                "DistanceAttenuation": false,
+                "DistanceAttenuationOverride": false,
+                "Falloff": [
+                  {
+                    "x": 0,
+                    "y": 1,
+                    "in": 3.1415927,
+                    "out": -3.1415927,
+                    "mode": "Mirrored"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0,
+                    "in": 0,
+                    "out": 0,
+                    "mode": "Mirrored"
+                  }
+                ],
+                "Force2d": false,
+                "MaxRepeatTime": 1,
+                "MinRepeatTime": 1,
+                "Occlusion": false,
+                "OcclusionOverride": false,
+                "OcclusionRadius": 32,
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Pitch": 1,
+                "PlayOnStart": false,
+                "ReflectionOverride": false,
+                "Reflections": false,
+                "Repeat": false,
+                "SoundEvent": "sound/mysterybox/latchopen.sound",
+                "SoundOverride": false,
+                "StopOnNew": false,
+                "TargetMixer": {
+                  "Name": "game",
+                  "Id": "5738813b-cd3b-4189-9162-60a8214741b7"
+                },
+                "Volume": 1
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "498744c0-5a69-4bf3-9733-44320b532b25",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "SpinningSound",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 1,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SoundPointComponent",
+                "__guid": "44423678-3333-4b36-8558-221c994df8b1",
+                "__enabled": true,
+                "Flags": 0,
+                "Distance": 512,
+                "DistanceAttenuation": false,
+                "DistanceAttenuationOverride": false,
+                "Falloff": [
+                  {
+                    "x": 0,
+                    "y": 1,
+                    "in": 3.1415927,
+                    "out": -3.1415927,
+                    "mode": "Mirrored"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0,
+                    "in": 0,
+                    "out": 0,
+                    "mode": "Mirrored"
+                  }
+                ],
+                "Force2d": false,
+                "MaxRepeatTime": 1,
+                "MinRepeatTime": 1,
+                "Occlusion": false,
+                "OcclusionOverride": false,
+                "OcclusionRadius": 32,
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Pitch": 1,
+                "PlayOnStart": false,
+                "ReflectionOverride": false,
+                "Reflections": false,
+                "Repeat": false,
+                "SoundEvent": null,
+                "SoundOverride": false,
+                "StopOnNew": false,
+                "TargetMixer": {
+                  "Name": "game",
+                  "Id": "5738813b-cd3b-4189-9162-60a8214741b7"
+                },
+                "Volume": 1
+              }
+            ],
+            "Children": []
+          }
+        ]
       }
     ],
     "__properties": {
@@ -201,7 +380,7 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,

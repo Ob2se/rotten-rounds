@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "wallbuy",
     "Position": "0,0,0",
@@ -9,15 +9,17 @@
     "Scale": "1,1,1.000132",
     "Tags": "interactable",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
-    "NetworkOrphaned": 0,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 1,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "Sandbox.WorldPanel",
         "__guid": "3c0e6ec9-206b-4c29-8817-f3e681bebec2",
         "__enabled": true,
+        "Flags": 0,
         "HorizontalAlign": "Center",
         "InteractionRange": 1000,
         "LookAtCamera": false,
@@ -27,7 +29,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "PanelSize": "512,256",
+        "PanelSize": "1024,512",
         "RenderOptions": {
           "GameLayer": true,
           "OverlayLayer": false,
@@ -41,32 +43,31 @@
         "__type": "WallBuy",
         "__guid": "b1167930-102b-487c-901d-f50d29103abe",
         "__enabled": true,
-        "Cost": 0,
+        "Flags": 0,
+        "AmmoCost": 500,
+        "Cost": 1000,
+        "Hold": false,
+        "InteractionTriggerBox": {
+          "_type": "component",
+          "component_id": "3cf485a6-3490-43c6-ab78-cdd814fa398e",
+          "go": "fdb63d19-9fc8-4bea-b4c5-fa56ba6d4307",
+          "component_type": "BoxCollider"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "WeaponName": "TestSmg"
-      },
-      {
-        "__type": "Sandbox.weaponbuy",
-        "__guid": "7dbcdafa-02ca-4907-b461-6f123d7957e2",
-        "__enabled": true,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "WeaponName": "MP5"
+        "WeaponIdent": null
       },
       {
         "__type": "Sandbox.BoxCollider",
         "__guid": "71f0ba2d-b40b-4117-8544-bb6d3be19dd1",
         "__enabled": true,
+        "Flags": 0,
         "Center": "-0.001620285,-0.06315708,-0.04390097",
+        "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
         "IsTrigger": false,
@@ -87,7 +88,53 @@
         "SurfaceVelocity": "0,0,0"
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "fdb63d19-9fc8-4bea-b4c5-fa56ba6d4307",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "InteractionBox",
+        "Position": "-0.09257081,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "interaction",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "3cf485a6-3490-43c6-ab78-cdd814fa398e",
+            "__enabled": true,
+            "Flags": 0,
+            "Center": "3.179064,0,-21.65482",
+            "ColliderFlags": "IgnoreMass",
+            "Elasticity": null,
+            "Friction": null,
+            "IsTrigger": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
+            "Scale": "56.35812,50,126.0606",
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": []
+      }
+    ],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,
@@ -97,7 +144,7 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,

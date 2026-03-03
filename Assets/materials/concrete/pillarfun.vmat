@@ -1,0 +1,15 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "materials/concrete/pillarfun.shader"
+
+	Texture_ps_0 "materials/concrete/natchpillars_material.001_basecolor.png"
+	Texture_ps_1 "materials/concrete/natchpillars_material.001_normal.png"
+	Texture_ps_2 "materials/concrete/natchpillars_material.001_roughness.png"
+	Texture_ps_3 "materials/concrete/natchpillars_material.001_metallic.png"
+	Texture_vs_0 "materials/concrete/natchpillars_material.001_height.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

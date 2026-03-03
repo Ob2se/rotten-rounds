@@ -23,31 +23,31 @@ public static class PowerUpDatabase
 			PowerupID.MaxAmmo => new PowerUpClass
 			{
 				PowerUpName = "Max Ammo",
-				PowerUpModelPath = "models/powerups/maxammo/maxammo.vmdl"
+				PowerUpModelPath = "models/powerups/maxammo/maxammo2.vmdl"
 			},
 
 			PowerupID.InstantKill => new PowerUpClass
 			{
 				PowerUpName = "Insta Kill",
-				PowerUpModelPath = "models/powerups/instakill/instakill.vmdl"
+				PowerUpModelPath = "models/powerups/instakill/instakill2.vmdl"
 			},
 
 			PowerupID.DoublePoints => new PowerUpClass
 			{
 				PowerUpName = "Double Points",
-				PowerUpModelPath = "models/powerups/2x/2xpowerup.vmdl"
+				PowerUpModelPath = "models/powerups/2x/x2.vmdl"
 			},
 
 			PowerupID.FireSale => new PowerUpClass
 			{
 				PowerUpName = "Fire Sale",
-				PowerUpModelPath = "models/powerups/firesale/firesale.vmdl"
+				PowerUpModelPath = "models/powerups/firesale/firesale2.vmdl"
 			},
 
 			PowerupID.Nuke => new PowerUpClass
 			{
 				PowerUpName = "Nuke",
-				PowerUpModelPath = "models/powerups/nuke/nuke.vmdl"
+				PowerUpModelPath = "models/powerups/nuke/nuke2.vmdl"
 			},
 
 			_ => default // returns null for PowerupID.None

@@ -1,43 +1,159 @@
 using Sandbox;
 using System.Numerics;
-
+using System;
+using System.Threading.Tasks;
+using Sandbox.Rendering;
 public sealed class WallBuy : Component, IInteraction
 {
 
+
 	[Property]
-	public string WeaponName { get; set; }
+	public bool Hold { get; set; }
+
+	public bool Interactable { get; set; } = true;
+
+	[Property, Sync]
+	public string WeaponIdent { get; set; }
 
 	[Property]
 	public int Cost { get; set; }
 
+	[Property]
+	public int AmmoCost { get; set; } = 500;
+
+	public GameObject GO => this.GameObject;
+
 	WeaponManager WeaponManager { get; set; }
 	public float HoldTime => 0f;
+
+	[Sync]
+	public string WeaponName { get; set; }
+
+
+	Random rand = new Random();
+
+	[Sync]
+	private string WeaponPath { get; set; }
+
+	[Property]
+	public Collider InteractionTriggerBox { get; set; }
+
 	protected override void OnUpdate()
 	{
+		if ( Networking.IsHost )
+		{
+			if ( WeaponPath == null && WeaponIdent == null )
+			{
+				if ( WeaponManager != null )
+				{
+					var randomweap = rand.Next( WeaponManager.WeaponPaths.Count );
+					if ( WeaponManager.WeaponPaths[randomweap] != null )
+					{
+						Log.Info( "how manuy times" );
+						WeaponPath = WeaponManager.WeaponPaths[randomweap];
+						var temp = GameObject.Clone( WeaponPath ).GetComponentInChildren<BaseWeapon>();
+						if ( temp == null )
+						{
+							Log.Error( "WallBuy | SOMETHING SERIOUSLY WRONG!" );
+						}
 
+						WeaponName = temp.WeaponName;
+						temp.GameObject.Destroy();
+						var ui = this.GameObject.AddComponent<weaponbuy>();
+						ui.WeaponName = WeaponName;
+						Interactable = true;
+					}
+				}
+			}
+		}
 	}
 
 
 	protected override void OnStart()
 	{
-		if ( Networking.IsHost )
+
+		InteractionTriggerBox.OnObjectTriggerEnter += OnInteractionEnter;
+		InteractionTriggerBox.OnObjectTriggerExit += OnInteractionExit;
+
+		WeaponManager = Scene.GetAll<WeaponManager>().FirstOrDefault();
+
+		if ( WeaponIdent != null )
 		{
-			WeaponManager = Scene.GetAll<WeaponManager>().FirstOrDefault();
+			_ = DownloadWeapon();
 		}
-		
+
+	}
+
+
+	private void OnInteractionEnter( GameObject obj )
+	{
+		Log.Info( "hellur" );
+		var player = obj.GetComponent<Player>();
+		if ( player != null )
+		{
+			if ( Interactable )
+			{
+				player.CurrentInteraction = this;
+			}
+
+		}
+	}
+
+	private void OnInteractionExit( GameObject obj )
+	{
+		var player = obj.GetComponent<Player>();
+		if ( player != null )
+		{
+			player.CurrentInteraction = null;
+
+		}
+	}
+
+	private async Task DownloadWeapon()
+	{
+		var package = await Package.Fetch( WeaponIdent, false );
+
+		if ( package == null )
+		{
+			WeaponPath = WeaponManager.WeaponPaths[rand.Next( WeaponManager.WeaponPaths.Count )];
+			return;
+		}
+
+		if ( package != null )
+		{
+			WeaponPath = package.GetMeta( "PrimaryAsset", "" );
+
+			//Log.Info( "Downloaded weapon for wallbuy: " + WeaponPath );
+		}
+
+		var temp = GameObject.Clone( WeaponPath ).GetComponent<BaseWeapon>();
+		if ( temp == null )
+		{
+			Log.Error( "WallBuy | SOMETHING SERIOUSLY WRONG!" );
+		}
+
+		WeaponName = temp.WeaponName;
+
+		var ui = this.GameObject.AddComponent<weaponbuy>();
+		ui.WeaponName = WeaponName;
+		Interactable = true;
+
 	}
 
 
 	private void GiveWeapon( Player player )
 	{
-		Log.Info( "gave weapon?" );
-		
+
+		player.Inventory.AddWeapon( WeaponPath );
+
 	}
 
 
-	private bool PriceCheck(Player player)
+
+
+	private bool PriceCheck( Player player )
 	{
-		
+
 		return true;
 	}
 
@@ -48,20 +164,48 @@ public sealed class WallBuy : Component, IInteraction
 		{
 			if ( player.Points - Cost < 0 )
 			{
-				Log.Info( "broke" );
+				OnInteractionFailed( player, IInteraction.InteractionFReason.NoMoney );
 				return;
 			}
+
 			player.RemovePoints( Cost );
+			player.PlayChaChing();
 			GiveWeapon( player );
 		}
 	}
 
-	public void OnInteractionFailed( Player player )
+
+	[Rpc.Host]
+	private void GiveAmmo( Player player, int slot )
+	{
+		if ( player.Points - AmmoCost < 0 )
+		{
+			OnInteractionFailed( player, IInteraction.InteractionFReason.NoMoney );
+			return;
+		}
+		Log.Info( "got ammo" );
+		player.RemovePoints( AmmoCost );
+		player.Inventory.ServerGiveCertainMaxAmmo( slot );
+
+
+	}
+
+
+
+	public void OnInteractionFailed( Player player, IInteraction.InteractionFReason reason )
 	{
 		//could add some feedback here later
 	}
 	public void OnInteract( Player player )
 	{
+		var playerweapons = player.Inventory.Weapons;
+		Log.Info( WeaponPath );
+		if ( playerweapons.Contains( WeaponPath ) )
+		{
+			var index = playerweapons.IndexOf( WeaponPath );
+			GiveAmmo( player, index );
+			return;
+		}
 		BuyWeapon( player );
 	}
 

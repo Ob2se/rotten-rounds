@@ -3,49 +3,75 @@
 @inherits MainMenuPanel
 @namespace Sandbox
 
+<div class="fullscreen-blur"></div>
+<div class="screen-blocker"></div>"
 <div class="create-menu-container">
+    <div class="brush-stroke"></div>
     <div class="menu-options-container">
-        <div class="inputs-line">
-            <text class="inputs-text">Players:</text>
-            <SliderControl class="player-slider" Min="@PartyCount" Max="@(64)" Step="@(1)" Value:bind="@MaxPlayersGame"></SliderControl>
-            <text class="inputs-text">@MaxPlayersGame</text>
+        <div class="inputs-line-players">
+            <text class="inputs-players">Players</text>
+            <div class="slider-maxplayer">
+                <SliderControl class="player-slider" ShowValueTooltip="@(false)" ShowTextEntry="@(false)" ShowRange="@(false)" Min=@(1) Max="@(64)" Step="@(1)" Value:bind="@MaxPlayersGame"></SliderControl>
+                <text class="inputs-maxplayers">@MaxPlayersGame</text>
+            </div>
+            
         </div>
-        <div class="inputs-line">
+        
+        <div class="inputs-line-invite">
             <text class="inputs-text">Invite Only</text>
-            <Checkbox class="inputs-checkbox" Checked=@false Value:bind="@InviteOnly"></Checkbox>
+            <Checkbox @ref="InviteOnlyCheckBox" class="inputs-checkbox" Value:bind="@InviteOnly"></Checkbox>
         </div>
-        <div class="inputs-line">
+        <div class="inputs-line-friends">
             <text class="inputs-text">Friends Only</text>
-            <Checkbox class="inputs-checkbox" Checked="@FriendsOnly" Value:bind="@FriendsOnly"></Checkbox>
+            <Checkbox @ref="FriendsOnlyCheckBox" class="inputs-checkbox" Value:bind="@FriendsOnly" @onmouseover="@OnMouseOva"></Checkbox>
         </div>       
         <div class="create-button-wrapper">
             <button class="create-lobby-button" @onclick="@CreateLobby">Create</button>
         </div>
     </div>
 </div>
+<div class="back-button-container @(IsBackVisible ? "" : "hidden")">
+    <button class="back-button" @onclick="@OnBackClicked">Back</button>
+</div>
 
 @code
 {
     public Panel InputContainer;
 
-    public int MaxPlayersGame { get; set; }
+    bool IsBackVisible = true;
 
-    public bool InviteOnly { get; set; } = false;
-    public bool FriendsOnly { get; set; } = false;
+    Checkbox InviteOnlyCheckBox;
+    Checkbox FriendsOnlyCheckBox;
+
+    public int MaxPlayersGame = 1;
+
+    public bool? InviteOnly = false;
+    public bool? FriendsOnly = false;
 
     public int PartyCount { get; set; }
 
     public MainMenuManager mainMenu { get; set; }
 
-
+    //
 
     [Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
 
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
     /// </summary>
-    protected override int BuildHash() => System.HashCode.Combine( InviteOnly, FriendsOnly, PartyCount, MaxPlayersGame );
+    protected override int BuildHash() => System.HashCode.Combine(InviteOnly, FriendsOnly, PartyCount, MaxPlayersGame, FriendsOnlyCheckBox.Value);
 
+    public void OnMouseOva()
+    {
+        Log.Info(FriendsOnlyCheckBox.Checked);
+        FriendsOnlyCheckBox.Value = true;
+    }
+
+
+    public void OnBackClicked()
+    {
+        this.Delete();
+    }
 
     public void GetMainMenuComp()
     { 
@@ -53,18 +79,12 @@
     }
 
 
-    //make own checkbox
-    public void OnFriendsOnly()
+    public void OnInviteOnlyChanged()
     {
-        FriendsOnly = true;
-        Log.Info("Hello");
+        InviteOnlyCheckBox.Value = false;
+        InviteOnlyCheckBox.Checked = false;
     }
 
-    public void OnInviteOnly()
-    {
-        InviteOnly = true;
-        Log.Info("Hello");
-    }
 
 
 
@@ -76,7 +96,7 @@
              {
                  MaxPlayers = MaxPlayersGame,
                  Privacy = Network.LobbyPrivacy.FriendsOnly,
-                 Name = "rotten rounds testing"
+                 Name = "Rotten Rounds | Waiting to start... "
              });
     }
 

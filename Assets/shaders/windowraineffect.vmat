@@ -1,0 +1,13 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/windowraineffect.shader"
+
+	raindripmask "shaders/rain_drip_mask.tga"
+	raindripscomb "shaders/rain_drips.tga"
+	Texture_ps_2 "shaders/rain_drops.tga"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+}

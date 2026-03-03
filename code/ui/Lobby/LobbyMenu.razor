@@ -1,21 +1,24 @@
 @using Sandbox;
 @using Sandbox.UI;
 @using System.Threading.Tasks;
-@inherits PanelComponent
+@inherits MainMenuPanelComponent
 @namespace Sandbox
 
-
-<div class="create-lobby-container">
+<div class="fullscreen-blur"></div>
+<div class="create-lobby-container @(IsMenuVisible ? "" : "hidden")">
     <div class="left-side-container">
-        <text class="title">Lobby</text>
-        <ChosenMap @key="@SelectedMap" class="chosen-container" @MapAuthor="@SelectedMap.Author" @MapDescription="@SelectedMap.Description" @MapTitle="@SelectedMap.Name" @MapDownVotes="@SelectedMap.DownVotes.ToString()" @MapUpVotes="@SelectedMap.UpVotes.ToString()" @MapThumbnail="@SelectedMap.Thumbnail" ></ChosenMap>
+        
+        <ChosenMap @key="@SelectedMap" @ref="@TheChosenMaper" class="chosen-container" @MapAuthor="@SelectedMap.Author" @MapDescription="@SelectedMap.Description" @MapTitle="@SelectedMap.Name" @MapDownVotes="@SelectedMap.DownVotes.ToString()" @MapUpVotes="@SelectedMap.UpVotes.ToString()" @MapThumbnail="@SelectedMap.Thumbnail"></ChosenMap>
         <div class="buttons-wrapper">
-            <button class="button-start" @onclick="@OnStartClick">Start Game</button>
-            <button class="button" @onclick="@MapBrowseClick">Map Browse</button>
-            <button class="button" @onclick="@GameOptionsClick">Game Options</button>
+            <button class="button-start @(isHost ? "" : "disabled")" @onclick="@OnStartClick">Start Game</button>
+            <button class="button-browse @(isHost ? "" : "disabled")" @onclick="@MapBrowseClick">Map Browse</button>
+            <button class="button-game-options @(isHost ? "" : "disabled")" @onclick="@GameOptionsClick">Game Options</button>
             <button class="button" @onclick="@OptionsClick">Options</button>
             <button class="button" @onclick="@LeaveClick">Leave</button>
         </div>
+    </div>
+    <div class="right-side-container">
+        <PlayerList Connections="@Connections"></PlayerList>
     </div>
 </div>
 
@@ -23,18 +26,17 @@
 @code
 {
 
-    public MapData SelectedMap { get; set; } = new MapData
-    {
-        Name = "None",
-        Description = "None",
-        Author = "None",
-        UpVotes = 0,
-        DownVotes = 0,
-        Thumbnail = "ui/images/questionmark.png", // or null if you're handling that
-        Tags = new List<string>(),
-        Genres = new List<string>()
-    };
+    [Property]
+    public MapSelector TheMapSelector { get; set; }
 
+    public bool isHost => LobbyCreator.isHost;
+    public List<Connection> Connections => LobbyCreator.Connections;
+
+    public MapData SelectedMap;
+
+    public ChosenMap TheChosenMaper;
+
+    [Property]
     private CreateLobby LobbyCreator { get; set; }
 
     [Property]
@@ -43,20 +45,41 @@
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
     /// </summary>
-    protected override int BuildHash() => System.HashCode.Combine( SelectedMap, LobbyCreator );
+    protected override int BuildHash() => System.HashCode.Combine( SelectedMap, LobbyCreator, isHost, Connections );
 
 
     protected override void OnStart()
     {
         base.OnStart();
-        _ = GetLobbyCreator();
+        //_ = GetLobbyCreator();
 
+        IsMenuVisible = true;
 
-
+        _ = UntilTheseFucksFixThisShit();
     }
+
+    private async Task UntilTheseFucksFixThisShit()
+    {
+        var pkg = await Package.FetchAsync("clickhq.nightoftheterry", false);
+
+        var mapData = new MapData
+        {
+            Author = pkg.Org?.Title,
+            Description = pkg.Description,
+            DownVotes = pkg.VotesDown,
+            UpVotes = pkg.VotesUp,
+            Name = pkg.Title,
+            Thumbnail = pkg.Thumb,
+            Indent = pkg.Ident,
+            FullIndent = pkg.FullIdent
+        };
+        SelectedMap = mapData;
+    }
+
 
     private void OnStartClick(){
         LobbyCreator.ChooseMap(SelectedMap);
+        Log.Info(isHost);
     }
 
     private async Task GetLobbyCreator()
@@ -74,9 +97,7 @@
 
     private void OpenMapBrowser()
     {
-        var mapSelector = Camera.AddComponent<MapSelector>();
-        mapSelector.TheLobbyMenu = this;
-        mapSelector.MapList = LobbyCreator.MapList;
+
 
     }
 
@@ -88,17 +109,22 @@
 
     private void MapBrowseClick()
     {
-        OpenMapBrowser();
+        TheMapSelector.Enabled = true;
+        TheMapSelector.MapList = LobbyCreator.MapList;
+        this.Enabled = false;
     }
 
     private void OptionsClick()
     {
-
+        Log.Info(TheChosenMaper);
     }
 
     private void LeaveClick()
     {
 
+        // Scene.LoadFromFile("scenes/mainmenu.scene");
+        // Game.Disconnect();
+        Game.Load("clickhq.rottenrounds", false);
     }
 
 

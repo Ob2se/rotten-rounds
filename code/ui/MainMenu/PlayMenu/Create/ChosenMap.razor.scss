@@ -14,12 +14,15 @@
         display: flex;
         flex-direction: column;
         gap: 1vh;
-        
+
 
         .chosen-map-title {
-            font-size: 3vh;
+            font-size: 50%;
             font-weight: bold;
             align-self: center;
+            
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
         }
 
         .chosen-map-thumbnail {
@@ -29,25 +32,52 @@
             //background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            border-width: .1vw;
-            border-radius: 1vh;
-            flex: 0 1 auto;
+            //flex: 0 1 auto;
         }
 
         .map-text-info-wrapper {
             display: flex;
             justify-content: space-between;
 
-            .chosen-text-info {
+            .chosen-author {
+                font-family: 'Montserrat';
+                font-weight: bold;
+            }
 
 
-                .map-votes-wrapper {
+            .map-votes-wrapper {
+                display: flex;
+                flex-direction: row;
+                gap: .5rem;
+                align-items: center;
+
+                .thumbs-up-icon {
+                    font-family: 'Material Icons';
+                    color: limegreen;
+                    font-size: 24%;
+                }
+
+                .chosen-up-votes {
+                    color: limegreen;
+                    font-family: 'Montserrat';
+                }
+
+                .thumbs-down-icon {
+                    font-family: 'Material Icons';
+                    color: red;
+                    font-size: 24%;
+                }
+
+                .chosen-down-votes {
+                    color: red;
+                    font-family: 'Montserrat';
                 }
             }
         }
 
         .chosen-text-description {
-            font-size: 1.85vh;
+            font-size: 1.5%;
+            font-family: 'Montserrat';
         }
     }
 }

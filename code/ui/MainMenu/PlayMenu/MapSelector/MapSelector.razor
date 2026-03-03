@@ -3,17 +3,19 @@
 @inherits MainMenuPanelComponent
 @namespace Sandbox
 
-
-<div class="map-selector-container">
-    <div class="map-filters">
-        Filters
-        <div class="map-filters-wrapper">
-            <div class="filter-line">
-                <text class="inputs-text">Most Popular</text>
-                <Checkbox class="inputs-checkbox" Checked="@MostPopular" Value:bind="@MostPopular"></Checkbox>
+<div class="fullscreen-blur"></div>
+<div class="map-selector-container-root">
+    <div class="map-selector-container">
+        <div class="map-filters">
+            Filters
+            <div class="map-filters-wrapper">
+                <div class="filter-line">
+                    <text class="inputs-text">Most Popular</text>
+                    <Checkbox class="inputs-checkbox" Checked="@MostPopular" Value:bind="@MostPopular"></Checkbox>
+                </div>
             </div>
         </div>
-    </div>
+    
     <div class="map-grid">
         @foreach(var x in MapList)
         {
@@ -24,15 +26,24 @@
         @if(AMapSelected)
         {
             <div class="the-map-title">@SelectedMap.Name</div>
-            <img class="the-map-thumbnail" src="@SelectedMap.Thumbnail"></img>
+            <img class="the-map-thumbnail" src="@SelectedMap.Thumbnail">
             <div class="author-vote-wrapper">
-                <text class="the-map-author">Author: @SelectedMap.Author</text>
-                <text class="the-map-up">Thumb Ups: @SelectedMap.UpVotes</text>
-                <text class="the-map-down">Thumb Downs: @SelectedMap.DownVotes</text>
+                <text class="the-map-author">@SelectedMap.Author</text>
+                <div class="map-votes">
+                    <div class="map-vote-ups">
+                        <text class="the-map-up">thumb_up_alt</text>
+                        <text class="the-map-up-votes">@SelectedMap.UpVotes</text>
+                    </div>
+                    <div class="map-vote-downs">
+                        <text class="the-map-down">thumb_down_alt</text>
+                        <text class="the-map-down-votes">@SelectedMap.DownVotes</text>
+                    </div>
+                </div>
             </div>
             <div class="the-map-description">@SelectedMap.Description</div>
             <button @onclick="@SelectTheMapClick" class="select-map-button">Select</button>
         }
+    </div>
     </div>
 </div>
 
@@ -45,11 +56,14 @@
     [Parameter]
     public List<MapData> MapList { get; set; }
 
-    public MapData SelectedMap { get; set; }
+    public MapData SelectedMap;
 
-    public bool MostPopular { get; set; }
+    public bool MostPopular;
 
-    private bool AMapSelected { get; set; }
+    private bool AMapSelected = false;
+
+
+
 
     [Property]
     public LobbyMenu TheLobbyMenu { get; set; }
@@ -71,12 +85,14 @@
         Log.Info("hello");
         TheLobbyMenu.SelectedMap = SelectedMap;
         Log.Info(TheLobbyMenu.SelectedMap.Name);
-        this.Destroy();
+        this.Enabled = false;
+        TheLobbyMenu.Enabled = true;
+        //this.Destroy();
     }
 
-    protected override void OnStart()
-    {
-        base.OnStart();
-        AMapSelected = false;
-    }
+    // protected override void OnStart()
+    // {
+    //     base.OnStart();
+    //     AMapSelected = false;
+    // }
 }

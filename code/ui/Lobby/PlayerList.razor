@@ -1,0 +1,25 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits MainMenuPanel
+@namespace Sandbox
+
+<div class="player-list-container">
+    <div class="fullscreen-blur"></div>
+    <div class="player-list">
+        @foreach (var x in Connections)
+        {
+            <PlayerListCard PlayerName="@x.DisplayName" PlayerLevel="@(1)" PlayerTitlePath="textures/playercards/default/_5ozi0c3w5ivq2k3wzti7_0.png"></PlayerListCard>
+        }
+    </div>
+</div>
+@code
+{
+
+    [Parameter]
+    public List<Connection> Connections { get; set; }
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( Connections );
+}

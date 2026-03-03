@@ -4,10 +4,9 @@
 @namespace Sandbox
 
 <div class="play-container @(IsMenuVisible ? "" : "hidden")">
-    <div class="bg-strip"></div>
     <div class="button-containers">
-        <button class="button-join" @onclick="@OnJoinClicked">Join</button>
-        <button class="button-create" @onclick="@OnCreateClicked">Create</button>
+        <button class="button-join" @onclick="@OnJoinClicked" @onmouseover="@OnJoinHovered" onmouseout="@OnJoinUnhovered"></button>
+        <button class="button-create" @onclick="@OnCreateClicked" @onmouseover="@OnCreateHovered" onmouseout="@OnCreateUnhovered"></button>
     </div>
 </div>
 
@@ -16,6 +15,16 @@
 
     MainMenuPanelComponent mainMenu { get; set; }
 
+    [Parameter]
+    public DecalHighlight CreaterDecal { get; set; }
+
+
+    [Parameter]
+    public DecalHighlight JoinerDecal { get; set; }
+
+
+    public LightFlickerSolid CreateLight;
+    public LightFlickerSolid JoinLight;
 
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
@@ -28,9 +37,40 @@
     }
 
 
+
+    void OnCreateHovered()
+    {
+        CreaterDecal.HighlightOn();
+        CreateLight.isHovered = true;
+        JoinLight.Unselected = true;
+    }
+
+    void OnCreateUnhovered()
+    {
+        CreaterDecal.HighlightOff();
+        CreateLight.isHovered = false;
+        JoinLight.Unselected = false;
+    }
+
+    void OnJoinHovered()
+    {
+        JoinerDecal.HighlightOn();
+        JoinLight.isHovered = true;
+        CreateLight.Unselected = true;
+    }
+
+    void OnJoinUnhovered()
+    {
+        JoinerDecal.HighlightOff();
+        JoinLight.isHovered = false;
+        CreateLight.Unselected = false;
+    }
+
+
     void OnCreateClicked()
     {
         var x = AddChild<CreateGame>();
+        
         
     }
 

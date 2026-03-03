@@ -8,10 +8,12 @@
         <text class="chosen-map-title">@MapTitle</text>
             <div class="chosen-map-thumbnail" style="background-image: url('@MapThumbnail');"></div>
             <div class="map-text-info-wrapper">
-                <text class="chosen-text-info">@MapAuthor</text>
+                <text class="chosen-author">@MapAuthor</text>
                 <div class="map-votes-wrapper">
-                    <text class="chosen-text-info">@MapUpVotes</text>
-                    <text class="chosen-text-info">@MapDownVotes</text>
+                    <text class="thumbs-up-icon">thumb_up_alt</text>
+                    <text class="chosen-up-votes">@MapUpVotes</text>
+                    <text class="thumbs-down-icon">thumb_down_alt</text>
+                    <text class="chosen-down-votes">@MapDownVotes</text>
                 </div>
         </div>
         <text class="chosen-text-description">@MapDescription</text>
@@ -33,7 +35,10 @@
     [Parameter]
     public string MapThumbnail { get; set; }
 
-	
+    public void asdf()
+    {
+        Log.Info("asdf");
+    }
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt

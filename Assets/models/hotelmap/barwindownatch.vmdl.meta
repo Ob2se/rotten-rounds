@@ -1,0 +1,24 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "Barwindownatch",
+      "Type": "model",
+      "Org": "local",
+      "Ident": "barwindownatch",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": [
+        "facepunch.concrete_wall_bare_02#47059",
+        "niclude.metal_5#30649"
+      ],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "models/hotelmap/barwindownatch.vmdl"
+      }
+    }
+  }
+}

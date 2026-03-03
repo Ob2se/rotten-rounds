@@ -9,6 +9,27 @@
 			{
 				key = 
 				{
+					m_id = 52753330
+				}
+				value = 
+				{
+					_class = "CSequenceAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -480.0, 48.0 ]
+					m_nNodeID = 
+					{
+						m_id = 52753330
+					}
+					m_sNote = ""
+					m_tagSpans = [  ]
+					m_sequenceName = "boardfallanimation3"
+					m_playbackSpeed = 1.0
+					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 420832682
 				}
 				value = 
@@ -73,7 +94,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1995945199
+									m_id = 4294967295
 								}
 								m_outputID = 
 								{
@@ -141,7 +162,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 653342388
+									m_id = 52753330
 								}
 								m_outputID = 
 								{
@@ -162,27 +183,6 @@
 					]
 					m_bBlockWaningTags = false
 					m_bLockStateWhenWaning = false
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 653342388
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ -432.0, 16.0 ]
-					m_nNodeID = 
-					{
-						m_id = 653342388
-					}
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "letstrythisagain2"
-					m_playbackSpeed = 1.0
-					m_bLoop = false
 				}
 			},
 			{
@@ -211,27 +211,6 @@
 							m_id = 4294967295
 						}
 					}
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 1995945199
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ -480.0, -48.0 ]
-					m_nNodeID = 
-					{
-						m_id = 1995945199
-					}
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "letstrythisagain2_reverse"
-					m_playbackSpeed = 2.0
-					m_bLoop = false
 				}
 			},
 		]
@@ -330,7 +309,7 @@
 	}
 	m_previewModels = 
 	[
-		"models/fuckmeffs.vmdl",
+		"models/window/windowboard/board.vmdl",
 	]
 	m_boneMergeModels = [  ]
 	m_cameraSettings = 

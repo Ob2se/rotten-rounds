@@ -1,0 +1,140 @@
+{
+  "RootObject": {
+    "__guid": "26232b82-8daa-4959-91f4-0a8730065204",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "basethrowable",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "BaseThrowable",
+        "__guid": "1896cc64-a9f9-403d-9248-3a0dae63db23",
+        "__enabled": true,
+        "Flags": 0,
+        "Damage": 100,
+        "ExplosionEffect": "particles/explosion/explosion.medium.prefab",
+        "ExplosionSound": null,
+        "Lethal": true,
+        "MaxAmount": 4,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "ThrowableModel": {
+          "_type": "component",
+          "component_id": "3ce63c47-7e4f-438c-afa7-03f9369a0a98",
+          "go": "ec2b5436-8a55-430c-87d7-89b734c9a72c",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "ThrowableName": "HE Grenade",
+        "TypeOfThrowable": "Grenade"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "ec2b5436-8a55-430c-87d7-89b734c9a72c",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "ThrowableContainer",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "3ce63c47-7e4f-438c-afa7-03f9369a0a98",
+            "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "models/weapons/sbox_grenade_explosive/v_he_grenade.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Weapons/Throwable",
+  "MenuIcon": "add",
+  "DontBreakAsTemplate": false,
+  "__references": [
+    "facepunch.explosionmedium#110500",
+    "facepunch.v_he_grenade#150528"
+  ],
+  "__version": 2
+}

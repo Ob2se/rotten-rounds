@@ -5,7 +5,7 @@
   "Ident": "rottenrounds",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "models/fpsarms/nightofterry.vmap\ncode/ui/*\nAssets\\fonts\\*",
+  "Resources": "models/fpsarms/nightofterry.vmap\ncode/ui/*\nAssets\\fonts\\*\nAssets\\ui\\*\nAssets\\ui\\*.png\nAssets\\ui\\Perks\\*\nAssets\\ui\\Perks\\IcyAid\\*\n/fonts/*\n/ui/*\nfonts/*\nui/*\n\\fonts\\*\n\\ui\\*\nfonts\\*\nui\\*\ntextures\\*\ntextures/*\ntextures\\playercards\\default\\*\ntextures/playercards/default/*",
   "PackageReferences": [],
   "EditorReferences": null,
   "Mounts": null,
@@ -24,6 +24,11 @@
     "LeaderboardType": "None",
     "CsProjName": "",
     "StartupScene": "scenes/mainmenu.scene",
-    "LaunchMode": "Normal"
+    "LaunchMode": "Normal",
+    "ControlModes": {
+      "Keyboard": false,
+      "VR": false,
+      "Gamepad": false
+    }
   }
 }

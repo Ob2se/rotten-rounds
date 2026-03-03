@@ -1,0 +1,6 @@
+
+Layer0
+{
+	shader "decals/writingonwall.shader_c"
+
+}

@@ -1,70 +1,60 @@
 .play-container {
-    display: flex;
-    position: absolute;
-    flex-direction: row;
-    pointer-events: all;
-    justify-content: space-between;
-    width: 100vw;
-    height: 100vh;
-    opacity: 1;
-    top: 0;
-    left: 0;
-    overflow: visible;
+    .button-containers {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; // only children will interact
+
+        .button-join {
+            position: absolute;
+            bottom: 20%; // adjust so it lines up with your gate
+            right: 60%; // adjust horizontally
+            width: 35%; // span across gate
+            height: 50%; // fill vertically
+            //background-color: red; // debug red tint, remove later
+            /* border-color: red;
+            border-width: 1rem;*/
+            pointer-events: all;
+            cursor: pointer;
+            font-size: 2vw;
+            font-family: Mostly Ghostly;
+            transition: transform 0.2s, color 0.2s;
+            justify-content: center;
+            color: gray;
+
+            &:hover {
+                color: white;
+            }
+        }
+
+
+        .button-create {
+            position: absolute;
+            bottom: 20%; // adjust so it lines up with your gate
+            right: 7%; // adjust horizontally
+            width: 35%; // span across gate
+            height: 50%; // fill vertically
+            //background-color: red; // debug red tint, remove later
+            /*border-color: red;
+            border-width: .5rem;*/
+            pointer-events: all;
+            cursor: pointer;
+            font-size: 2vw;
+            font-family: Mostly Ghostly;
+            transition: transform 0.08s ease-out, color 0.05s linear;
+            color: gray;
+
+            &:hover {
+                color: white;
+            }
+
+            justify-content: center;
+        }
+    }
 
     &.hidden {
         opacity: 0;
-    }
-
-    .bg-strip {
-        background-color: black;
-        width: 15vw;
-        //background-color: black;
-
-        &::after {
-            //content: "";
-            //position: absolute;
-            position: absolute;
-            //top: 0;
-            left: 15vw;
-            width: 5vw;
-            height: 100vh;
-            background: linear-gradient(to right, black, transparent);
-            pointer-events: none;
-        }
-    }
-
-
-    .button-containers {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        gap: 9vh;
-        align-items: flex-start;
-        top: 40vh;
-        left: 3vw;
-
-
-        .button {
-            font-size: 2vw;
-            font-family: HEROLD;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
-
-
-            &:hover {
-                //font: bold;
-                background-image: url(ui/images/favpng_b8f4c8ee5c84df0b4738672ad0ccad05.png);
-                color: darkred;
-                background-repeat: no-repeat;
-                background-position: left;
-                background-size: contain;
-                overflow: visible;
-                transform: scale(1.35vw);
-                color: gold;
-                //font-family: Scream Blood;
-                //border-radius: 2vw;
-            }
-        }
     }
 }

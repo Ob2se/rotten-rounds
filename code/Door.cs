@@ -13,19 +13,87 @@ public sealed class Door : Component, IInteraction, IPower
 	[Property]
 	private ModelRenderer DoorModel {  get; set; }
 
+	public bool Interactable { get; set; } = true;
+
 	[Property]
-	private bool NeedsPower { get; set; }
+	public bool NeedsPower { get; set; }
+
+	[Property]
+	private Collider InteractionTrigger { get; set; }
+
 
 	[Sync]
 	public bool Powered { get; set; } = false;
 
-	[Property]
-	private List<GameObject> AssociatedWindows;
 
 	[Property]
 	private List<GameObject> AssociatedSpawns;
 
 	public float HoldTime => 0f;
+
+	[Property]
+	public bool Hold { get; set; }
+
+	public GameModeManager GameMode;
+
+	public GameObject GO => this.GameObject;
+
+
+	[Property]
+	public bool ConnectedToOtherDoors { get; set; } = false;
+
+	[Property, HideIf("ConnectedToOtherDoors", false), Validate("CheckConnectedDoorsNoPower", "ERROR: One of the connected doors requires power while this one does not!", LogLevel.Error), Validate( "CheckConnectedDoorsPowered", "ERROR: One of the connected doors does not require power while this one does!", LogLevel.Error )]
+	public List<Door> ConnectedDoors { get; set; }
+
+
+	private bool CheckConnectedDoorsPowered(List<Door> connectedDoors)
+	{
+		if ( NeedsPower )
+		{
+			if ( ConnectedToOtherDoors )
+			{
+				foreach ( var door in connectedDoors )
+				{
+					if ( !door.NeedsPower ) return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private bool CheckConnectedDoorsNoPower( List<Door> connectedDoors )
+	{
+		if ( !NeedsPower )
+		{
+			if ( ConnectedToOtherDoors )
+			{
+				foreach ( var door in connectedDoors )
+				{
+					if ( door.NeedsPower ) return false;
+				}
+			}
+		}
+		return true;
+	}
+
+
+	protected override void DrawGizmos()
+	{
+		if ( !Scene.Editor.Selection.Contains( this.GameObject ) ) return;
+
+		if ( AssociatedSpawns.Count() == 0 ) return;
+		Gizmo.Draw.Color = Color.Cyan;
+		Gizmo.Transform = global::Transform.Zero;
+		Gizmo.Draw.IgnoreDepth = true;
+		foreach ( var x in AssociatedSpawns )
+		{
+			Gizmo.Draw.Line(
+			GameObject.Transform.World.Position,
+			x.Transform.World.Position
+		);
+		}
+	}
+
 
 
 	private void OnDoorOpened()
@@ -41,22 +109,46 @@ public sealed class Door : Component, IInteraction, IPower
 		GameObject.Destroy();
 	}
 
-	[Rpc.Host]
+	
 	private void OpenDoor( Player player )
 	{
-		Log.Info( "door interacted with" );
-		if ( player.Points - DoorPrice < 0 )
+
+		player.RemovePoints( DoorPrice );
+		player.PlayChaChing();
+		player.CurrentInteraction = null;
+		if ( ConnectedToOtherDoors )
 		{
-			Log.Info( "broke" );
+			foreach ( var door in ConnectedDoors )
+			{
+				door.OpenDoorConnection();
+			}
+		}
+		ActivateSpawns();
+		
+	}
+
+
+	public void OpenDoorConnection()
+	{
+		ActivateSpawns();
+	}
+
+
+	[Rpc.Host]
+	private void ActivateSpawns()
+	{
+		if ( AssociatedSpawns.Count() <= 0 )
+		{
+			Opened = true;
 			return;
 		}
-		player.RemovePoints( DoorPrice );
-		Opened = true;
 		foreach ( var x in AssociatedSpawns )
 		{
 			x.GetComponent<ZombieSpawn>().activated = true;
 		}
+		Opened = true;
 	}
+
 
 
 	public void OnPowerTurnedOn()
@@ -68,13 +160,10 @@ public sealed class Door : Component, IInteraction, IPower
 	[Rpc.Host]
 	private void TurnPowerOn()
 	{
-		if ( NeedsPower && !Powered )
-		{
-			Powered = true;
-		}
+		Powered = true;
 	}
 
-	public void OnInteractionFailed( Player player )
+	public void OnInteractionFailed( Player player, IInteraction.InteractionFReason reason )
 	{
 		//could add some feedback here later
 	}
@@ -82,13 +171,58 @@ public sealed class Door : Component, IInteraction, IPower
 	public void OnInteract(Player player)
 	{
 
-		if ( NeedsPower && !Powered )
+		if(player.Points < DoorPrice)
 		{
-			//need some indication that it needs power 
+			OnInteractionFailed( player, IInteraction.InteractionFReason.NoMoney );
 			return;
-		} 
+		}
+
+		if ( !Powered && NeedsPower)
+		{
+			return;
+		}
+
 		OpenDoor(player);
 
+	}
+
+	private void InteractionTriggerEnter( GameObject obj )
+	{
+		var player = obj.GetComponentInParent<Player>();
+		if( player != null )
+		{
+			if ( Interactable )
+			{
+				player.CurrentInteraction = this;
+			}
+		}
+	}
+
+
+	private void InteractionTriggerExit( GameObject obj )
+	{
+		var player = obj.GetComponentInParent<Player>();
+		if ( player != null )
+		{
+			player.CurrentInteraction = null;
+		}
+	}
+
+
+	
+
+
+	
+	protected override void OnStart()
+	{
+		InteractionTrigger.OnObjectTriggerEnter += InteractionTriggerEnter;
+		InteractionTrigger.OnObjectTriggerExit += InteractionTriggerExit;
+
+		GameMode = Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
+		if ( !NeedsPower )
+		{
+			Interactable = true;
+		}
 	}
 
 	protected override void OnUpdate()

@@ -1,0 +1,36 @@
+root {
+    overflow: visible;
+}
+
+.name-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: visible;
+    justify-content: center;
+    align-items: center; /* vertical */
+
+    .name-content {
+        width: 512px;
+        max-width: 512px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: visible;
+
+        .name {
+            flex: 0 0 auto;
+            color: whitesmoke;
+            white-space: nowrap;
+            overflow: visible;
+            padding: 8px 12px;
+            text-shadow: 0 0 4px black, 0 0 8px black, 0 0 12px black;
+            font-weight: bolder;
+            font-family: 'Montserrat';
+        }
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+}

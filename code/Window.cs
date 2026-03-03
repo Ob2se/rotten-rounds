@@ -21,8 +21,19 @@ public sealed class Window : Component, IInteraction
 
 	[Property] Collider WindowRepairCollider { get; set; }
 
+	public GameObject GO => this.GameObject;
 
-	
+
+	private bool BeingRepaired = false;
+
+	public bool CanBeRepaired = false;
+
+	private List<Player> PlayersInInterBox = new();
+
+	[Property]
+	public bool Hold { get; set; }
+
+	public bool Interactable { get; set; } = false;
 
 	[Property]
 	public float HoldTime => 2f;
@@ -90,17 +101,21 @@ public sealed class Window : Component, IInteraction
 
 	public void OnInteract( Player player )
 	{
-		if ( boards < 6 )
+		if ( CanBeRepairedCheck(player) )
 		{
 			AddBoard();
 			player.AddPoints( 20 );
+			if ( boards == maxBoards )
+			{
+				player.CurrentInteraction = null;
+			}
 		}
 		
-		Log.Info( "window repair" );
+		//Log.Info( "window repair" );
 	}
 
 
-	public void OnInteractionFailed( Player player )
+	public void OnInteractionFailed( Player player, IInteraction.InteractionFReason reason )
 	{
 		// Optional: Handle interaction failure (e.g., show a message to the player)
 	}
@@ -118,15 +133,23 @@ public sealed class Window : Component, IInteraction
 
 	private void PlayBoardAnimationFall()
 	{
-		var board = GetRandomUnfallenBoard( WindowBoards ).GetComponent<SkinnedModelRenderer>();
-		board.Set( "b_fall", true );
+		var boarder = GetRandomUnfallenBoard( WindowBoards );
+		if ( boarder != null )
+		{ 
+			var board = boarder.GetComponent<SkinnedModelRenderer>();
+			board.Set( "b_fall", true );
+		}
 	}
 
 	private void PlayBoardAnimationRepair()
 	{
-		var board = GetRandomFallenBoard( WindowBoards ).GetComponent<SkinnedModelRenderer>();
-		board.Set( "b_repair", true );
-		//board.PlaybackRate = 1;
+		var boarder = GetRandomFallenBoard( WindowBoards );
+		if ( boarder != null )
+		{ 
+			var board = boarder.GetComponent<SkinnedModelRenderer>();
+			board.Set( "b_repair", true );
+			//board.PlaybackRate = 1;
+		}
 	}
 
 	private static void PlaySoundAtLocation( Vector3 Location )
@@ -185,6 +208,11 @@ public sealed class Window : Component, IInteraction
 		WindowDestroyPointPos = WindowDestroyPoint.WorldPosition;
 		WindowEnteredPointPos = WindowEnteredPoint.WorldPosition;
 		WindowBoards = new();
+
+		WindowRepairCollider.OnObjectTriggerEnter += OnRepairTriggerEnter;
+		WindowRepairCollider.OnObjectTriggerExit += OnRepairTriggerExit;
+		
+
 		foreach ( var x in BoardsContainer.Children )
 		{
 			if ( x == null )
@@ -202,10 +230,56 @@ public sealed class Window : Component, IInteraction
 	}
 
 
+
+	private bool CanBeRepairedCheck(Player player)
+	{
+		if(BeingRepaired) return false;
+		if ( boards >= maxBoards ) return false;
+		return true;
+
+	}
+
+
+	private void OnRepairTriggerEnter( GameObject obj )
+	{
+		//Log.Info( obj.ToString() + " entered the trigger box" );
+		var player = obj.GetComponentInParent<Player>();
+		if ( player != null )
+		{
+			if ( !PlayersInInterBox.Contains( player ) )
+			{
+				PlayersInInterBox.Add( player );
+			}
+			if ( CanBeRepairedCheck( player ) )
+			{
+				player.CurrentInteraction = this;
+			}
+
+
+		}
+	}
+
+
+	private void OnRepairTriggerExit( GameObject obj )
+	{
+		//Log.Info( obj.ToString() + " entered the trigger box" );
+		var player = obj.GetComponentInParent<Player>();
+		if ( player != null )
+		{
+			if(PlayersInInterBox.Contains( player ))
+			{
+				PlayersInInterBox.Remove( player );
+				player.CurrentInteraction = null;
+			}
+		}
+	}
+
+
+
 	[Rpc.Host]
 	private void OnTriggerEnter(GameObject obj)
 	{
-		Log.Info( obj.ToString() + " entered the trigger box" );
+		//Log.Info( obj.ToString() + " entered the trigger box" );
 
 		if ( obj.Parent.Tags.Has( "zombie" ) )
 		{
@@ -300,33 +374,50 @@ public sealed class Window : Component, IInteraction
 	[Rpc.Host]
 	public void AddBoard()
 	{
-		if ( boards != 6 )
+		if ( boards < maxBoards )
 		{
 			boards++;
+			//Log.Info( "board should be added cuh" );
 			PlayRepairEffects( this.WorldPosition );
 		}
+		
 	}
 
 
 	protected override void OnUpdate()
 	{
-
 		if ( boards < maxBoards )
 		{
-			WindowRepairCollider.Tags.Add("interactable");
-			WindowRepairCollider.Tags.Add( "interactablehold" );
-		} else if ( boards >= maxBoards )
+			if ( !WindowRepairCollider.Tags.Contains( "interactable" ) )
+			{
+				WindowRepairCollider.Tags.Add( "interactable" );
+			}
+
+			if ( !WindowRepairCollider.Tags.Contains( "interactablehold" ) )
+			{
+				WindowRepairCollider.Tags.Add( "interactablehold" );
+			}
+		}
+		else
 		{
 			if ( WindowRepairCollider.Tags.Contains( "interactable" ) )
 			{
 				WindowRepairCollider.Tags.Remove( "interactable" );
 			}
-			if( WindowRepairCollider.Tags.Contains( "interactablehold" ) )
+
+			if ( WindowRepairCollider.Tags.Contains( "interactablehold" ) )
 			{
 				WindowRepairCollider.Tags.Remove( "interactablehold" );
 			}
 		}
 
+		if(boards < maxBoards )
+		{
+			Interactable = true;
+		} else
+		{
+			Interactable = false;
+		}
 
 		if ( AttackingZombie == null && NeedLineChange && !isOpen )
 		{

@@ -73,12 +73,11 @@ VS
 PS
 {
 	#include "common/pixel.hlsl"
-	
+	RenderState( CullMode, F_RENDER_BACKFACES ? NONE : DEFAULT );
+		
 	SamplerState g_sSampler0 < Filter( ANISO ); AddressU( WRAP ); AddressV( WRAP ); >;
 	CreateInputTexture2D( Texture_ps_0, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "textures/perks/icyaid/machine/perkmachine_explode_low_glass_basecolor.jpg" ) );
-	CreateInputTexture2D( Texture_ps_1, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "textures/perks/icyaid/machine/perkmachine_explode_low_glass_normal.jpg" ) );
 	Texture2D g_tTexture_ps_0 < Channel( RGBA, Box( Texture_ps_0 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
-	Texture2D g_tTexture_ps_1 < Channel( RGBA, Box( Texture_ps_1 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
 	TextureAttribute( LightSim_DiffuseAlbedoTexture, g_tTexture_ps_0 )
 	TextureAttribute( RepresentativeTexture, g_tTexture_ps_0 )
 	
@@ -97,14 +96,12 @@ PS
 		m.Transmission = 0;
 		
 		float4 l_0 = Tex2DS( g_tTexture_ps_0, g_sSampler0, i.vTextureCoords.xy );
-		float4 l_1 = Tex2DS( g_tTexture_ps_1, g_sSampler0, i.vTextureCoords.xy );
 		
 		m.Albedo = l_0.xyz;
 		m.Opacity = 1;
-		m.Normal = l_1.xyz;
-		m.Roughness = 1;
+		m.Roughness = 0;
 		m.Metalness = 0;
-		m.AmbientOcclusion = 1;
+		m.AmbientOcclusion = 0;
 		
 		
 		m.AmbientOcclusion = saturate( m.AmbientOcclusion );

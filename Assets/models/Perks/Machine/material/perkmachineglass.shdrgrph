@@ -23,18 +23,14 @@
     {
       "_class": "Result",
       "DefaultOpacity": 1,
-      "DefaultRoughness": 1,
+      "DefaultRoughness": 0,
       "DefaultMetalness": 0,
-      "DefaultAmbientOcclusion": 1,
+      "DefaultAmbientOcclusion": 0,
       "Identifier": "0",
-      "Position": "156,-96",
+      "Position": "252,-108",
       "HandleOffsets": {},
       "Albedo": {
         "Identifier": "1",
-        "Output": "Result"
-      },
-      "Normal": {
-        "Identifier": "2",
         "Output": "Result"
       }
     },
@@ -68,7 +64,7 @@
         }
       },
       "Identifier": "1",
-      "Position": "-156,-288",
+      "Position": "-120,-288",
       "HandleOffsets": {}
     },
     {

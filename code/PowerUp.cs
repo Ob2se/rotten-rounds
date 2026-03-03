@@ -7,27 +7,40 @@ public sealed class PowerUp : Component
 	[Property]
 	public ModelRenderer PowerUpModel { get; set; }
 
+	[Property]
+	public GameObject PowerUpVFX { get; set; }
 	
 	public PowerupID PowerUpType { get; set; }
 
 	[Property]
 	public BoxCollider PowerUpTriggerBox { get; set; }
 
+	bool blinking = false;
+	int blinkIndex = 0;                 // counts how many blinks have happened
+	float nextBlinkInterval = 0f;       // interval until next blink
+	TimeSince TimeSincePowerUpDropped;  // auto-incrementing
+	TimeSince timeSinceBlink;           // auto-incrementing
+
+	float blinkStartTime = 20f;
+	float blinkDuration = 10f;          // total time for acceleration
+	float maxInterval = .5f;
+	float minInterval = 0.1f;
+	int totalBlinks = 50;               // approximate number of blinks over duration
 
 	protected override void OnStart()
 	{
 		base.OnStart();
-
+		TimeSincePowerUpDropped = 0f;
 		if ( Networking.IsHost )
 		{
 			
 			var rand = new Random();
 			var vals = Enum.GetValues( typeof( PowerupID ) );
 			var index = rand.Next( 1, vals.Length );
-
+			
 			var type = (PowerupID)vals.GetValue( index );
 			SetPowerup( (int)type );
-			Log.Info( type );
+			
 		}
 		PowerUpTriggerBox.OnObjectTriggerEnter += OnTriggerEnter;
 	}
@@ -52,7 +65,7 @@ public sealed class PowerUp : Component
 
 	private void OnTriggerEnter( GameObject other )
 	{
-		Log.Info( "hello triggerbox power activated" );
+		
 		var player  = other.GetComponent<Player>();
 		if ( player == null ) return;
 
@@ -76,7 +89,6 @@ public sealed class PowerUp : Component
 			switch ( powerupname )
 			{
 				case "Max Ammo":
-					Log.Info( "maxammo picked up" );
 					gamemodemanager.MaxAmmo();
 					break;
 				case "Insta Kill":
@@ -87,6 +99,9 @@ public sealed class PowerUp : Component
 					break;
 				case "Nuke":
 					gamemodemanager.KillAllZombies();
+					break;
+				case "Fire Sale":
+					gamemodemanager.StartFireSale();
 					break;
 			}
 		}
@@ -99,8 +114,63 @@ public sealed class PowerUp : Component
 		GameObject?.Destroy();
 	}
 
+
+	private void Blink()
+	{
+		
+		if ( PowerUpModel.Enabled )
+		{
+			PowerUpModel.Enabled = false;
+			
+			
+			return;
+		}
+		if ( !PowerUpModel.Enabled )
+		{
+			
+			PowerUpModel.Enabled = true;
+			
+			return;
+		}
+	}
+
+
 	protected override void OnUpdate()
 	{
+
 		WorldRotation *= Rotation.FromYaw( 90f * Time.Delta );
+
+		if ( !blinking )
+		{
+			if ( TimeSincePowerUpDropped >= blinkStartTime )
+			{
+				blinking = true;
+				timeSinceBlink = 0f;
+				blinkIndex = 0;
+				nextBlinkInterval = maxInterval;
+			}
+			return;
+		}
+
+		if ( timeSinceBlink >= nextBlinkInterval )
+		{
+			timeSinceBlink = 0f;
+			Blink();  // <-- your blink effect
+
+			blinkIndex++;
+
+			
+			float u = MathX.Clamp( (float)blinkIndex / totalBlinks, 0f, 1f );
+
+			// cubic easing for smooth acceleration
+			float eased = 1f - MathF.Pow( 1f - u, 3f );
+
+			// schedule next blink interval
+			nextBlinkInterval = MathX.Lerp( maxInterval, minInterval, eased );
+		}
+
+
+
+
 	}
 }

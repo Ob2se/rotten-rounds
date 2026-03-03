@@ -22,18 +22,18 @@
 
         .button-play {
             position: absolute;
-            top: 22%; // adjust so it lines up with your gate
-            left: 40%; // adjust horizontally
-            width: 20%; // span across gate
-            height: 38%; // fill vertically
+            top: 30%; // adjust so it lines up with your gate
+            left: 42%; // adjust horizontally
+            width: 15%; // span across gate
+            height: 35%; // fill vertically
             //background-color: red; // debug red tint, remove later
-           /* border-color: red;
+            /*border-color: red;
             border-width: 1rem;*/
             pointer-events: all;
             cursor: pointer;
             font-size: 2vw;
             font-family: Mostly Ghostly;
-            transition: transform 0.2s, color 0.2s;
+            transition: transform 0.08s ease-out, color 0.05s linear;
             justify-content: center;
             color: gray;
 
@@ -44,10 +44,10 @@
 
         .button-leaderboards {
             position: absolute;
-            left: 1vw;
+            left: 14vw;
             top: 30vh;
-            height: 68%;
-            width: 34%;
+            height: 55%;
+            width: 25%;
             font-size: 2vw;
             font-family: Mostly Ghostly;
             color: gray;
@@ -55,7 +55,7 @@
             cursor: pointer;
             /*border-color: red;
             border-width: 1rem;*/
-            transition: transform 0.2s, color 0.2s;
+            //transition: transform 0.2s, color 0.2s;
             justify-content: center;
 
             &:hover {
@@ -65,10 +65,10 @@
 
         .button-customize {
             position: absolute;
-            bottom: 11%; // adjust so it lines up with your gate
+            bottom: 20%; // adjust so it lines up with your gate
             right: 1%; // adjust horizontally
-            width: 40%; // span across gate
-            height: 45%; // fill vertically
+            width: 35%; // span across gate
+            height: 50%; // fill vertically
             //background-color: red; // debug red tint, remove later
             /*border-color: red;
             border-width: .5rem;*/
@@ -76,14 +76,13 @@
             cursor: pointer;
             font-size: 2vw;
             font-family: Mostly Ghostly;
-            transition: transform 0.2s, color 0.2s;
+            //transition: transform 0.2s, color 0.2s;
             color: gray;
 
             &:hover {
                 color: white;
             }
-
-            justify-content: center;
+            //justify-content: center;
         }
 
 
@@ -97,25 +96,45 @@
             font-size: 1.5vw;
             font-family: Mostly Ghostly;
             color: gray;
-            pointer-events: none;
         }
 
         .button-options,
         .button-quit {
             display: none; // hidden, replaced by [ESC] Menu
         }
+
+        &.hidden {
+            opacity: 0;
+        }
     }
 
-    .motd {
-        position: absolute;
-        right: 46vw;
-        bottom: 4vh;
-        flex-direction: column;
-        align-items: flex-end;
-        padding-bottom: 1vh;
+    &.hidden {
+        opacity: 0;
     }
 }
 
+.back-button-container {
+    position: absolute;
+    bottom: 2vh;
+    right: 3vw;
+    pointer-events: all;
+
+
+    .back-button {
+        font-size: 1.5vw;
+        font-family: Mostly Ghostly;
+        color: gray;
+        transition: transform 0.08s ease-out, color 0.05s linear;
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+}
 
 
 

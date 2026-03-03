@@ -1,0 +1,64 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <div class="@NameContainerClass">
+        <div class="name-content">
+	        <Label style="font-size: @(DisplayFontSize)px;" class="name">@PlayerName</Label>
+        </div>
+    </div>
+</root>
+
+@code
+{
+
+    public string PlayerName => Network?.Owner?.DisplayName ?? string.Empty;
+
+    public string NameContainerClass => $"name-container {(Network?.IsOwner == true ? "hidden" : string.Empty)}";
+
+    public float DisplayFontSize => GetStableFontSize( PlayerName );
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine(PlayerName, Network?.IsOwner == true);
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        //AdjustText();
+    }
+
+
+    
+
+    protected override void OnTreeBuilt()
+    {
+        base.OnTreeBuilt();
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+    }
+
+
+    private static float GetStableFontSize( string playerName )
+    {
+        const float maxFontSize = 30f;
+        const float minFontSize = 24f;
+        const int startShrinkAt = 10;
+        const float shrinkPerChar = 1.6f;
+
+        var length = string.IsNullOrEmpty( playerName ) ? 0 : playerName.Length;
+        if ( length <= startShrinkAt )
+            return maxFontSize;
+
+        var size = maxFontSize - (length - startShrinkAt) * shrinkPerChar;
+        return MathF.Max( minFontSize, size );
+    }
+
+}

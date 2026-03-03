@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "de687cc1-9a0f-4a8a-b4fd-b16c1106197b",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "powerup",
     "Position": "0,0,0",
@@ -10,7 +10,7 @@
     "Tags": "powerup,trigger",
     "Enabled": true,
     "NetworkMode": 1,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
@@ -19,6 +19,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "ad01935e-139e-43ac-8e0e-e1d25200dc6d",
         "__enabled": false,
+        "Flags": 0,
         "BodyGroups": 18446744073709551615,
         "CreateAttachments": false,
         "LodOverride": null,
@@ -45,6 +46,7 @@
         "__type": "Sandbox.BoxCollider",
         "__guid": "6c6391f3-e6fa-4b37-a0d3-612db06891fd",
         "__enabled": true,
+        "Flags": 0,
         "Center": "0,0,0",
         "ColliderFlags": 0,
         "Elasticity": null,
@@ -65,6 +67,30 @@
         "Static": false,
         "Surface": null,
         "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "PowerUp",
+        "__guid": "5ab62039-b52c-4a4b-96ba-95a9576f653d",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PowerUpModel": {
+          "_type": "component",
+          "component_id": "ad01935e-139e-43ac-8e0e-e1d25200dc6d",
+          "go": "de687cc1-9a0f-4a8a-b4fd-b16c1106197b",
+          "component_type": "ModelRenderer"
+        },
+        "PowerUpTriggerBox": {
+          "_type": "component",
+          "component_id": "6c6391f3-e6fa-4b37-a0d3-612db06891fd",
+          "go": "de687cc1-9a0f-4a8a-b4fd-b16c1106197b",
+          "component_type": "BoxCollider"
+        }
       }
     ],
     "Children": [],
@@ -84,7 +110,8 @@
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
         "IncludedBodies": ""
-      }
+      },
+      "GameObjectSystems": []
     },
     "__variables": []
   },

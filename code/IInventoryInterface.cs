@@ -2,7 +2,7 @@ using Sandbox;
 
 public interface IInventoryInterface
 {
-	public void AddWeapon( string WeaponPrefab );
+	public void AddWeapon( string WeaponPrefab, int packed );
 
 	public void RemoveWeapon( int slot );
 

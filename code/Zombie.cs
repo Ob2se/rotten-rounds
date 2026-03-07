@@ -188,7 +188,7 @@ public sealed class Zombie : Component
 	}
 
 
-	[Rpc.Host]
+	
 	private void GibbedUp( GameObject hitObject, int hitBone, Vector3 HitPos, Vector3 Direction )
 	{
 		var gibMap = new Dictionary<string, int>
@@ -199,15 +199,15 @@ public sealed class Zombie : Component
 			{ "lleg", 6 },
 			{ "rleg", 7 }
 		};
-
+		Log.Info( "GibbedUp: " + hitObject);
 		foreach ( var kvp in gibMap )
 		{
 			if ( hitObject.Tags.Has( kvp.Key ) )
 			{
+				Log.Info( "GibbedUp: dismemberment at: " + kvp.Key + "|" + kvp.Value );
 				zombieModel.SetBodyGroup( "Dismemberment", kvp.Value );
-				if ( kvp.Key == "head" ) return;
-				var c = Gibbin.FirstOrDefault( gib => gib.Key == kvp.Key ).Value;
 
+				var c = Gibbin.FirstOrDefault( gib => gib.Key == kvp.Key ).Value;
 				c.Enabled = true;
 
 				var z = c.GetComponents<ModelPhysics>();
@@ -217,6 +217,10 @@ public sealed class Zombie : Component
 					m.Bodies.ForEach( body => body.Component.ApplyImpulseAt( HitPos, Direction * 1000f ) );
 				}
 				break;
+				
+				
+
+				
 			}
 		}
 	}

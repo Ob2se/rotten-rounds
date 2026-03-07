@@ -14,10 +14,18 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 
 
 
-	[Sync] public NetList<string> Weapons { get; set; } = new();
+	[Sync] public NetList<WeaponStuff> Weapons { get; set; } = new();
 
 	//currentmag | ammo total
 	[Sync] public NetList<WeaponAmmo> WeaponsAmmo { get; set; } = new();
+
+
+	public struct WeaponStuff
+	{
+		public string Weapon { get; set; }
+
+		public int Packed { get; set; }
+	}
 
 
 	public struct WeaponAmmo
@@ -37,13 +45,13 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 
 
 	[Rpc.Host]
-	public void AddWeapon( string weapon )
+	public void AddWeapon( string weapon, int packed)
 	{
 
-		if ( this.Weapons.Count < 2 )
+		if ( this.Weapons.Count < 2 && !Player.Upgrading)
 		{
-			this.Weapons.Add( weapon );
-			ClientAddWeapon( weapon );
+			this.Weapons.Add( new WeaponStuff { Weapon = weapon, Packed = packed } );
+			ClientAddWeapon( weapon, packed );
 			var temp = GameObject.Clone( weapon );
 			//Log.Info( "is it not giving" );
 			GiveAmmo( 1, temp.GetComponentInChildren<BaseWeapon>().AmmoMax, temp.GetComponentInChildren<BaseWeapon>().MagMax );
@@ -51,11 +59,11 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 			this.Player.ChangeCurrentSlot( Weapons.Count - 1 );
 
 		}
-		else if ( this.Weapons.Count >= 2 )
+		else if ( this.Weapons.Count >= 2 || Player.Upgrading )
 		{
 			var slot = this.Player.CurrentWeaponSlot;
-			this.Weapons[slot] = weapon;
-			ClientAddWeaponSlot( weapon, slot );
+			this.Weapons[slot] = new WeaponStuff { Weapon = weapon, Packed = packed };
+			ClientAddWeaponSlot( weapon, slot, packed );
 			var temp = GameObject.Clone( weapon );
 			//Log.Info( "is it not giving" );
 			GiveAmmo( slot, temp.GetComponentInChildren<BaseWeapon>().AmmoMax, temp.GetComponentInChildren<BaseWeapon>().MagMax );
@@ -65,20 +73,20 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	}
 
 	[Rpc.Owner]
-	public void ClientAddWeapon( string weapon )
+	public void ClientAddWeapon( string weapon, int packed)
 	{
 		if ( Networking.IsHost ) return;
-		this.Weapons.Add( weapon );
+		this.Weapons.Add( new WeaponStuff { Weapon = weapon, Packed = packed } );
 		this.Player.ChangeCurrentSlot( Weapons.Count - 1 );
 	}
 
 	[Rpc.Owner]
-	public void ClientAddWeaponSlot( string weapon, int slot )
+	public void ClientAddWeaponSlot( string weapon, int slot, int packed )
 	{
 		if ( Networking.IsHost ) return;
 		//Log.Info( "weapon: " + weapon + " slot: " + slot );
 		var idek = this.Weapons[slot];
-		idek = weapon;
+		idek = new WeaponStuff { Weapon = weapon, Packed = packed };
 		this.Weapons[slot] = idek;
 		this.Player.ChangeCurrentSlot( slot );
 	}
@@ -87,7 +95,9 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	[Rpc.Host]
 	public void RemoveWeapon( int slot )
 	{
-		this.Weapons.RemoveAt( slot );
+		var weaps = Weapons;
+		weaps.RemoveAt( slot );
+		Weapons = weaps;
 		ClientRemoveWeapon( slot );
 	}
 
@@ -95,7 +105,9 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	public void ClientRemoveWeapon( int slot )
 	{
 		if ( Networking.IsHost ) return;
-		this.Weapons.RemoveAt( slot );
+		var weaps = Weapons;
+		weaps.RemoveAt( slot );
+		Weapons = weaps;
 	}
 
 
@@ -263,7 +275,6 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 			x.AmmoTotal = WeaponsAmmo[ammoslot].MaxAmmoTotal;
 			x.CurrentMag = WeaponsAmmo[ammoslot].MagMax;
 			WeaponsAmmo[ammoslot] = x;
-
 		}
 		ClientGiveMaxAmmo();
 	}
@@ -297,7 +308,7 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 		if ( Weapons.Count <= 0 )
 		{
 			var weaponmanager = Scene.GetAllComponents<WeaponManager>().FirstOrDefault();
-			weaponmanager.GivePlayerWeapon( "usp-rottenrounds.prefab", Player, 0 );
+			weaponmanager.GivePlayerWeapon( "usp-rottenrounds.prefab", Player, 0, 0 );
 		}
 	}
 }

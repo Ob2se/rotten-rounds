@@ -72,6 +72,9 @@ public partial class BaseWeapon : Component
 
 	public bool HideAutomatic => WeaponType == weaponType.Sniper || WeaponType == weaponType.Launcher;
 
+	public Material WeaponMaterial { get; set; }
+
+
 	public enum weaponType
 	{
 		Pistol = 0,
@@ -86,5 +89,14 @@ public partial class BaseWeapon : Component
 	[Property, Group( "Weapon Setup" )]
 	public weaponType WeaponType { get; set; }
 
+	protected override void OnStart()
+	{
+		base.OnStart();
 
+		if ( WeaponMaterial != null )
+		{
+			WeaponModel.MaterialOverride = WeaponMaterial;
+		}
+		
+	}
 }

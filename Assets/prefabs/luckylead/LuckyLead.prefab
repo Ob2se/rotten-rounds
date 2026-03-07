@@ -22,13 +22,17 @@
         "Flags": 0,
         "Cost": 5000,
         "InteractionTrigger": null,
+        "JackpotMaterial": "materials/luckyleaded/x1/jackpotupgrade.vmat",
         "NeedsPower": true,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "OnComponentUpdate": null,
+        "x1Material": "materials/luckyleaded/x1/x1upgrade.vmat",
+        "x2Material": "materials/luckyleaded/x1/x2upgrade.vmat",
+        "x3Material": "materials/luckyleaded/x1/x3upgrade.vmat"
       }
     ],
     "Children": [

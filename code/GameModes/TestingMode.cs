@@ -676,7 +676,7 @@ public sealed class TestingMode : Component, Component.INetworkListener, IZombie
 
 		player.SetHealthToMax();
 		player.AddPoints( 500 );
-		WeaponManager.GivePlayerWeapon( "spaghellim-rottenrounds.prefab", player, 0 );
+		WeaponManager.GivePlayerWeapon( "spaghellim-rottenrounds.prefab", player, 0, 0 );
 
 		//player.ChangeCurrentSlot(1);
 

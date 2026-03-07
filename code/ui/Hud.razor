@@ -44,19 +44,22 @@
             {
                 foreach (var playa in PlayerList)
                 {
-                    if(playa.PlayerSteamID == Connection.Local.SteamId.ToString())
+                    if(playa.player != null)
                     {
-                        <PlayerCard @ref="localPlayerCard" PlayerName="@playa.PlayerName" Points="@playa.player.Points" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
-                        if (changeAmount > 0)
+                        if(playa.PlayerSteamID == Connection.Local.SteamId.ToString())
                         {
-                            AddPointPanel();
-                        
-                        }
+                            <PlayerCard @ref="localPlayerCard" PlayerName="@playa.PlayerName" Points="@playa.player.Points" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
+                             if (changeAmount > 0)
+                             {
+                               AddPointPanel();
+
+                             }
                     
-                    }
-                    if (playa.PlayerSteamID != Connection.Local.SteamId.ToString())
-                    {
-                        <PlayerCard PlayerName="@playa.PlayerName" Points="@playa.player.Points" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
+                        }
+                        if (playa.PlayerSteamID != Connection.Local.SteamId.ToString())
+                        {
+                            <PlayerCard PlayerName="@playa.PlayerName" Points="@playa.player.Points" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
+                        }
                     }
                 }
             }
@@ -270,6 +273,7 @@
 
         if (changeAmount == 0) return;
         var popup = new GainPoints();
+        if (popup == null) return;
         popup.PointValue = changeAmount;
         popup.AddClass("points-popup");
         if(localPlayerCard != null)

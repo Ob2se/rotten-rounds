@@ -47,7 +47,7 @@ public sealed class SimpleZombieController : Component
 	Collider ZombieCollider { get; set; }
 
 	//player go list
-	IEnumerable<Player> players;
+	//IEnumerable<Player> players;
 
 	IEnumerable<GameObject> window;
 
@@ -102,7 +102,7 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Host]
 	private void ZombieStart()
 	{
-		players = Scene.GetAllComponents<Player>();
+		//players = Scene.GetAllComponents<Player>();
 		HasEnteredThroughWindow = false;
 
 		if ( SpawnPoint != null )
@@ -189,9 +189,11 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Host]
 	private void GetClosestPlayer()
 	{
-		players = Scene.GetAllComponents<Player>();
+		
+		var players = Scene.GetAllComponents<Player>();
 		if ( players == null )
 		{
+			
 			targetPlayer = null;
 			return;
 		}
@@ -205,14 +207,15 @@ public sealed class SimpleZombieController : Component
 
 		if ( targetPlayer != null && !targetPlayer.Downed && TimeSinceRetarget < TargetRetargetInterval )
 		{
+			
 			return;
 		}
 
 		Player closestPlayer = null;
 		float closestDistance = float.MaxValue;
-
 		foreach ( var player in players )
 		{
+
 			if ( player.Downed ) continue;
 			var delta = player.WorldPosition - GameObject.WorldPosition;
 			var horizontalDistance = delta.WithZ( 0f ).Length;
@@ -223,6 +226,7 @@ public sealed class SimpleZombieController : Component
 
 			if ( distance < closestDistance )
 			{
+				
 				closestDistance = distance;
 				closestPlayer = player;
 			}
@@ -236,9 +240,18 @@ public sealed class SimpleZombieController : Component
 
 		if ( targetPlayer != null && !targetPlayer.Downed )
 		{
-			var currentDelta = targetPlayer.WorldPosition - GameObject.WorldPosition;
-			var currentScore = currentDelta.WithZ( 0f ).Length + (MathF.Abs( currentDelta.z ) * 1.75f);
 
+			if ( !targetPlayer.IsValid )
+			{
+				targetPlayer = null;
+				return;
+			}
+
+
+			var currentDelta = targetPlayer.WorldPosition - GameObject.WorldPosition;
+			
+			var currentScore = currentDelta.WithZ( 0f ).Length + (MathF.Abs( currentDelta.z ) * 1.75f);
+			
 			// Only switch when clearly better to avoid floor-flip oscillation.
 			if ( currentScore <= (closestDistance + TargetSwitchAdvantage) )
 			{
@@ -424,10 +437,12 @@ public sealed class SimpleZombieController : Component
 				}
 				break;
 			case ZomState.TargetPlayer:
+
+
 				GetClosestPlayer();
+
 				if ( targetPlayer == null )
 				{
-					ChangeState( ZomState.Idle );
 					break;
 				}
 

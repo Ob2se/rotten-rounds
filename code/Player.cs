@@ -200,6 +200,9 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	[Sync]
 	public bool IsUsingVoiceChat { get; set; }
 
+	[Sync]
+	public bool Upgrading { get; set; } = false;
+
 	public bool IsTypingChat { get; set; }
 
 	private bool LastVoiceChatState { get; set; }
@@ -421,17 +424,43 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	{
 
 		CurrentWeapon?.Destroy();
-		var weap = GameObject.GetPrefab( Inventory.Weapons[CurrentWeaponSlot] );
+		var weap = GameObject.GetPrefab( Inventory.Weapons[CurrentWeaponSlot].Weapon );
 		var weapon = weap.Clone();
 		CurrentWeapon = weapon;
 		//CurrentWeapon.NetworkMode = NetworkMode.Never;
 		CurrentWeaponClass = weapon.GetComponentInChildren<BaseWeapon>();
+		if ( Inventory.Weapons[CurrentWeaponSlot].Packed >= 1 )
+		{
+			var packmach = Scene.GetAllComponents<PackAPunch>().FirstOrDefault();
+			if ( packmach != null )
+			{
+				switch ( Inventory.Weapons[CurrentWeaponSlot].Packed )
+				{
+					case 1:
+						CurrentWeaponClass.WeaponModel.MaterialOverride = packmach.x1Material;
+						break;
+					case 2:
+						CurrentWeaponClass.WeaponModel.MaterialOverride = packmach.x2Material;
+						break;
+					case 3:
+						CurrentWeaponClass.WeaponModel.MaterialOverride = packmach.x3Material;
+						break;
+					case 4:
+						CurrentWeaponClass.WeaponModel.MaterialOverride = packmach.JackpotMaterial;
+						break;
+
+				}
+			}
+			
+		}
+		if( Inventory.Weapons[CurrentWeaponSlot].Packed == 0)
+		{
+			CurrentWeaponClass.WeaponModel.MaterialOverride = null;
+		}
 
 		SetWeaponPosition();
-		Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath );
+		Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath, CurrentWeaponClass.WeaponModel.GetMaterial() );
 		//weapon.Destroy();
-
-
 
 	}
 
@@ -459,13 +488,13 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	{
 		if ( CurrentWeapon != null )
 		{
-			Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath );
+			Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath, CurrentWeaponClass.WeaponModel.GetMaterial() );
 			//ManageHoldType(1);
 		}
 	}
 
 	[Rpc.Host]
-	private void Thefuckifiknow( string weaponPath )
+	private void Thefuckifiknow( string weaponPath, Material material )
 	{
 
 		if ( ThirdPersonWeaponModelContainer.Children.Count > 0 )
@@ -477,9 +506,11 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		}
 
 		var go = new GameObject();
-		go.AddComponent<ModelRenderer>().Model = Model.Load( weaponPath );
-
+		var model = go.AddComponent<ModelRenderer>();
+		model.Model = Model.Load( weaponPath );
+		model.MaterialOverride = material;
 		go.Parent = ThirdPersonWeaponModelContainer;
+		
 		go.WorldRotation = ThirdPersonWeaponModelContainer.WorldRotation;
 		go.NetworkSpawn();
 
@@ -547,7 +578,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 
 
-		StartingValues();
+		//StartingValues();
 	}
 
 
@@ -1109,7 +1140,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			case PackAPunch packAPunch:
 				action = "Pack-a-Punch";
 				target = "Weapon";
-				cost = 5000;
+				cost = packAPunch.Cost;
 				break;
 			case Power:
 				action = "Turn On";
@@ -1664,27 +1695,33 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		//holdtype shit
 		if ( CurrentWeapon != null )
 		{
-
-			switch ( CurrentWeaponClass.WeaponType )
+			if ( !Upgrading )
 			{
-				case BaseWeapon.weaponType.Pistol:
-					ManageHoldType( 1 );
-					break;
-				case BaseWeapon.weaponType.Smg:
-					ManageHoldType( 2 );
-					break;
-				case BaseWeapon.weaponType.Rifle:
-					ManageHoldType( 2 );
-					break;
-				case BaseWeapon.weaponType.Shotgun:
-					ManageHoldType( 3 );
-					break;
-				case BaseWeapon.weaponType.Launcher:
-					ManageHoldType( 7 );
-					break;
-				case BaseWeapon.weaponType.Sniper:
-					ManageHoldType( 2 );
-					break;
+				switch ( CurrentWeaponClass.WeaponType )
+				{
+					case BaseWeapon.weaponType.Pistol:
+						ManageHoldType( 1 );
+						break;
+					case BaseWeapon.weaponType.Smg:
+						ManageHoldType( 2 );
+						break;
+					case BaseWeapon.weaponType.Rifle:
+						ManageHoldType( 2 );
+						break;
+					case BaseWeapon.weaponType.Shotgun:
+						ManageHoldType( 3 );
+						break;
+					case BaseWeapon.weaponType.Launcher:
+						ManageHoldType( 7 );
+						break;
+					case BaseWeapon.weaponType.Sniper:
+						ManageHoldType( 2 );
+						break;
+				}
+			}
+			if ( Upgrading )
+			{
+				ManageHoldType( 0 );
 			}
 		}
 
@@ -1777,7 +1814,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		}
 
 		//weapon swapping
-		if ( !IsTypingChat && Input.Pressed( "Slot1" ) )
+		if ( !Upgrading && !IsTypingChat && Input.Pressed( "Slot1" ) )
 		{
 			if ( CurrentWeaponSlot != 0 )
 			{
@@ -1786,7 +1823,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 		}
 
-		if ( !IsTypingChat && Input.Pressed( "Slot2" ) )
+		if ( !Upgrading && !IsTypingChat && Input.Pressed( "Slot2" ) )
 		{
 			if ( Inventory.Weapons.Count >= 2 && CurrentWeaponSlot != 1 )
 			{
@@ -1796,7 +1833,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 		}
 
-		if ( !IsTypingChat && Input.Pressed( "Slot3" ) )
+		if ( !Upgrading && !IsTypingChat && Input.Pressed( "Slot3" ) )
 		{
 			if ( Inventory.Weapons.Count == 3 && CurrentWeaponSlot != 3 )
 			{

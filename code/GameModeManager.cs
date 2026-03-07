@@ -828,7 +828,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 		player.SetHealthToMax();
 		player.AddPoints( 500 );
-		WeaponManager.GivePlayerWeapon( "usp-rottenrounds.prefab", player, 0 );
+		WeaponManager.GivePlayerWeapon( "usp-rottenrounds.prefab", player, 0, 0 );
 
 		//player.ChangeCurrentSlot(1);
 

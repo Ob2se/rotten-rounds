@@ -387,7 +387,7 @@ public sealed class MysteryBox : Component, IInteraction
 
 	private void GiveWeapon( Player player )
 	{
-		player.Inventory.AddWeapon( GivenWeapon );
+		player.Inventory.AddWeapon( GivenWeapon, 0 );
 	}
 
 	[Rpc.Host]

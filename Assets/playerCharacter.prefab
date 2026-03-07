@@ -287,6 +287,8 @@
         "__guid": "48719f13-7307-45f0-b1e6-c27a027f7a1d",
         "__enabled": true,
         "Flags": 0,
+        "LauncherExplosionRadius": 280,
+        "LauncherProjectileSpeed": 2300,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

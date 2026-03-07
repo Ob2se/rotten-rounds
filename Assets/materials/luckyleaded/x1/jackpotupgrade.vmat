@@ -1,0 +1,21 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "materials/luckyleaded/luckyleader.shader"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Lightning Mask A ----
+	LightningMaskA "materials/luckyleaded/24.png"
+
+	//---- Lightning Mask B ----
+	LightningMaskB "materials/luckyleaded/27.png"
+
+	//---- Lightning Mask C ----
+	LightningMaskC "materials/luckyleaded/23.png"
+
+	//---- Lightning Tint Color ----
+	LightningTintColor "[0.854902 0.647059 0.125490 1.000000]"
+}

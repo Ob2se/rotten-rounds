@@ -1,8 +1,9 @@
 using Sandbox;
-using System.Numerics;
-using System;
-using System.Threading.Tasks;
 using Sandbox.Rendering;
+using System;
+using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
 public sealed class WallBuy : Component, IInteraction
 {
 
@@ -144,7 +145,7 @@ public sealed class WallBuy : Component, IInteraction
 	private void GiveWeapon( Player player )
 	{
 
-		player.Inventory.AddWeapon( WeaponPath );
+		player.Inventory.AddWeapon( WeaponPath, 0 );
 
 	}
 
@@ -199,12 +200,14 @@ public sealed class WallBuy : Component, IInteraction
 	public void OnInteract( Player player )
 	{
 		var playerweapons = player.Inventory.Weapons;
-		Log.Info( WeaponPath );
-		if ( playerweapons.Contains( WeaponPath ) )
+		foreach ( var weapon in playerweapons )
 		{
-			var index = playerweapons.IndexOf( WeaponPath );
-			GiveAmmo( player, index );
-			return;
+			if ( weapon.Weapon == WeaponPath )
+			{
+				var index = playerweapons.IndexOf( weapon );
+				GiveAmmo( player, index );
+				return;
+			}
 		}
 		BuyWeapon( player );
 	}

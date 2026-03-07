@@ -25,12 +25,12 @@ public sealed class WeaponManager : Component
 
 
 	[Rpc.Host]
-	public void GivePlayerWeapon( string Weapon, Player player, int slot )
+	public void GivePlayerWeapon( string Weapon, Player player, int slot, int packed )
 	{
 
 		if ( WeaponPaths.Contains( Weapon ) )
 		{
-			player.Inventory.AddWeapon( Weapon );
+			player.Inventory.AddWeapon( Weapon, packed );
 		}
 
 	}

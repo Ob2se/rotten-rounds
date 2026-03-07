@@ -143,7 +143,10 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 		if ( !this.Network.IsOwner ) return;
 
-
+		if ( WeaponOwner.Upgrading )
+		{
+			return;
+		}
 
 		//if ( Reloading ) return;
 

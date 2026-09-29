@@ -1,0 +1,27 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/adobesubstance.shader"
+
+	//---- Ambient Occlusion ----
+	AmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Base Color ----
+	BaseColor "materials/luckyleaded/luckyleadmachine/luckyleadesubstance_low_mainbody_basecolor.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Metallic ----
+	Metallic "materials/luckyleaded/luckyleadmachine/luckyleadesubstance_low_mainbody_metallic.png"
+
+	//---- Normal ----
+	Normal "materials/luckyleaded/luckyleadmachine/luckyleadesubstance_low_mainbody_normal.png"
+
+	//---- Roughness ----
+	Roughness "materials/luckyleaded/luckyleadmachine/luckyleadesubstance_low_mainbody_roughness.png"
+
+	//---- UV ----
+	g_vTextureTiling "[1.000 1.000 0.000 0.000]"
+}

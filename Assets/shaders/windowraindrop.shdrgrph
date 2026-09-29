@@ -1,23 +1,1047 @@
 {
+  "IsSubgraph": false,
+  "Path": "shaders/windowraindrop.shdrgrph",
   "Model": null,
+  "Title": null,
   "Description": "",
-  "BlendMode": "Opaque",
+  "Category": null,
+  "Icon": null,
+  "AddToNodeLibrary": false,
+  "BlendMode": "Translucent",
+  "ShadingModel": "Unlit",
+  "Domain": "Surface",
+  "PreviewSettings": {
+    "RenderBackfaces": false,
+    "EnableShadows": true,
+    "ShowGround": false,
+    "ShowSkybox": true,
+    "BackgroundColor": "0,0,0,1",
+    "Tint": "1,1,1,1"
+  },
+  "Version": 1,
   "nodes": [
     {
       "_class": "Result",
-      "Albedo": {},
-      "Emission": {},
-      "Opacity": {},
-      "Normal": {},
-      "Roughness": {},
-      "Metalness": {},
-      "AmbientOcclusion": {},
-      "DefaultOpacity": 1,
+      "DefaultOpacity": 0.62562865,
       "DefaultRoughness": 1,
       "DefaultMetalness": 0,
       "DefaultAmbientOcclusion": 1,
       "Identifier": "0",
-      "Position": "160,-96"
+      "Position": "156,-96",
+      "HandleOffsets": {},
+      "Albedo": {
+        "Identifier": "56",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "shaders/rain_drips.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": "raindripscomb",
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Color",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "None",
+        "ColorSpace": "Linear",
+        "ImageFormat": "RGBA8888",
+        "SrgbRead": false,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "1",
+      "Position": "-3264,-312",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "2",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureCoord",
+      "UseSecondaryCoord": false,
+      "Tiling": "3,3",
+      "Identifier": "2",
+      "Position": "-3636,-300",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "3",
+      "Position": "-2988,-312",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "1",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "4",
+      "Position": "-2760,-312",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "3",
+        "Output": "X"
+      },
+      "Y": {
+        "Identifier": "3",
+        "Output": "Y"
+      },
+      "Z": {
+        "Identifier": "3",
+        "Output": "Z"
+      },
+      "W": {
+        "Identifier": "3",
+        "Output": "W"
+      }
+    },
+    {
+      "_class": "Lerp",
+      "DefaultA": 0.15,
+      "DefaultB": -0.05,
+      "Fraction": 0.5,
+      "Identifier": "5",
+      "Position": "-2772,60",
+      "HandleOffsets": {},
+      "C": {
+        "Identifier": "14",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Time",
+      "Identifier": "6",
+      "Position": "-3084,276",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "7",
+      "Position": "-3600,204",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "2",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 6,
+      "Identifier": "8",
+      "Position": "-2520,-264",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "4",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "9",
+      "Position": "-2376,108",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "5",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "13",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Round",
+      "Identifier": "10",
+      "Position": "-2412,-60",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "1",
+        "Output": "B"
+      }
+    },
+    {
+      "_class": "Subtract",
+      "DefaultA": 0,
+      "DefaultB": 3,
+      "Identifier": "11",
+      "Position": "-2376,-264",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "8",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "12",
+      "Position": "-2256,204",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "22",
+        "Output": "XYZW"
+      },
+      "B": {
+        "Identifier": "9",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "13",
+      "Position": "-2772,252",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "14",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "6",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Reroute",
+      "Comment": null,
+      "Identifier": "14",
+      "Position": "-2988,144",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "1",
+        "Output": "A"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "15",
+      "Position": "-3360,396",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "7",
+        "Output": "X"
+      }
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "shaders/rain_drip_mask.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": "raindripmask",
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Color",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "None",
+        "ColorSpace": "Srgb",
+        "ImageFormat": "DXT5",
+        "SrgbRead": true,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "16",
+      "Position": "-2016,204",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "12",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureCoord",
+      "UseSecondaryCoord": false,
+      "Tiling": "1,1",
+      "Identifier": "17",
+      "Position": "-2028,-636",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": -0.5,
+      "Identifier": "18",
+      "Position": "-3360,516",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "7",
+        "Output": "Y"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "19",
+      "Position": "-1692,-240",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "11",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "21",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Time",
+      "Identifier": "20",
+      "Position": "-1752,-444",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "21",
+      "Position": "-1764,36",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "10",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "16",
+        "Output": "R"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "22",
+      "Position": "-3096,492",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "15",
+        "Output": "Result"
+      },
+      "Y": {
+        "Identifier": "18",
+        "Output": "Result"
+      },
+      "Z": {
+        "Identifier": "7",
+        "Output": "Z"
+      },
+      "W": {
+        "Identifier": "7",
+        "Output": "W"
+      }
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": -1,
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Default",
+        "Step": 0,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "23",
+      "Position": "-1752,-360",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "24",
+      "Position": "-1764,-636",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "17",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "25",
+      "Position": "-1512,-420",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "20",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "23",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureCoord",
+      "UseSecondaryCoord": false,
+      "Tiling": "4,4",
+      "Identifier": "26",
+      "Position": "-2772,696",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "27",
+      "Position": "-1356,-612",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "24",
+        "Output": "Y"
+      },
+      "B": {
+        "Identifier": "25",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "shaders/rain_drops.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": null,
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Color",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "None",
+        "ColorSpace": "Srgb",
+        "ImageFormat": "DXT5",
+        "SrgbRead": true,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "28",
+      "Position": "-2136,720",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "37",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "29",
+      "Position": "-1824,744",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "28",
+        "Output": "R"
+      },
+      "Y": {
+        "Identifier": "28",
+        "Output": "G"
+      },
+      "Z": {
+        "Identifier": "28",
+        "Output": "A"
+      }
+    },
+    {
+      "_class": "SceneColor",
+      "AddressU": "Wrap",
+      "AddressV": "Wrap",
+      "Identifier": "30",
+      "Position": "-1056,12",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "43",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Subtract",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "31",
+      "Position": "-1332,768",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "33",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "SceneColor",
+      "AddressU": "Wrap",
+      "AddressV": "Wrap",
+      "Identifier": "32",
+      "Position": "-1116,-156",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "11",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 2,
+      "Identifier": "33",
+      "Position": "-1536,768",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "29",
+        "Output": "XYZ"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "34",
+      "Position": "-1128,-636",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "24",
+        "Output": "X"
+      },
+      "Y": {
+        "Identifier": "27",
+        "Output": "Result"
+      },
+      "Z": {
+        "Identifier": "24",
+        "Output": "Z"
+      },
+      "W": {
+        "Identifier": "24",
+        "Output": "W"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "35",
+      "Position": "-1056,792",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "41",
+        "Output": "X"
+      },
+      "Y": {
+        "Identifier": "41",
+        "Output": "Y"
+      }
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "36",
+      "Position": "-2796,852",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "26",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "37",
+      "Position": "-2496,852",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "36",
+        "Output": "X"
+      },
+      "Y": {
+        "Identifier": "36",
+        "Output": "Y"
+      },
+      "Z": {
+        "Identifier": "36",
+        "Output": "Z"
+      },
+      "W": {
+        "Identifier": "36",
+        "Output": "W"
+      }
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "shaders/publicdomainpictures-rain-316580_1920.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": null,
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Color",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "None",
+        "ColorSpace": "Srgb",
+        "ImageFormat": "DXT5",
+        "SrgbRead": true,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "38",
+      "Position": "-756,-672",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "34",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "Subtract",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "39",
+      "Position": "-1908,972",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "28",
+        "Output": "B"
+      },
+      "B": {
+        "Identifier": "48",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "40",
+      "Position": "-816,-84",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "32",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "30",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "41",
+      "Position": "-1416,912",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "31",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "42",
+      "Position": "-660,36",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "21",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "46",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "43",
+      "Position": "-564,840",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "35",
+        "Output": "XY"
+      },
+      "B": {
+        "Identifier": "46",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "44",
+      "Position": "-492,-96",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "32",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "32",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "45",
+      "Position": "-540,168",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "21",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "46",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "46",
+      "Position": "-852,1020",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "47",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "49",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Saturate",
+      "Identifier": "47",
+      "Position": "-1128,1020",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "41",
+        "Output": "Z"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 2,
+      "Identifier": "48",
+      "Position": "-2052,1056",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "6",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Frac",
+      "Identifier": "49",
+      "Position": "-1572,1104",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "39",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Mod",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "50",
+      "Position": "-1812,1212",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "39",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "FuzzyNoise",
+      "Identifier": "51",
+      "Position": "-2136,1272",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "37",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "Subtract",
+      "DefaultA": 1,
+      "DefaultB": 1,
+      "Identifier": "52",
+      "Position": "-1620,1356",
+      "HandleOffsets": {},
+      "B": {
+        "Identifier": "50",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Power",
+      "DefaultA": 1,
+      "DefaultB": 5,
+      "Identifier": "53",
+      "Position": "-1344,1344",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "52",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "VoronoiNoise",
+      "AngleOffset": 3.1415925,
+      "CellDensity": 10,
+      "Worley": false,
+      "Identifier": "54",
+      "Position": "-2124,1380",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "37",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 3,
+      "Identifier": "55",
+      "Position": "-1824,1392",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "6",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "56",
+      "Position": "-300,-216",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "65",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "19",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "57",
+      "Position": "-1812,1560",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "55",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "54",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "ValueNoise",
+      "Identifier": "58",
+      "Position": "-2112,1560",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "37",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "SimplexNoise",
+      "Identifier": "59",
+      "Position": "-2124,1656",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "37",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "Float4",
+      "Value": "0.18094,0.2054,0.47442,0",
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Color",
+        "Step": 0,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "60",
+      "Position": "-864,-408",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "61",
+      "Position": "-552,-324",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "60",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "19",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "62",
+      "Position": "-552,-228",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "60",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "11",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "63",
+      "Position": "-312,-708",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "38",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "64",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "SceneColor",
+      "AddressU": "Wrap",
+      "AddressV": "Wrap",
+      "Identifier": "64",
+      "Position": "-852,-468",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "17",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "65",
+      "Position": "-360,-492",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "38",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "64",
+        "Output": "Result"
+      }
     }
   ]
 }

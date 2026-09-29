@@ -91,6 +91,14 @@ public sealed class PackAPunch : Component, IInteraction, IPower
 				Upgrading = false;
 				Upgraded = true;
 			}
+
+			if ( Upgraded && TimeSinceUpgradeStarted >= 10f )
+			{
+				playerUpgrading.Upgrading = false;
+				GiveWeapon();
+				DeleteTemp();
+				
+			}
 		}
 		
 
@@ -154,7 +162,7 @@ public sealed class PackAPunch : Component, IInteraction, IPower
 			player.CurrentWeaponClass.WeaponModel.Set( "b_holster", true );
 			Roll();
 		}
-		Log.Info( CanTakeWeapon );
+		
 		if ( Upgraded && CanTakeWeapon && playerUpgrading == player )
 		{
 			
@@ -188,7 +196,7 @@ public sealed class PackAPunch : Component, IInteraction, IPower
 	[Rpc.Host]
 	private void UpgradeGun( string upgrade )
 	{
-		Log.Info("upgrade: " +  upgrade );
+
 		switch ( upgrade )
 		{
 			case "x1":

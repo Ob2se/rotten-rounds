@@ -4,6 +4,7 @@ using Sandbox.UI;
 using System;
 using System.Net.Http.Headers;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using static Sandbox.Citizen.CitizenAnimationHelper;
 using static Sandbox.Package;
@@ -13,21 +14,9 @@ using static Sandbox.PhysicsContact;
 
 public sealed class Player : Component, IHudInterface, IInteraction
 {
-	public struct ChatMessageData
-	{
-		public string SteamId { get; set; }
-		public string PlayerName { get; set; }
-		public string Message { get; set; }
+	
 
-		public ChatMessageData( string steamId, string playerName, string message )
-		{
-			SteamId = steamId;
-			PlayerName = playerName;
-			Message = message;
-		}
-	}
-
-	public static event Action<ChatMessageData> ChatMessageReceived;
+	
 
 	[RequireComponent]
 	[Sync]
@@ -36,8 +25,14 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	[Property]
 	private SoundPointComponent ChaChingSound { get; set; }
 
+	[Property]
+	public GameObject EndGamePrefab { get; set; }
+
+
 	public GameObject GO => this.GameObject;
 
+	[Property]
+	public GameObject SpectatorPoint { get; set; }
 
 	[Property]
 	public Dresser PlayerDresser { get; set; }
@@ -99,6 +94,8 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	private float BaseWalkSpeed { get; set; } = 200f;
 	public int CurrentWeaponType { get; set; }
 
+	[Property]
+	public GameObject downedPanel { get; set; }
 	GameObject WeaponPrefab { get; set; }
 
 	[Sync]
@@ -154,7 +151,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	public bool isFiring { get; set; } = false;
 
 	[Property]
-	private Sandbox.WorldPanel NameTag { get; set; }
+	public Sandbox.WorldPanel NameTag { get; set; }
 	public bool CanShootWeapon => CanShoot();
 
 	[Sync]
@@ -177,7 +174,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 	public List<string> PerkIcons { get; set; } = new();
 
-
+	public bool bStopSprint { get; set; }
 	public bool LookingAtInteractable { get; set; } = false;
 	public bool LookingAtInteractableRevive { get; set; } = false;
 	public bool LookingAtInteractableHold { get; set; } = false;
@@ -216,12 +213,16 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 	TimeSince TimeSinceDamagedLast { get; set; }
 
+
+	TimeSince TimeSinceDowned { get; set; }
+
 	TimeSince TimeSinceLastRegen { get; set; }
 
 	TimeSince TimeSinceKnifeStarted;
 	TimeSince TimeSinceLastStackNudge;
 	bool KnifeAttackTriggered;
 	bool KnifeMeshShown;
+	bool WasReloadingBeforeKnife;
 
 	TimeSince TimeSinceLastInteractionPress = 0f;
 	const float InteractionPressCooldown = 0.1f;
@@ -229,11 +230,16 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	TimeSince TimeSinceWeaponSwap = 0f;
 	TimeSince TimeSinceLastGrenadeThrow;
 
+
+	public TimeSince TimeSinceSprintingStopped { get; set; }
+
 	public GameObject TPWeapon;
 
-	public bool HasQuickRevive = false;
-
-
+	[Sync] public bool HasIcyAid { get; set; } = false;
+	[Sync] public bool HasBurleyBrew { get; set; } = false;
+	[Sync] public bool HasJitterJuice { get; set; } = false;
+	[Sync] public bool HasQuickSip { get; set; } = false;
+	private bool Dead;
 
 	[Rpc.Owner]
 	private void SetWeaponPosition()
@@ -244,15 +250,18 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		CurrentWeaponClass.WeaponModel.RenderType = ModelRenderer.ShadowRenderType.Off;
 
 
-		CurrentWeapon.SetParent( fpsArms.GameObject, false );
+		CurrentWeapon.SetParent( playerCamera.GameObject, false );
 
 		Scene.RunEvent<IWeaponHandler>( x => x.WeaponEquipped( CurrentWeapon ) );
 
 
-		var boneObject = fpsArms.GetBoneObject( "weapon_IK_hand_R" );
+		//var boneObject = fpsArms.GetBoneObject( "weapon_IK_hand_R" );
 		var bw = CurrentWeapon.GetComponentInChildren<BaseWeapon>();
 
-		fpsArms.BoneMergeTarget = bw.WeaponModel;
+		bw.fpsArms.RenderType = ModelRenderer.ShadowRenderType.Off;
+
+		//fpsArms.BoneMergeTarget = bw.WeaponModel;
+		fpsArms = bw.fpsArms;
 
 
 	}
@@ -270,6 +279,36 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		PerkListChanged?.Invoke();
 	}
 
+	[Rpc.Broadcast]
+	public void ApplyPerkState( PerkID perkId )
+	{
+		var perkdata = PerkDatabase.GetData( perkId );
+
+		switch ( perkId )
+		{
+			case PerkID.IcyAid:
+				HasIcyAid = true;
+				break;
+			case PerkID.JitterJuice:
+				HasJitterJuice = true;
+				break;
+			case PerkID.BurleyBrew:
+				HasBurleyBrew = true;
+				break;
+			case PerkID.QuickSip:
+				HasQuickSip = true;
+				break;
+		}
+
+		if ( perkdata != null && !PerkIcons.Contains( perkdata.PerkIcon ) )
+		{
+			PerkIcons.Add( perkdata.PerkIcon );
+		}
+
+		_ = PerkListIconsChanged();
+		Log.Info( perkdata?.PerkName + " Perk Applied to " + Network.Owner.DisplayName );
+	}
+
 	public void PointsChanged( float oldValue, float newValue )
 	{
 		var changeAmount = newValue - oldValue;
@@ -283,29 +322,6 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	{
 		PlayerList.Add( player );
 		Log.Info( connection + " | " + player );
-	}
-
-	[Rpc.Host]
-	public void SubmitChatMessage( string steamId, string playerName, string message )
-	{
-		if ( string.IsNullOrWhiteSpace( message ) )
-		{
-			return;
-		}
-
-		var trimmed = message.Trim();
-		if ( trimmed.Length > 120 )
-		{
-			trimmed = trimmed[..120];
-		}
-
-		BroadcastChatMessage( steamId, playerName, trimmed );
-	}
-
-	[Rpc.Broadcast]
-	private void BroadcastChatMessage( string steamId, string playerName, string message )
-	{
-		ChatMessageReceived?.Invoke( new ChatMessageData( steamId, playerName, message ) );
 	}
 
 	[Rpc.Host]
@@ -372,6 +388,15 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	{
 		this.Health = this.MaxHealth;
 	}
+
+
+	[Rpc.Broadcast]
+	public void SetHealth( float ammount )
+	{
+		this.MaxHealth = ammount;
+		ChangeHealthToMax();
+	}
+
 
 
 	[Rpc.Host]
@@ -459,7 +484,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		}
 
 		SetWeaponPosition();
-		Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath, CurrentWeaponClass.WeaponModel.GetMaterial() );
+		Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath, CurrentWeaponClass.WeaponModel.GetMaterial(), CurrentWeaponClass.WeaponOffsetPos, CurrentWeaponClass.WeaponOffsetRot );
 		//weapon.Destroy();
 
 	}
@@ -488,13 +513,13 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	{
 		if ( CurrentWeapon != null )
 		{
-			Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath, CurrentWeaponClass.WeaponModel.GetMaterial() );
+			Thefuckifiknow( CurrentWeaponClass.WeaponModel.Model.ResourcePath, CurrentWeaponClass.WeaponModel.GetMaterial(), CurrentWeaponClass.WeaponOffsetPos, CurrentWeaponClass.WeaponOffsetRot );
 			//ManageHoldType(1);
 		}
 	}
 
 	[Rpc.Host]
-	private void Thefuckifiknow( string weaponPath, Material material )
+	private void Thefuckifiknow( string weaponPath, Material material, Vector3 WeaponOffset, Vector3 WeaponOffsetRot )
 	{
 
 		if ( ThirdPersonWeaponModelContainer.Children.Count > 0 )
@@ -511,7 +536,10 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		model.MaterialOverride = material;
 		go.Parent = ThirdPersonWeaponModelContainer;
 		
-		go.WorldRotation = ThirdPersonWeaponModelContainer.WorldRotation;
+		go.LocalRotation = Rotation.From( WeaponOffsetRot.x, WeaponOffsetRot.y, WeaponOffsetRot.z );
+		//Log.Info( CurrentWeaponClass.WeaponOffset );
+
+		go.LocalPosition = WeaponOffset;
 		go.NetworkSpawn();
 
 
@@ -536,6 +564,11 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 
 
+	public async Task ApplyTheClothes()
+	{
+		await PlayerDresser.Apply();
+	}
+
 
 	protected override void OnStart()
 	{
@@ -544,7 +577,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		PlayerAnimationHelper = new CitizenAnimationHelper();
 		PlayerAnimationHelper.Target = PlayerController.Renderer;
 
-		PlayerDresser.Apply();
+		_ = ApplyTheClothes();
 
 
 		ReviveBox.OnObjectTriggerEnter += InteractionReviveTriggerEnter;
@@ -566,7 +599,6 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			playerCamera.Enabled = true;
 			fpsArms.Enabled = true;
 			Hud.Enabled = true;
-			Log.Info( PlayerList.Count );
 			SetHealthToMax();
 
 
@@ -574,15 +606,83 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 		}
 
-		Log.Info( "player spawned" );
 
 
 
 		//StartingValues();
 	}
 
+	[Rpc.Owner]
+	public void UpdateKills()
+	{
+		_ = IncrementKills();
+	}
 
 
+	[Rpc.Owner]
+	public void UpdateHeadshotKills()
+	{
+		_ = IncrementHeadshotKills();
+	}
+
+
+	private async Task IncrementKills()
+	{
+		var stats = Sandbox.Services.Stats.GetPlayerStats( "clickhq.rottenrounds", Network.Owner.SteamId );
+
+		await stats.Refresh();
+
+
+		Sandbox.Services.Stats.Increment( "zombie_kills", 1 );
+
+		
+	}
+
+	private async Task IncrementHeadshotKills()
+	{
+		var stats = Sandbox.Services.Stats.GetPlayerStats( "clickhq.rottenrounds", Network.Owner.SteamId );
+
+		await stats.Refresh();
+
+		Sandbox.Services.Stats.Increment( "zombie_headshot_kills", 1 );
+	}
+
+
+	private async Task GiveXp(string stat, float value )
+	{
+
+		var stats = Sandbox.Services.Stats.GetPlayerStats( "clickhq.rottenrounds", Network.Owner.SteamId);
+
+		await stats.Refresh();
+
+		var xp = stats.Get( "experience" );
+		var currentXp = xp.Value;
+
+		var sum = currentXp + value;
+
+		if ( sum >= 10000 )
+		{
+			Log.Info( "level up!" );
+			var level = stats.Get( "level" );
+			Log.Info( "current level: " + level.Value );
+			var leftover = (currentXp + value) - 10000;
+			Log.Info("leftover xp: " +  leftover );
+			Sandbox.Services.Stats.Increment( "level", 1 );
+			var newlevel = stats.Get( "level" ).Value;
+			Log.Info("new level: " +  newlevel );
+			Sandbox.Services.Stats.SetValue( "experience", leftover );
+			Log.Info( "current xp: " + stats.Get( "experience" ).Value );
+			return;
+		}
+		else
+		{
+			Sandbox.Services.Stats.SetValue( "experience", sum );
+		}
+
+		var levelStat = stats.Get( "level" );
+
+
+	}
 
 
 	[Rpc.Host]
@@ -594,6 +694,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 	public void ChangeCurrentSlot( int slot )
 	{
+		if ( Downed ) return;
 		TimeSinceWeaponSwap = 0;
 		isDeploying = true;
 		CurrentWeaponSlot = slot;
@@ -663,7 +764,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			knifedamage.Attacker = this.GameObject;
 			var incDir = (traceResult.HitPosition - GameObject.WorldPosition).Normal;
 			var dir = (incDir - traceResult.HitPosition.Normal * 1f).Normal;
-			traceResult.GameObject.Parent.GetComponent<Zombie>()?.TakeKnifeDamage( this, traceResult.HitPosition, dir, GameObject.Name, 5000 );
+			traceResult.GameObject.Parent.GetComponent<Zombie>()?.TakeKnifeDamage( this, traceResult.HitPosition, dir, GameObject.Name, 5000, Network.Owner.SteamId, traceResult.GameObject );
 			GameObject.GetPrefab( BloodMistMelee.ResourcePath ).Clone( traceResult.HitPosition );
 		}
 
@@ -682,6 +783,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		Log.Info( "oninteract2" );
 		player.CurrentInteraction = null;
 		RevivePlayer();
+		TellHostAboutRevive();
 
 	}
 
@@ -709,6 +811,8 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		this.PlayerController.RunSpeed = BaseRunSpeed;
 		this.PlayerController.BodyHeight = BaseHeight;
 		this.PlayerController.JumpSpeed = 290;
+		this.downedPanel.Enabled = false;
+		this.NameTag.Enabled = true;
 		if ( ReviveBox != null )
 		{
 			ReviveBox.Enabled = false;
@@ -743,8 +847,28 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	[Rpc.Host]
 	private void PlayerDowned()
 	{
+		var GameModeManager = Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
 		SetPlayerDowns();
+		if ( GameModeManager.DownedList.ContainsKey( this.Network.Owner.SteamId ) )
+		{
+			GameModeManager.DownedList[this.Network.Owner.SteamId] += 1;
+		}
+		else
+		{
+			GameModeManager.DownedList.Add( this.Network.Owner.SteamId, 1 );
+		}
 	}
+
+
+	[Rpc.Owner]
+	public void DisplayEndGameStats()
+	{
+		playerCamera.Enabled = false;
+		Hud.Enabled = false;
+		
+	}
+
+
 
 	[Rpc.Broadcast]
 	private void SetPlayerDowns()
@@ -758,6 +882,8 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		PlayerController.JumpSpeed = 0;
 		this.Interactable = true;
 		this.PlayerController.BodyHeight = 30;
+		this.downedPanel.Enabled = true;
+		this.NameTag.Enabled = false;
 		if ( this.ReviveBox != null )
 		{
 			this.ReviveBox.Enabled = true;
@@ -767,6 +893,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			}
 		}
 		GameObject.Tags.Add( "downed" );
+		TimeSinceDowned = 0f;
 	}
 
 	public void UpdateWeaponSway()
@@ -796,7 +923,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 	private void ControlMovingAnimationFPS()
 	{
-
+		if ( Upgrading ) return;
 		CurrentWeaponClass.WeaponModel.Set( "move_bob", PlayerController.Velocity.WithZ( 0 ).Length );
 
 
@@ -810,6 +937,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		}
 		if ( Input.Pressed( "Jump" ) )
 		{
+			
 			CurrentWeaponClass.WeaponModel.Set( "b_jump", true );
 		}
 		if ( PlayerController.IsAirborne )
@@ -871,7 +999,19 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		ReviveTarget.RevivePlayer();
 	}
 
-
+	[Rpc.Host]
+	private void TellHostAboutRevive()
+	{
+		var GameModeManager = Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
+		if ( GameModeManager.ReviveList.ContainsKey( this.Network.Owner.SteamId ) )
+		{
+			GameModeManager.ReviveList[this.Network.Owner.SteamId] += 1;
+		}
+		else
+		{
+			GameModeManager.ReviveList.Add( this.Network.Owner.SteamId, 1 );
+		}
+	}
 
 	private void InteractionUITick()
 	{
@@ -968,15 +1108,25 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	[Rpc.Owner]
 	public void PlayerKnife()
 	{
+		if ( Downed ) return;
 		if ( CurrentWeaponClass?.WeaponModel == null || Knife == null )
 		{
 			return;
 		}
 
+		// Check if the weapon handler is currently reloading before we start the knife
+		var weaponhandler = GameObject.GetComponent<WeaponHandler>();
+		if ( weaponhandler.IsReloading )
+		{
+			weaponhandler.CancelReload();
+		}
+		
+
+		isKnifing = true;
 		TimeSinceKnifeStarted = 0;
 		KnifeAttackTriggered = false;
 		KnifeMeshShown = false;
-		Knife.Set( "b_attack", false );
+		Knife.Set( "b_backstab", true );
 		CurrentWeaponClass.WeaponModel.Set( "b_deploy_skip", true );
 		CurrentWeaponClass.WeaponModel.Set( "speed_deploy", 5f );
 		CurrentWeaponClass.WeaponModel.Set( "b_lower_weapon", true );
@@ -987,7 +1137,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		{
 			KnifeHand.RenderOptions.Game = false;
 		}
-		isKnifing = true;
+		
 		LineTraceMelee();
 	}
 
@@ -997,11 +1147,11 @@ public sealed class Player : Component, IHudInterface, IInteraction
 	{
 		if ( CurrentWeaponClass?.WeaponModel == null || Knife == null )
 		{
-			isKnifing = false;
+			//isKnifing = false;
 			return;
 		}
 
-		Knife.Set( "b_attack", false );
+		Knife.Set( "b_backstab", false );
 		Knife.RenderOptions.Game = false;
 		if ( KnifeHand != null )
 		{
@@ -1016,7 +1166,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 		TimeSinceWeaponSwap = 0f;
 		isDeploying = true;
-		isKnifing = false;
+		//isKnifing = false;
 		KnifeAttackTriggered = false;
 		KnifeMeshShown = false;
 	}
@@ -1054,6 +1204,10 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			return false;
 		}
 
+		if ( false )
+		{
+			return false;
+		}
 
 		if ( isKnifing )
 		{
@@ -1079,6 +1233,8 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		string action = "Use";
 		string target = "Object";
 		int? cost = null;
+
+		if ( Downed ) return false;
 
 		switch ( interaction )
 		{
@@ -1133,11 +1289,29 @@ public sealed class Player : Component, IHudInterface, IInteraction
 				cost = perk.Cost;
 				break;
 			case WallBuy wallBuy:
-				action = "Buy";
+				if ( Inventory.Weapons.Any( x => x.Weapon == wallBuy.WeaponPath ) )
+				{
+					action = "Buy ammo for ";
+					cost = wallBuy.AmmoCost;
+				}
+				else 
+				{
+					action = "Buy";
+					cost = wallBuy.Cost;
+				}
+				
 				target = string.IsNullOrWhiteSpace( wallBuy.WeaponName ) ? "Weapon" : wallBuy.WeaponName;
-				cost = wallBuy.Cost;
+				
 				break;
 			case PackAPunch packAPunch:
+				if ( packAPunch.Upgrading ) break;
+				if ( packAPunch.Upgraded && packAPunch.playerUpgrading != this )
+				{
+
+					InteractionPromptText = string.Empty;
+					InteractionCostText = string.Empty;
+					return false;
+				}
 				action = "Pack-a-Punch";
 				target = "Weapon";
 				cost = packAPunch.Cost;
@@ -1195,6 +1369,14 @@ public sealed class Player : Component, IHudInterface, IInteraction
 					action = "Waiting";
 					target = "for link...";
 					break;
+				}
+				break;
+
+			case InteractionEE interactEasterEgg:
+				if ( interactEasterEgg.ShowInteractionUI )
+				{
+					action = "Take";
+					target = interactEasterEgg.UIName;
 				}
 				break;
 			default:
@@ -1560,6 +1742,41 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 		if ( IsProxy ) return;
 
+		if ( Dead ) 
+		{
+			PlayerController.Enabled = false;
+			var check = GameObject.GetComponentInChildren<WeaponHandler>(true);
+			if(check.Enabled)
+			{
+				check.Enabled = false;
+			}
+			return; 
+		}
+
+
+		if ( TimeSinceDowned >= 30f && Downed )
+		{
+			Downed = false;
+			playerCamera.Enabled = false;
+			Dead = true;
+			if ( !Scene.GetAllComponents<GameModeManager>().FirstOrDefault().GameEnding ) 
+			{
+				var connectioon = this.GameObject.Network.Owner;
+				Scene.GetAllComponents<GameModeManager>().FirstOrDefault()?.SetPlayerSpectator( this );
+			}
+			
+			/*if ( TimeSinceDowned >= 6f)
+			{
+				this.GameObject.Destroy();
+				return;
+			}*/
+			return;
+		}
+
+
+		
+
+
 		UpdateInteractionSelection();
 		//DrawInteractionDebug();
 
@@ -1569,7 +1786,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		{
 			if ( !IsTypingChat && Input.Pressed( "dev_debug" ) )
 			{
-				Log.Info( "hellur" ); var cameraPos = Knife.WorldPosition;
+				var cameraPos = Knife.WorldPosition;
 				var direction = playerCamera.WorldRotation.Forward;
 
 				var endPosition = cameraPos + direction * 1000f;
@@ -1586,6 +1803,37 @@ public sealed class Player : Component, IHudInterface, IInteraction
 				}
 
 				zom.NetworkSpawn();
+			}
+
+
+
+			if ( !IsTypingChat && Input.Pressed( "dev_debug2" ) )
+			{
+				var cameraPos = Knife.WorldPosition;
+				var direction = playerCamera.WorldRotation.Forward;
+
+				var endPosition = cameraPos + direction * 1000f;
+				DebugOverlay.Line( cameraPos, endPosition, Color.Red, 5f );
+				var trace = Scene.Trace.FromTo( cameraPos, endPosition ).IgnoreGameObjectHierarchy( this.GameObject ).Run();
+
+				var zom = GameObject.GetPrefab( "powerup.prefab" ).Clone();
+				zom.LocalPosition = Vector3.Zero;
+				zom.LocalRotation = Rotation.Identity;
+				zom.WorldPosition = trace.HitPosition;
+				if ( zom == null )
+				{
+					Log.Info( "uhuh" );
+				}
+
+				zom.NetworkSpawn();
+			}
+
+
+			if ( !IsTypingChat && Input.Pressed( "dev_debug3" ) )
+			{ 
+
+				Scene.GetAllComponents<GameModeManager>().FirstOrDefault().RespawnAllPlayers();
+
 			}
 		}
 
@@ -1651,7 +1899,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			}
 
 			// Phase 2: bring gun mesh back just before finishing so transition back feels smoother.
-			if ( KnifeMeshShown && TimeSinceKnifeStarted >= 0.28f )
+			if ( KnifeMeshShown && TimeSinceKnifeStarted >= 0.45f )
 			{
 				Knife.RenderOptions.Game = false;
 				if ( KnifeHand != null )
@@ -1666,10 +1914,23 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		//Log.Info( "is knifin " + isKnifing );
 		if ( TimeSinceKnifeStarted >= .25f && isKnifing )
 		{
-			if ( TimeSinceKnifeStarted >= .34f )
+			if ( TimeSinceKnifeStarted >= .35f )
 			{
 				FinishKnife();
-				Log.Info( "Hellllllllo" );
+				isDeploying = false;
+				if ( TimeSinceKnifeStarted >= .75f )
+				{
+					isKnifing = false;
+
+					// Restart the reload now that isKnifing is false
+					// (WeaponHandler.HandleInput cancels reloads while isKnifing is true)
+
+					if ( Inventory.WeaponsAmmo[CurrentWeaponSlot].CurrentMag == 0 )
+					{
+						var weaponhandler = GameObject.GetComponent<WeaponHandler>();
+						weaponhandler.StartReload();
+					}
+				}
 
 			}
 
@@ -1762,17 +2023,23 @@ public sealed class Player : Component, IHudInterface, IInteraction
 		if ( !Downed )
 		{
 			CheckAndNudgeStacking();
-			if ( isSprinting && (isAiming || isFiring) )
+/*			if ( false )
 			{
 
 				PlayerController.RunSpeed = PlayerController.WalkSpeed;
 				isSprinting = false;
+				if ( !bStopSprint )
+				{
+					bStopSprint = true;
+					TimeSinceSprintingStopped = 0f;
+				}
+				
 			}
 			else
 			{
-
+				bStopSprint = false;
 				PlayerController.RunSpeed = BaseRunSpeed;
-			}
+			} */
 
 			if ( CurrentWeapon != null )
 			{
@@ -1793,12 +2060,27 @@ public sealed class Player : Component, IHudInterface, IInteraction
 			if ( !IsTypingChat && Input.Down( "run" ) && PlayerController.Velocity.LengthSquared >= 0.2f )
 			{
 				if ( Downed ) return;
-				isSprinting = true;
+				if ( Input.Down("Attack1") || Input.Down("Attack2") || isAiming || isFiring )
+				{
+					if ( isSprinting ) { TimeSinceSprintingStopped = 0f; }
+					isSprinting = false;
+
+				}
+				else
+				{ isSprinting = true; }
 			}
 			else if ( Input.Released( "run" ) || PlayerController.Velocity.LengthSquared <= 0.2f )
 			{
+				if ( isSprinting ) { TimeSinceSprintingStopped = 0f; }
 				isSprinting = false;
+				bStopSprint = false;
+				// properly reset above
 			}
+		}
+		if ( isSprinting ) {
+			PlayerController.RunSpeed = BaseRunSpeed;
+		} else {
+			PlayerController.RunSpeed = PlayerController.WalkSpeed;
 		}
 
 
@@ -1847,7 +2129,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 		if ( !IsTypingChat && Input.Pressed( "use" ) && TimeSinceLastInteractionPress >= InteractionPressCooldown && CurrentInteraction != null )
 		{
-			Log.Info( "vait" );
+
 			TimeSinceLastInteractionPress = 0;
 			TimeSinceInteractHeld = 0;
 			if ( CurrentInteraction.Hold )
@@ -1856,7 +2138,7 @@ public sealed class Player : Component, IHudInterface, IInteraction
 				HoldingInteraction = true;
 				if ( isReviving )
 				{
-					CurrentInterHoldTime = HasQuickRevive ? 3f : ReviveTime;
+					CurrentInterHoldTime = HasIcyAid ? 3f : ReviveTime;
 				}
 				else
 				{
@@ -1921,3 +2203,4 @@ public sealed class Player : Component, IHudInterface, IInteraction
 
 	}
 }
+

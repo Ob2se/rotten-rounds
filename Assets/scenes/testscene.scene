@@ -6,9 +6,9 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Plane",
-      "Position": "60.29875,-25.96903,-15.91907",
+      "Position": "60.2987518,-25.9690304,-15.9190702",
       "Rotation": "0,0,0,1",
-      "Scale": "19.00642,19.00642,9.003422",
+      "Scale": "19.0064201,19.0064201,9.00342178",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -66,7 +66,7 @@
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
           "RollingResistance": null,
-          "Scale": "100.1401,99.91001",
+          "Scale": "100.140099,99.9100113",
           "Static": true,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -79,8 +79,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Sun",
-      "Position": "-56.17049,-87.4492,178.1376",
-      "Rotation": "0,-0.6087611,0,-0.7933536",
+      "Position": "-56.1704903,-87.4492035,178.137604",
+      "Rotation": "0,-0.608761072,0,-0.793353617",
       "Scale": "1,1,1",
       "Tags": "light_directional,light",
       "Enabled": true,
@@ -104,8 +104,13 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "ShadowBias": 0.0005,
+          "ShadowCascadeCount": 4,
+          "ShadowCascadeSplitRatio": 0.91,
+          "ShadowHardness": 0,
           "Shadows": true,
-          "SkyColor": "0,0,0,0"
+          "SkyColor": "0,0,0,0",
+          "Visualizer": {}
         }
       ],
       "Children": []
@@ -115,7 +120,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object",
-      "Position": "-82.99984,-7.369583,8.680321",
+      "Position": "-82.9998398,-7.36958313,8.68032074",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -147,7 +152,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object (1)",
-      "Position": "9.70446,-7.369583,8.680321",
+      "Position": "9.70446014,-7.36958313,8.68032074",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -179,7 +184,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "2D Skybox",
-      "Position": "-25.77514,-191.4411,87.23908",
+      "Position": "-25.7751408,-191.441101,87.2390823",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "skybox",
@@ -204,6 +209,38 @@
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "d939630f-8e2b-4258-97f2-3a7607fcc8ad",
+          "__enabled": false,
+          "Flags": 0,
+          "__version": 1,
+          "BakedTexture": "scenes/testscene_scene_data/envmap/bake_d939630f-8e2b-4258-97f2-3a7607fcc8ad.vtex",
+          "Bounds": {
+            "Mins": "-512,-512,-512",
+            "Maxs": "512,512,512"
+          },
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 8,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "Mode": "Realtime",
+          "MultiBounce": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Priority": 0,
+          "Projection": "Sphere",
+          "Resolution": "Medium",
+          "Texture": null,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
         }
       ],
       "Children": []
@@ -213,7 +250,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object",
-      "Position": "21.17072,-76.5943,6.321793",
+      "Position": "21.1707191,-76.5942993,6.32179308",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -250,6 +287,10 @@
               "go": "2db6ab30-a08e-4b33-aa32-4ad1e2bab78a"
             }
           ],
+          "SpectatorPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/spectator/spectator.prefab"
+          },
           "StartServer": true,
           "zombiePrefab": {
             "_type": "gameobject",
@@ -282,7 +323,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "922dc9d2-2d42-4580-b3b4-8de5b7dbd244"
+              "IdValue": "fcbf272a-9ff7-4995-af03-8429b2432128"
             },
             "Parent": {
               "Type": "GameObject",
@@ -295,10 +336,10 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "922dc9d2-2d42-4580-b3b4-8de5b7dbd244",
+              "__guid": "fcbf272a-9ff7-4995-af03-8429b2432128",
               "__version": 2,
               "Flags": 0,
-              "Name": "Clothing - shorts",
+              "Name": "Clothing - loose_jeans",
               "Position": "0,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
@@ -316,18 +357,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "6cc62708-c59d-438b-acdd-e5c370b9e3f0"
+              "IdValue": "ba2a5ebf-0518-4a93-a48c-dd20f9278087"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "922dc9d2-2d42-4580-b3b4-8de5b7dbd244"
+              "IdValue": "fcbf272a-9ff7-4995-af03-8429b2432128"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "6cc62708-c59d-438b-acdd-e5c370b9e3f0",
+              "__guid": "ba2a5ebf-0518-4a93-a48c-dd20f9278087",
               "__enabled": true,
               "Flags": 0,
               "AnimationGraph": null,
@@ -344,7 +385,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_clothes/shorts/shorts/models/shorts_m_human.vmdl",
+              "Model": "models/citizen_clothes/trousers/loosejeans/models/loose_jeans_m_human.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -381,13 +422,13 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "94ab05bd-4c62-42ec-ba7e-dfe04673958a"
+              "IdValue": "b8fac12c-f2b7-4204-82ed-9bf6f18dfe2d"
             }
           },
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "f946cad0-1cd9-4f22-80b3-3028fcf689c2"
+              "IdValue": "40a21a6d-a59c-4ca4-b112-baf5f8d3543d"
             }
           }
         ],
@@ -398,7 +439,7 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Position",
-            "Value": "64.29481,369.7647,-12.16578"
+            "Value": "270.242004,-171.808502,-12.1657801"
           },
           {
             "Target": {
@@ -406,7 +447,7 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Rotation",
-            "Value": "0,0,-0.7071067,0.7071068"
+            "Value": "0,0,-0.707106709,0.707106829"
           },
           {
             "Target": {
@@ -439,6 +480,19 @@
             },
             "Property": "zombieRagdollPrefab",
             "Value": null
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "348a4a83-5c87-4ea7-a169-7dffcabd2392"
+            },
+            "Property": "RenderOptions",
+            "Value": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": true,
+              "AfterUILayer": false
+            }
           }
         ],
         "MovedObjects": []
@@ -457,19 +511,12 @@
         "a0eb7230-1ae6-4d7d-96ac-412ec3b435ec": "04b6e83a-be1c-4b4d-894e-83190bc38f0c",
         "991c9a03-5d7c-4d33-9fa9-495d5066cc4d": "199d5985-89b1-415b-8820-a73a1304aaa3",
         "e4fe4506-0057-422d-a2fb-895e1c6a4543": "9a2279be-537e-4894-a66a-7e1de1f319a1",
-        "7ea05261-9f6a-4394-9616-4f12b0815592": "7ef4a162-fe39-4994-8c9a-9246c85ddaae",
-        "66e7e4a0-b4a5-43dc-a7d8-d676a10c0ed4": "159896cb-01e5-4afc-93b0-40b37298cfc8",
-        "60c2dd88-874a-4972-aa6c-91097dcf53e0": "a5454822-dc34-4ed4-867e-39acc981dc8f",
         "fd05d57d-534c-437c-b013-be7dc476b920": "22e9cf43-d4ed-4ed8-8dc7-9ae0546d51e5",
         "5c0d1fab-ae19-437f-ac52-c8b30e809ada": "591e6ae8-08cc-4e1e-818d-432c2cac7c4c",
-        "4fcaff2c-f6bc-437d-b3ac-1cad0c189ae0": "0ae2533f-408e-4267-8864-5a7c090a9cf0",
         "f004fff7-6d85-4f7a-a250-37c73cf80f75": "4a85b400-e535-47d1-b7c3-31a92f26ba83",
-        "abcff50e-1361-44b8-9b66-adc2388dde40": "926173c3-d6a2-40b3-a774-01731a690f9f",
         "d3bb1c1b-5e57-4e06-9080-a94f87900b69": "4cc25a9c-919a-4f7c-8b5b-5cbe9dc3048d",
         "b322a5e6-cb92-4bd7-81c5-a36bb98807f1": "a9f70a5a-4f20-447d-829e-418b9201c22e",
-        "66075742-9909-45a3-ad99-809b62d9738c": "735b13c3-0794-4c55-a781-766cbf7cdd2e",
         "f29c533e-6ba1-4db3-8f3c-964d484d98e4": "5a17eb0b-210a-462b-a9f3-5c4fd95a79d1",
-        "a77ee3c4-84bb-40b3-9b96-192b4556c679": "e329a6c0-6e4e-4483-a24e-7bed49f23256",
         "4961f202-6c5c-400e-9314-7080c300b1c9": "93d34cb8-5cc0-4d17-bb41-f085686d941f",
         "24a7c892-7977-470c-9d3c-9c934a6e8db8": "7edf1c11-d778-4752-84a2-596f3603cccd",
         "803f8ab1-fb1b-4042-8c33-3456ce2ff55f": "64739aa4-467b-4286-abab-36f281150651",
@@ -480,9 +527,7 @@
         "884bd44c-a9f7-448a-9a1d-c17c1cd881df": "b4fbbe3e-a8bb-4238-adf1-e1bd3dc2cf4f",
         "93dbb5c6-3a7f-4ac5-ad95-f39a047c88d6": "08eb168e-493a-4ccc-a140-6dcc479adfe2",
         "2b35f2c5-401b-48b4-91e4-87fe23f8c39b": "9ce07e5f-7e28-40b0-9bdb-961d82a249e0",
-        "ff18d2a8-658a-4b0a-839f-571d827d6e93": "9a62c660-88e0-49ae-9548-2e5313ce8311",
         "32f46a70-e6c9-498f-abef-28eac4c51e74": "fc087fdb-4845-4365-950e-0b9df347f462",
-        "0d48c976-619f-4582-b9c4-b491a8de1117": "ea6d5e21-5d71-4207-9558-ab60c1872322",
         "c21396f2-6a1f-479a-9472-610b666c3d64": "f11d6d22-6918-481b-a5d3-298067cc66c0",
         "2890f797-d885-4e86-9904-7466beb83baf": "5df879ac-a2c7-4a94-8e6e-3df24d8e01e4",
         "65a21f26-7051-438e-83c5-0e19847b5871": "162c0c85-9dd4-486a-8174-937192b0aeb7",
@@ -647,8 +692,8 @@
         "2f058b07-e034-4905-a99f-d6545faa598e": "c4b1222a-dae2-4602-9f51-cd6069e3f52e",
         "d5b2040b-97db-4c35-ad56-2f1c27281b57": "65076756-affe-4fa7-b616-5a02d1865f7e",
         "8ff0bf0e-2604-4cba-9dbf-e9948405cb04": "c64e2435-2449-4382-ac9e-bc036c199111",
-        "f946cad0-1cd9-4f22-80b3-3028fcf689c2": "e592a308-e3d4-4a3e-b016-fa9a2f65cc43",
-        "94ab05bd-4c62-42ec-ba7e-dfe04673958a": "7b37b8c0-c691-4729-956b-dc500bc93369",
+        "93ea0345-66f8-46f8-93b6-2b5e56c71c1b": "a65c4f8d-fa91-4673-82c9-86d56864d635",
+        "edbf8b57-d320-416f-90e9-1765384a552d": "c40116b4-80eb-4a91-82fe-46483b587e47",
         "25b9c859-5a0b-4d01-99c3-98273076a3ae": "4e3f8703-adbd-4a3a-bd0a-6939df715609",
         "a7b26063-3e69-4bc0-8e1d-2b9a2442492b": "43aed6dd-c14b-4e13-84dd-042f1545d421",
         "e392c2ef-a29f-4fcc-bb37-d46cf801d59d": "73d5b824-ec56-4932-bca9-af90d68f3d41",
@@ -667,7 +712,31 @@
         "564fa76b-cd81-49e3-8d6d-c4002c0befeb": "af8b98b3-03c8-476e-82b5-1258410c5d2e",
         "d1a50bdb-055e-4a99-9ff8-aaec50c5c187": "729f1473-cd2a-4057-a8b6-42d303d6d9b5",
         "c9c5f71a-365d-4391-a0e1-bd7b3be4a2cc": "6c31c79a-b384-46a4-91ff-56b6c32ce2fd",
-        "eb00ca16-a638-4993-aa63-111a98c01ce7": "b4c40084-d2a4-459c-855f-3ef57fc3ce72"
+        "eb00ca16-a638-4993-aa63-111a98c01ce7": "b4c40084-d2a4-459c-855f-3ef57fc3ce72",
+        "ea3be825-fc9d-4937-ac88-bebf4860d318": "0dad765d-7868-452a-aaf8-5e973e7a71d5",
+        "26bad5b1-93a5-4eb2-91e0-85547d46b332": "50ac6ef1-73e5-4fa6-bd50-3d2e140a12d8",
+        "c5b2c402-45fe-408a-acb0-93c941956308": "37acfe5f-e2fc-4826-a1d4-a2014934e2c0",
+        "179e8d53-3e7a-457a-8330-5ddd23807f80": "439424d7-1253-4811-b04a-4430729c0afa",
+        "dbc4ed65-9a2c-4cfa-85f5-c3f8df3c8651": "31feffb5-c60e-4e52-9024-258c23b1a53e",
+        "94062c2e-5c68-4651-ac88-ff3cbffb3326": "cddb5578-38f4-4711-8dee-a69de59737a5",
+        "39e3245c-2a76-4636-afb1-a7a72e4745e0": "1e01b390-3191-4659-b58f-7be762f5b117",
+        "985689bb-68b7-489e-b15d-eb3e75201786": "dec5f1e3-634d-41f3-910c-b42cd89e1e16",
+        "b8ea0cc6-0b1f-4c28-a4c5-0defe3438aa8": "a6a3e240-abab-4539-8709-9d98ad1c4a73",
+        "7e0247c2-e787-49b2-8e21-40fc5c6c9725": "3dc7c2d9-c1f7-4578-a4d8-d07a7f5d71e4",
+        "39a9dd21-8926-4941-8b01-bc24c7ee9189": "8628add3-c808-44cf-9efb-6c2d0300aa48",
+        "c74aed38-46fe-4922-9a3c-502b4d7d028b": "42966337-d88e-4703-a2a9-060f4b6e1b0d",
+        "17dd639b-7751-44e5-bc3f-e7ca4508cef9": "6c90274c-7f44-4312-b35a-66dc913931da",
+        "67fce0ad-9a54-40c2-9a7e-640387b9793b": "70cfece0-d69b-4e4b-937d-66d9956051f8",
+        "fdd2d4c5-3668-42ab-a5f4-cf158d376e9e": "660cbaf7-7c75-47d1-87c7-f7f77f22c090",
+        "04e5adf3-ff50-47d8-8756-43199ff652dc": "a4e64d31-0581-4145-84aa-e2fbb6f648d4",
+        "3beb74f8-2884-474c-84ab-c3d120e318d1": "967760eb-cd45-4c6d-9df8-04979981e5ca",
+        "615d7d70-57c8-48cc-81af-ecaa8595cdd9": "01e2d088-eed4-4575-908b-695420d9fa33",
+        "6c7a7c7e-dd63-42a3-b19c-112f4248598a": "09717417-c7b5-460b-9d70-596a8650409a",
+        "eef53a85-5ce2-4fcc-8a73-c89cc8746680": "eb2a4415-defa-4a24-8f03-f8456d48694b",
+        "fa80c451-84d2-4980-aaff-3b527b6ea3d7": "fa9acf0b-3fbc-4862-a17f-2c55814c47d1",
+        "fca62479-8ed4-4a64-a64e-4f6f31f9a019": "e7375949-c39a-4d20-b499-6e8648f966fe",
+        "eef81ad3-af1e-4fed-9584-502d1614298d": "16b345b9-68dc-46f4-a580-3942a592c055",
+        "9a756c80-3c43-46c7-9bfa-e9f390b33dab": "15b3cf3e-52df-4a46-8a2e-7118272f2745"
       }
     },
     {
@@ -675,9 +744,9 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Cube",
-      "Position": "638.1763,43.21222,50.32529",
+      "Position": "638.17627,-82.8380127,50.3252907",
       "Rotation": "0,0,0,1",
-      "Scale": "0.2687795,15.25214,2.689738",
+      "Scale": "0.268779486,23.5187359,2.68973804",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -734,7 +803,7 @@
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
           "RollingResistance": null,
-          "Scale": "50.04314,50,50",
+          "Scale": "50.0431404,50,50",
           "Static": false,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -751,7 +820,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "a559df0a-46a0-4905-93d9-89fa431faa50"
+              "IdValue": "0ff3e324-a82d-43b4-ae3c-defbbdf9dc31"
             },
             "Parent": {
               "Type": "GameObject",
@@ -764,10 +833,10 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "a559df0a-46a0-4905-93d9-89fa431faa50",
+              "__guid": "0ff3e324-a82d-43b4-ae3c-defbbdf9dc31",
               "__version": 2,
               "Flags": 0,
-              "Name": "Clothing - shorts",
+              "Name": "Clothing - loose_jeans",
               "Position": "0,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
@@ -785,18 +854,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "91282dbe-5cd4-4116-bb8a-02c2510cc4d2"
+              "IdValue": "c22380f7-158b-4768-a9cd-d46d5493369b"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "a559df0a-46a0-4905-93d9-89fa431faa50"
+              "IdValue": "0ff3e324-a82d-43b4-ae3c-defbbdf9dc31"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "91282dbe-5cd4-4116-bb8a-02c2510cc4d2",
+              "__guid": "c22380f7-158b-4768-a9cd-d46d5493369b",
               "__enabled": true,
               "Flags": 0,
               "AnimationGraph": null,
@@ -813,7 +882,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_clothes/shorts/shorts/models/shorts_m_human.vmdl",
+              "Model": "models/citizen_clothes/trousers/loosejeans/models/loose_jeans_m_human.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -850,13 +919,13 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "94ab05bd-4c62-42ec-ba7e-dfe04673958a"
+              "IdValue": "b8fac12c-f2b7-4204-82ed-9bf6f18dfe2d"
             }
           },
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "f946cad0-1cd9-4f22-80b3-3028fcf689c2"
+              "IdValue": "40a21a6d-a59c-4ca4-b112-baf5f8d3543d"
             }
           }
         ],
@@ -875,7 +944,7 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Position",
-            "Value": "191.5495,405.6374,-15.50192"
+            "Value": "191.5495,405.63739,-15.5019197"
           },
           {
             "Target": {
@@ -883,7 +952,7 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.7071069,-0.7071067"
+            "Value": "0,0,0.707106888,-0.707106709"
           },
           {
             "Target": {
@@ -958,19 +1027,12 @@
         "a0eb7230-1ae6-4d7d-96ac-412ec3b435ec": "4a8dd560-8c5d-4f85-9ba9-ab91164f75d8",
         "991c9a03-5d7c-4d33-9fa9-495d5066cc4d": "a491eed6-33c3-4539-9f49-49f3c8f9a2bf",
         "e4fe4506-0057-422d-a2fb-895e1c6a4543": "58e39d67-279a-456c-b7af-d2dd78a10432",
-        "7ea05261-9f6a-4394-9616-4f12b0815592": "d9164bd2-31c3-40be-ad76-794748a0b4f2",
-        "66e7e4a0-b4a5-43dc-a7d8-d676a10c0ed4": "d0bea84d-5303-4f6e-b6c8-c948b55c14f8",
-        "60c2dd88-874a-4972-aa6c-91097dcf53e0": "b1b42a67-78c3-4cba-9044-91f5ec2ad539",
         "fd05d57d-534c-437c-b013-be7dc476b920": "c65879a6-df66-43ec-8617-5c92b129f224",
         "5c0d1fab-ae19-437f-ac52-c8b30e809ada": "1546cff4-9665-4b03-83fb-35987536a676",
-        "4fcaff2c-f6bc-437d-b3ac-1cad0c189ae0": "c95ba3b4-d15e-423c-9aa9-70bb5856d1bb",
         "f004fff7-6d85-4f7a-a250-37c73cf80f75": "660de2a9-dd5a-4316-98e4-64e5e8e8b81e",
-        "abcff50e-1361-44b8-9b66-adc2388dde40": "9d2645d1-42fd-4093-bedc-a54128cf20a6",
         "d3bb1c1b-5e57-4e06-9080-a94f87900b69": "17139755-9183-4141-b8d3-c1c86defb967",
         "b322a5e6-cb92-4bd7-81c5-a36bb98807f1": "eabb5606-82d6-4a22-a5f5-a96fe2a7231f",
-        "66075742-9909-45a3-ad99-809b62d9738c": "26744016-a968-47ec-aa3f-e11fe9c9fe58",
         "f29c533e-6ba1-4db3-8f3c-964d484d98e4": "6f9a4c5f-10df-44fa-b19e-3d7cc90f6e7c",
-        "a77ee3c4-84bb-40b3-9b96-192b4556c679": "35e6dff9-712d-4e87-944a-a7e53e8db418",
         "4961f202-6c5c-400e-9314-7080c300b1c9": "d051248c-89bd-4529-aeeb-e072116616b8",
         "24a7c892-7977-470c-9d3c-9c934a6e8db8": "2620cf19-fb11-44d2-9a4a-1fd57b8dfc87",
         "803f8ab1-fb1b-4042-8c33-3456ce2ff55f": "ee97b32b-1c56-4aea-aed3-146dcc79bfbc",
@@ -981,9 +1043,7 @@
         "884bd44c-a9f7-448a-9a1d-c17c1cd881df": "e254994b-0c76-4cee-a7a4-c7fc4ec2f689",
         "93dbb5c6-3a7f-4ac5-ad95-f39a047c88d6": "ad952146-263f-4a2e-bbf4-d36e949817ae",
         "2b35f2c5-401b-48b4-91e4-87fe23f8c39b": "0e54b1cc-37b8-42f0-a872-c2a05b3960c5",
-        "ff18d2a8-658a-4b0a-839f-571d827d6e93": "be2fa75b-3146-48ff-aabb-5535b5c34573",
         "32f46a70-e6c9-498f-abef-28eac4c51e74": "2c3cfad1-6c0c-4571-ab28-ad4ebb9cff06",
-        "0d48c976-619f-4582-b9c4-b491a8de1117": "d3eb7885-04ac-4c6f-9e6b-56a71b71aad4",
         "c21396f2-6a1f-479a-9472-610b666c3d64": "a7ea559c-ac67-4d67-ba64-8b07c288d057",
         "2890f797-d885-4e86-9904-7466beb83baf": "3184c0b0-a872-48c3-837d-d5f4b9e42ac8",
         "65a21f26-7051-438e-83c5-0e19847b5871": "ccae2110-1ff9-475c-acdb-b9638d682ebf",
@@ -1148,8 +1208,8 @@
         "2f058b07-e034-4905-a99f-d6545faa598e": "e9c8e1cf-3c52-4945-855c-f27144a84a92",
         "d5b2040b-97db-4c35-ad56-2f1c27281b57": "809764b2-b610-4430-9172-744727c5c7b9",
         "8ff0bf0e-2604-4cba-9dbf-e9948405cb04": "6a7505ed-27ff-4fe4-b43e-caa4058918ee",
-        "f946cad0-1cd9-4f22-80b3-3028fcf689c2": "972587e4-47d2-4e84-9044-494d16be4eb2",
-        "94ab05bd-4c62-42ec-ba7e-dfe04673958a": "f1797670-b790-4280-a69d-83f72afcf528",
+        "93ea0345-66f8-46f8-93b6-2b5e56c71c1b": "98e23ce6-6675-42c2-80eb-a0d8f848adb3",
+        "edbf8b57-d320-416f-90e9-1765384a552d": "a14b5569-cd7c-434d-adb0-7fda0621aa35",
         "25b9c859-5a0b-4d01-99c3-98273076a3ae": "8adaf8fa-bcf4-4b32-8f8b-e736036c00e0",
         "a7b26063-3e69-4bc0-8e1d-2b9a2442492b": "436803c8-0d56-4d34-bbce-1702060a5225",
         "e392c2ef-a29f-4fcc-bb37-d46cf801d59d": "8d464ace-1cfe-43ce-810d-de7cd45270d8",
@@ -1168,7 +1228,31 @@
         "564fa76b-cd81-49e3-8d6d-c4002c0befeb": "6fe148a3-7bda-4bf4-9aa9-c3585495cbf7",
         "d1a50bdb-055e-4a99-9ff8-aaec50c5c187": "6d788c3d-4013-4f36-a1ba-863d3c225dfd",
         "c9c5f71a-365d-4391-a0e1-bd7b3be4a2cc": "aafac967-24c0-4c62-b5eb-469bf56d541d",
-        "eb00ca16-a638-4993-aa63-111a98c01ce7": "b3b91b54-2729-4805-b6e1-b8486a74630c"
+        "eb00ca16-a638-4993-aa63-111a98c01ce7": "b3b91b54-2729-4805-b6e1-b8486a74630c",
+        "ea3be825-fc9d-4937-ac88-bebf4860d318": "751f3f74-982f-43cd-87bd-4ba5a937bd81",
+        "26bad5b1-93a5-4eb2-91e0-85547d46b332": "442acb8f-e077-498d-ae81-131a2ca47a61",
+        "c5b2c402-45fe-408a-acb0-93c941956308": "54f50fb3-64b9-4574-942f-399c429ad602",
+        "179e8d53-3e7a-457a-8330-5ddd23807f80": "599ca7a5-3778-49e8-9b49-d97eeb6b6c11",
+        "dbc4ed65-9a2c-4cfa-85f5-c3f8df3c8651": "1afcc34e-b427-49ee-97e0-13e907694388",
+        "94062c2e-5c68-4651-ac88-ff3cbffb3326": "7d302de9-e774-43a1-9041-0830595dfc21",
+        "39e3245c-2a76-4636-afb1-a7a72e4745e0": "2d94f121-1677-4ed7-9ced-b8718522c6f5",
+        "985689bb-68b7-489e-b15d-eb3e75201786": "b3794e58-65a8-427f-9ced-be53503ab982",
+        "b8ea0cc6-0b1f-4c28-a4c5-0defe3438aa8": "53eeba43-00a4-4d9e-ab19-1af6580d1a6d",
+        "7e0247c2-e787-49b2-8e21-40fc5c6c9725": "66c51720-e56e-4f33-87bd-a0e20dbd9df6",
+        "39a9dd21-8926-4941-8b01-bc24c7ee9189": "a8f9f1e8-b2c7-43ae-a5dc-3442b61d1731",
+        "c74aed38-46fe-4922-9a3c-502b4d7d028b": "7f901f36-d8f6-4f2d-975e-d30127d445af",
+        "17dd639b-7751-44e5-bc3f-e7ca4508cef9": "09315a8c-c94d-4caa-bdc8-b01c3080a089",
+        "67fce0ad-9a54-40c2-9a7e-640387b9793b": "acae2bf9-c9a1-453d-966b-259d364458df",
+        "fdd2d4c5-3668-42ab-a5f4-cf158d376e9e": "c193c7ce-beb7-4524-89ea-94783d3d3bc9",
+        "04e5adf3-ff50-47d8-8756-43199ff652dc": "aa8b4e8e-ebfa-41da-9b7b-cfe7219e779b",
+        "3beb74f8-2884-474c-84ab-c3d120e318d1": "eb69e780-604c-4ce5-9b4c-5a6294cc7ac9",
+        "615d7d70-57c8-48cc-81af-ecaa8595cdd9": "a5d04a60-03ac-462a-98d7-cbbf637e6905",
+        "6c7a7c7e-dd63-42a3-b19c-112f4248598a": "bfd9bbc7-76e3-4328-b9d5-43fc5d0ae8d3",
+        "eef53a85-5ce2-4fcc-8a73-c89cc8746680": "b0887bca-70c4-4927-9d3e-5281ec5af097",
+        "fa80c451-84d2-4980-aaff-3b527b6ea3d7": "e3f60d0a-082c-475b-b4b1-9a56c4eea8eb",
+        "fca62479-8ed4-4a64-a64e-4f6f31f9a019": "962499c9-aae6-4ace-88fb-9c82778dc937",
+        "eef81ad3-af1e-4fed-9584-502d1614298d": "c75fab23-bbce-4465-9257-fa6c61bc7057",
+        "9a756c80-3c43-46c7-9bfa-e9f390b33dab": "72d6f14a-be2c-498b-87b2-73a54c735263"
       }
     },
     {
@@ -1185,7 +1269,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Position",
-            "Value": "194.8949,364.5226,-18.10646"
+            "Value": "194.894897,364.522614,-18.1064606"
           },
           {
             "Target": {
@@ -1193,7 +1277,7 @@
               "IdValue": "7727ced1-badd-44bb-abe0-379c743e2f9e"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.7071067,0.7071068"
+            "Value": "0,0,0.707106709,0.707106829"
           }
         ],
         "MovedObjects": []
@@ -1246,7 +1330,7 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Position",
-            "Value": "-553.4677,-261.788,37.59507"
+            "Value": "-553.467712,-261.787994,37.5950699"
           },
           {
             "Target": {
@@ -1254,15 +1338,23 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.7071067,0.7071068"
+            "Value": "0,0,0.707106709,0.707106829"
           },
           {
             "Target": {
               "Type": "Component",
               "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
             },
-            "Property": "ConnectedDoors",
-            "Value": []
+            "Property": "BoxCollida",
+            "Value": null
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
+            },
+            "Property": "DoorModel",
+            "Value": null
           },
           {
             "Target": {
@@ -1307,7 +1399,7 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Position",
-            "Value": "-553.4677,-86.7237,37.59507"
+            "Value": "-553.467712,-86.7237015,37.5950699"
           },
           {
             "Target": {
@@ -1315,15 +1407,23 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.7071067,0.7071068"
+            "Value": "0,0,0.707106709,0.707106829"
           },
           {
             "Target": {
               "Type": "Component",
               "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
             },
-            "Property": "ConnectedDoors",
-            "Value": []
+            "Property": "BoxCollida",
+            "Value": null
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
+            },
+            "Property": "DoorModel",
+            "Value": null
           },
           {
             "Target": {
@@ -1376,7 +1476,7 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Position",
-            "Value": "-349.7614,-417.6916,37.59507"
+            "Value": "-349.761414,-417.691589,37.5950699"
           },
           {
             "Target": {
@@ -1384,7 +1484,15 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.9999999,0.0000001490116"
+            "Value": "0,0,0.999999881,1.49011598E-07"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
+            },
+            "Property": "BoxCollida",
+            "Value": null
           },
           {
             "Target": {
@@ -1408,6 +1516,14 @@
             },
             "Property": "ConnectedToOtherDoors",
             "Value": true
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
+            },
+            "Property": "DoorModel",
+            "Value": null
           },
           {
             "Target": {
@@ -1452,7 +1568,7 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Position",
-            "Value": "-524.8257,-417.6916,37.59507"
+            "Value": "-524.825684,-417.691589,37.5950699"
           },
           {
             "Target": {
@@ -1460,7 +1576,15 @@
               "IdValue": "1bf37de7-0224-4cc7-8fe5-e0e5156aee83"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.9999999,0.0000001490116"
+            "Value": "0,0,0.999999881,1.49011598E-07"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
+            },
+            "Property": "BoxCollida",
+            "Value": null
           },
           {
             "Target": {
@@ -1484,6 +1608,14 @@
             },
             "Property": "ConnectedToOtherDoors",
             "Value": true
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "02f2b0f1-87f3-4838-985a-55faa6c63ef4"
+            },
+            "Property": "DoorModel",
+            "Value": null
           },
           {
             "Target": {
@@ -1529,7 +1661,7 @@
               "__guid": "66659087-9edf-421f-9b42-6dfa4acb1973",
               "__enabled": true,
               "Flags": 0,
-              "Center": "0,0,63.55251",
+              "Center": "0,0,63.5525093",
               "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
@@ -1545,7 +1677,7 @@
               "OnTriggerEnter": null,
               "OnTriggerExit": null,
               "RollingResistance": null,
-              "Scale": "50,50,128.8451",
+              "Scale": "50,50,128.845093",
               "Static": false,
               "Surface": null,
               "SurfaceVelocity": "0,0,0"
@@ -1560,7 +1692,7 @@
               "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
             },
             "Property": "Position",
-            "Value": "616.545,-210.193,-15.77658"
+            "Value": "618.137329,-210.192993,-15.7765799"
           },
           {
             "Target": {
@@ -1568,7 +1700,35 @@
               "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
             },
             "Property": "Rotation",
-            "Value": "0,0,1,0.0000001947072"
+            "Value": "0,0,1,1.94707198E-07"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "247663fc-6683-4368-8b34-3c1e8e27ecd2"
+            },
+            "Property": "MaterialOverride",
+            "Value": "models/perks/machine/material/icyaid.vmat"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "247663fc-6683-4368-8b34-3c1e8e27ecd2"
+            },
+            "Property": "Materials",
+            "Value": {
+              "indexed": {
+                "0": "models/perks/machine/material/icyaid.vmat"
+              }
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "PerkType",
+            "Value": "IcyAid"
           },
           {
             "Target": {
@@ -1764,6 +1924,885 @@
       }
     },
     {
+      "__guid": "58bf6ead-fe07-4478-b8b6-e4c9333aa7ba",
+      "__version": 2,
+      "__Prefab": "perkmachine.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "c7c0264d-12ad-471c-9a21-3f4c3a0377af"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "39a12431-adc6-4808-9bd6-c78290d6cd7d"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "c7c0264d-12ad-471c-9a21-3f4c3a0377af",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,63.5525093",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,128.845093",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Name",
+            "Value": "perkmachine (1)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Position",
+            "Value": "618.137329,-321.529205,-15.7765799"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,1,1.94707198E-07"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "247663fc-6683-4368-8b34-3c1e8e27ecd2"
+            },
+            "Property": "Materials",
+            "Value": {
+              "indexed": {
+                "0": "models/perks/machine/material/icyaid.vmat"
+              }
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "Cost",
+            "Value": 2
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "PerkType",
+            "Value": "JitterJuice"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "050840cf-0a3d-4000-b5b2-a37d7b30607c"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "76d9bc1d-5695-460f-a043-d1e3ddca4ab3"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "a4445eac-98c4-4152-8d35-ade77c29f69a"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "6790aa3d-c5a5-4a24-aeff-56226f6f302b"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "659a0f88-e26d-4f28-8810-825d8dd30016"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "614401ba-1520-4fc6-b0e8-74b9f846a474"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "b3555513-9246-4794-95a4-fb047c668e15"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5c3d282d-55e5-40b7-bf84-5542f0793c40"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "096b5509-e145-41ab-91ee-e1fba6087572"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "c702b707-83ab-41ea-aa34-33a8104192bb"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "65cc87b2-6640-4b98-8ae8-da84bd7dda34"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "f8caf922-e472-4075-8851-5c280f6d2549"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "f6239b57-bdc2-44bd-81f8-14b00d3ce679"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "80d34ed5-c9a3-428a-bc09-b4f1f4a492dc"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7943e8a2-df11-4e9c-9de1-e16745248b56"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "149ea365-0910-4a8c-83cb-cb666f7a3bf7"
+            },
+            "Property": "__enabled",
+            "Value": false
+          }
+        ],
+        "MovedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "48601e88-ec98-4a0a-b421-98f32544652d"
+            },
+            "NewParent": {
+              "Type": "GameObject",
+              "IdValue": "39a12431-adc6-4808-9bd6-c78290d6cd7d"
+            },
+            "NewContainerProperty": "Components",
+            "IsNewContainerArray": true,
+            "NewPreviousElement": {
+              "Type": "Component",
+              "IdValue": "c7c0264d-12ad-471c-9a21-3f4c3a0377af"
+            }
+          }
+        ]
+      },
+      "__PrefabIdToInstanceId": {
+        "9850359a-92da-4a01-8971-8bb392ca06c1": "58bf6ead-fe07-4478-b8b6-e4c9333aa7ba",
+        "247663fc-6683-4368-8b34-3c1e8e27ecd2": "c95ce020-09a1-4b78-876c-420d54c2a1d2",
+        "5cb8ca0c-86c4-4596-8c43-35956535d241": "e6fb7936-d1d0-4c1c-a600-01ef879791d1",
+        "27827cda-f3ae-452b-bbb7-88a6bd0d4665": "8e38a24d-b3c4-4597-8863-1d2865ff0027",
+        "39a12431-adc6-4808-9bd6-c78290d6cd7d": "998d3c92-d721-41b2-ad41-eab84ca5525f",
+        "5a3b06ae-7da8-44dc-b58e-576259cf5495": "cf74d848-d27e-4474-bd62-340aac35b5c6",
+        "eda7ae11-9084-46e4-8c60-6384a04b8729": "cc7dd757-0b3e-4f3e-80a9-4058fec53f90",
+        "050840cf-0a3d-4000-b5b2-a37d7b30607c": "2ed801e1-ccec-483c-9191-7d14d996d915",
+        "76d9bc1d-5695-460f-a043-d1e3ddca4ab3": "9fd5986d-2427-4479-85bb-c194c91e733b",
+        "a4445eac-98c4-4152-8d35-ade77c29f69a": "8ecbd02d-4cb6-45e8-9aaa-0aff07f9502a",
+        "6790aa3d-c5a5-4a24-aeff-56226f6f302b": "1c92dae1-e765-411b-a537-387077f2def6",
+        "659a0f88-e26d-4f28-8810-825d8dd30016": "716a796a-6e7a-4c61-8471-5001321e0763",
+        "614401ba-1520-4fc6-b0e8-74b9f846a474": "de9ca368-e097-4db0-bfc2-3c6b443c3c62",
+        "b3555513-9246-4794-95a4-fb047c668e15": "7eb16d1e-42bf-4850-8c59-29209ea446a1",
+        "5c3d282d-55e5-40b7-bf84-5542f0793c40": "d917ca5e-007c-468d-9133-f9c0aa1cc541",
+        "096b5509-e145-41ab-91ee-e1fba6087572": "800b4ed1-e0da-4bcf-af5c-0ff570727dd7",
+        "c702b707-83ab-41ea-aa34-33a8104192bb": "3a4107bb-ce17-4c5d-9856-145e81825c04",
+        "65cc87b2-6640-4b98-8ae8-da84bd7dda34": "5d77c7c6-40e1-41de-abb1-8005bf0c2f5c",
+        "f8caf922-e472-4075-8851-5c280f6d2549": "d2b21101-d3d8-4445-b875-cda1f6b9f427",
+        "f6239b57-bdc2-44bd-81f8-14b00d3ce679": "996f36a8-8b3c-4ad5-8212-ba9346410abd",
+        "80d34ed5-c9a3-428a-bc09-b4f1f4a492dc": "f225debd-5a1d-4308-a690-7f4ce1943270",
+        "7943e8a2-df11-4e9c-9de1-e16745248b56": "aac61e14-5ba3-47d9-9602-f906839995a5",
+        "149ea365-0910-4a8c-83cb-cb666f7a3bf7": "45fc82a4-ce3d-458e-ace6-62f766bcd94c",
+        "7d2e751e-6ecc-4e90-877c-e27db6a8a00f": "579d0576-957c-4a93-b14e-cbfe3294943a",
+        "4315a98f-e364-44fb-bfa2-9a98fa34dd05": "8d792bf9-a035-4880-a632-f4bf349d57f2",
+        "a1ac93ae-9e9d-4c50-b6f7-c52be784dcdd": "5982397c-f8ac-4fc3-9eaf-5941d27e5c87",
+        "e81bc61f-4d4b-4724-bb76-ec536c9605e9": "911786db-b20b-4510-bc7e-d8074f7aac9f",
+        "6164d85a-e8b2-4747-82e2-7d0f2d4ef01c": "8f79b9fb-4516-4f0e-bcee-71b3f38e7fab",
+        "bbada587-2f47-4f21-9c54-7f710c10eb25": "bf4c2581-99b7-41bd-92f2-c9a090aa6413",
+        "a1a97814-bbe7-41e7-ad96-78a4219dafc1": "290182c4-25eb-4f1e-91f5-46cca5aca279",
+        "83eeb660-c7d4-4a00-bde5-1bb306a7ef79": "045cb8f0-8cb8-4327-b7d4-6a912ffd061a",
+        "1a935166-8aa5-4876-8540-a27e34f44890": "b6c27d75-c294-4d98-9fc2-78ccd7c8b524",
+        "53a7d780-0536-41c6-97a0-210a3eec869a": "07045e97-938a-4eb5-9bb4-7359b6a7257a",
+        "f5fc2ab3-515b-49d3-8467-7052251daec8": "31ab27ec-d924-461d-b820-0d3401a6ed38",
+        "afdbb596-a543-47d1-aee0-416e205ef21c": "03851144-9602-41ee-9612-d9aa5c60ec3d",
+        "eee132c3-54b1-439c-8f26-8467b7513af3": "043ca987-6f0c-41b2-9e70-5900c6e6673a",
+        "773365ab-510a-4690-8e96-298cc9f92095": "ba37a2d4-5ddb-4a07-a40e-af13578a36cd",
+        "85e6da14-1ace-4092-9928-6fdb38f8cdac": "5b981180-b0d7-4e6c-a9f9-25aa9a92f056",
+        "89cdf4e3-a8fb-47a0-9b00-2b3738cc7969": "587197f6-56fd-483b-88a9-3d91b73387ea",
+        "7f848fd2-36d6-4aae-96c5-f566f7a49a69": "70e0a37a-d7ad-46cc-b7e0-71f00afbda19",
+        "a3cebb8b-3e5f-43e6-87e1-8b578a1d822d": "7246508d-3c7e-4d59-9147-f194b6dead9e",
+        "48601e88-ec98-4a0a-b421-98f32544652d": "1cc9fc18-ca88-4289-9cae-9a736b074b23"
+      }
+    },
+    {
+      "__guid": "3d05a232-04cc-421d-80ff-35f24517b4b6",
+      "__version": 2,
+      "__Prefab": "perkmachine.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "a880e3fb-7017-4aa9-9104-8f42ae7c28f7"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "39a12431-adc6-4808-9bd6-c78290d6cd7d"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "a880e3fb-7017-4aa9-9104-8f42ae7c28f7",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,63.5525093",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,128.845093",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Name",
+            "Value": "perkmachine (2)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Position",
+            "Value": "618.137329,-390.811707,-15.7765799"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,1,1.94707198E-07"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "247663fc-6683-4368-8b34-3c1e8e27ecd2"
+            },
+            "Property": "Materials",
+            "Value": {
+              "indexed": {
+                "0": "models/perks/machine/material/icyaid.vmat"
+              }
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "Cost",
+            "Value": 2
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "PerkType",
+            "Value": "BurleyBrew"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "050840cf-0a3d-4000-b5b2-a37d7b30607c"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "76d9bc1d-5695-460f-a043-d1e3ddca4ab3"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "a4445eac-98c4-4152-8d35-ade77c29f69a"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "6790aa3d-c5a5-4a24-aeff-56226f6f302b"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "659a0f88-e26d-4f28-8810-825d8dd30016"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "614401ba-1520-4fc6-b0e8-74b9f846a474"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "b3555513-9246-4794-95a4-fb047c668e15"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5c3d282d-55e5-40b7-bf84-5542f0793c40"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "096b5509-e145-41ab-91ee-e1fba6087572"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "c702b707-83ab-41ea-aa34-33a8104192bb"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "65cc87b2-6640-4b98-8ae8-da84bd7dda34"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "f8caf922-e472-4075-8851-5c280f6d2549"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "f6239b57-bdc2-44bd-81f8-14b00d3ce679"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "80d34ed5-c9a3-428a-bc09-b4f1f4a492dc"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7943e8a2-df11-4e9c-9de1-e16745248b56"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "149ea365-0910-4a8c-83cb-cb666f7a3bf7"
+            },
+            "Property": "__enabled",
+            "Value": false
+          }
+        ],
+        "MovedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "48601e88-ec98-4a0a-b421-98f32544652d"
+            },
+            "NewParent": {
+              "Type": "GameObject",
+              "IdValue": "39a12431-adc6-4808-9bd6-c78290d6cd7d"
+            },
+            "NewContainerProperty": "Components",
+            "IsNewContainerArray": true,
+            "NewPreviousElement": {
+              "Type": "Component",
+              "IdValue": "a880e3fb-7017-4aa9-9104-8f42ae7c28f7"
+            }
+          }
+        ]
+      },
+      "__PrefabIdToInstanceId": {
+        "9850359a-92da-4a01-8971-8bb392ca06c1": "3d05a232-04cc-421d-80ff-35f24517b4b6",
+        "247663fc-6683-4368-8b34-3c1e8e27ecd2": "93714243-5ba6-419d-949f-89fbf2fc38a7",
+        "5cb8ca0c-86c4-4596-8c43-35956535d241": "deb5cec2-f4c8-4051-a0e2-5e3c5c89d52e",
+        "27827cda-f3ae-452b-bbb7-88a6bd0d4665": "466b3553-5c46-4776-a656-9d453bdf9cc3",
+        "39a12431-adc6-4808-9bd6-c78290d6cd7d": "4ae6388c-e7ae-4480-97f7-d3512d9f8389",
+        "5a3b06ae-7da8-44dc-b58e-576259cf5495": "72051095-4ba2-494b-ab57-a0901920f90b",
+        "eda7ae11-9084-46e4-8c60-6384a04b8729": "5a3f1092-3850-4f40-9fcc-15361516b50e",
+        "050840cf-0a3d-4000-b5b2-a37d7b30607c": "dc365d52-78d4-4c22-9218-7112d5d0c10e",
+        "76d9bc1d-5695-460f-a043-d1e3ddca4ab3": "e5ad2422-e18d-4a93-a2e1-b77e76f0e39c",
+        "a4445eac-98c4-4152-8d35-ade77c29f69a": "c91a443c-caf4-4b4e-86c0-c2b77aefbddf",
+        "6790aa3d-c5a5-4a24-aeff-56226f6f302b": "69688940-ddfe-474d-ae0f-cbe0d8de8389",
+        "659a0f88-e26d-4f28-8810-825d8dd30016": "12de5429-e8f2-457d-b8c4-2ca943e6f806",
+        "614401ba-1520-4fc6-b0e8-74b9f846a474": "0ec7e025-866e-4c7c-a0bd-8140d24bf5ca",
+        "b3555513-9246-4794-95a4-fb047c668e15": "b4b9755d-5028-4bcc-8785-905bd633a60b",
+        "5c3d282d-55e5-40b7-bf84-5542f0793c40": "7c1d4a38-e427-48b6-abd3-ad5ad2134234",
+        "096b5509-e145-41ab-91ee-e1fba6087572": "1580125a-6502-49a5-9a9b-852894754387",
+        "c702b707-83ab-41ea-aa34-33a8104192bb": "d3fb2ca4-e181-49f6-b329-ece638a9dbaa",
+        "65cc87b2-6640-4b98-8ae8-da84bd7dda34": "1b215f89-1973-4074-ad3a-13732dba0f88",
+        "f8caf922-e472-4075-8851-5c280f6d2549": "b100d6f0-34e7-41b7-a796-a24430721565",
+        "f6239b57-bdc2-44bd-81f8-14b00d3ce679": "cf43a541-7f4e-450a-84b9-23a5957c6135",
+        "80d34ed5-c9a3-428a-bc09-b4f1f4a492dc": "126421bd-eda8-45cf-a782-6aa2551bedff",
+        "7943e8a2-df11-4e9c-9de1-e16745248b56": "97274a33-8e08-4878-bac6-7a0c87c4fe4f",
+        "149ea365-0910-4a8c-83cb-cb666f7a3bf7": "c56af441-df1d-45f9-bf2c-9018637b2078",
+        "7d2e751e-6ecc-4e90-877c-e27db6a8a00f": "2e8b722f-83ec-482d-a7d2-a32f8559884d",
+        "4315a98f-e364-44fb-bfa2-9a98fa34dd05": "07f8df7b-a945-49e5-a1e7-57db1e50df6f",
+        "a1ac93ae-9e9d-4c50-b6f7-c52be784dcdd": "4b6a3e24-6a80-46c6-bc0a-45165d3dd1af",
+        "e81bc61f-4d4b-4724-bb76-ec536c9605e9": "58508bdc-70c2-4223-b09b-62a3038fac64",
+        "6164d85a-e8b2-4747-82e2-7d0f2d4ef01c": "e3e6a49a-17fb-4d76-8992-b4ac430741c0",
+        "bbada587-2f47-4f21-9c54-7f710c10eb25": "79373c6a-b0b8-4834-8904-2d7fc7f2798f",
+        "a1a97814-bbe7-41e7-ad96-78a4219dafc1": "c7371c47-2306-4667-a4fd-993128644a52",
+        "83eeb660-c7d4-4a00-bde5-1bb306a7ef79": "dbe87714-98af-41fb-9a02-0cbfc59ac4fb",
+        "1a935166-8aa5-4876-8540-a27e34f44890": "7301bfd7-094e-42ed-b906-00d64735aedd",
+        "53a7d780-0536-41c6-97a0-210a3eec869a": "6ca1dba9-fcd5-43e6-ae4c-4987d811760c",
+        "f5fc2ab3-515b-49d3-8467-7052251daec8": "4d64290f-9fa6-4776-99f6-968fcacf48f3",
+        "afdbb596-a543-47d1-aee0-416e205ef21c": "c582d649-b23f-46d3-9591-537e0630b7b2",
+        "eee132c3-54b1-439c-8f26-8467b7513af3": "940121be-c859-4af0-aa9d-44a48cdc326e",
+        "773365ab-510a-4690-8e96-298cc9f92095": "127a730e-1b3c-47bd-b7fc-ad7679200b21",
+        "85e6da14-1ace-4092-9928-6fdb38f8cdac": "27c9a55a-0da0-4ac0-bf91-0ead08b179ea",
+        "89cdf4e3-a8fb-47a0-9b00-2b3738cc7969": "61d93c42-5d26-45b6-bf74-efa6d91e921a",
+        "7f848fd2-36d6-4aae-96c5-f566f7a49a69": "a802e2c7-721f-4bae-92b0-ddd8a1bc56dc",
+        "a3cebb8b-3e5f-43e6-87e1-8b578a1d822d": "2d415c70-7eab-40a9-a01d-1d9fae1b4343",
+        "48601e88-ec98-4a0a-b421-98f32544652d": "470fd267-8d9f-467e-b13a-59ed9d251414"
+      }
+    },
+    {
+      "__guid": "43d69190-4513-443b-bcd2-7f195ad3852c",
+      "__version": 2,
+      "__Prefab": "perkmachine.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "75719e58-0caa-4e9a-8670-b73b33c8308e"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "39a12431-adc6-4808-9bd6-c78290d6cd7d"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "75719e58-0caa-4e9a-8670-b73b33c8308e",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,63.5525093",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,128.845093",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Name",
+            "Value": "perkmachine (3)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Position",
+            "Value": "618.137329,-467.71051,-15.7765799"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9850359a-92da-4a01-8971-8bb392ca06c1"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,1,1.94707198E-07"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "247663fc-6683-4368-8b34-3c1e8e27ecd2"
+            },
+            "Property": "Materials",
+            "Value": {
+              "indexed": {
+                "0": "models/perks/machine/material/icyaid.vmat"
+              }
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "Cost",
+            "Value": 3
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5cb8ca0c-86c4-4596-8c43-35956535d241"
+            },
+            "Property": "PerkType",
+            "Value": "QuickSip"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "050840cf-0a3d-4000-b5b2-a37d7b30607c"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "76d9bc1d-5695-460f-a043-d1e3ddca4ab3"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "a4445eac-98c4-4152-8d35-ade77c29f69a"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "6790aa3d-c5a5-4a24-aeff-56226f6f302b"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "659a0f88-e26d-4f28-8810-825d8dd30016"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "614401ba-1520-4fc6-b0e8-74b9f846a474"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "b3555513-9246-4794-95a4-fb047c668e15"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "5c3d282d-55e5-40b7-bf84-5542f0793c40"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "096b5509-e145-41ab-91ee-e1fba6087572"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "c702b707-83ab-41ea-aa34-33a8104192bb"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "65cc87b2-6640-4b98-8ae8-da84bd7dda34"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "f8caf922-e472-4075-8851-5c280f6d2549"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "f6239b57-bdc2-44bd-81f8-14b00d3ce679"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "80d34ed5-c9a3-428a-bc09-b4f1f4a492dc"
+            },
+            "Property": "__enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7943e8a2-df11-4e9c-9de1-e16745248b56"
+            },
+            "Property": "Enabled",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "149ea365-0910-4a8c-83cb-cb666f7a3bf7"
+            },
+            "Property": "__enabled",
+            "Value": false
+          }
+        ],
+        "MovedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "48601e88-ec98-4a0a-b421-98f32544652d"
+            },
+            "NewParent": {
+              "Type": "GameObject",
+              "IdValue": "39a12431-adc6-4808-9bd6-c78290d6cd7d"
+            },
+            "NewContainerProperty": "Components",
+            "IsNewContainerArray": true,
+            "NewPreviousElement": {
+              "Type": "Component",
+              "IdValue": "75719e58-0caa-4e9a-8670-b73b33c8308e"
+            }
+          }
+        ]
+      },
+      "__PrefabIdToInstanceId": {
+        "9850359a-92da-4a01-8971-8bb392ca06c1": "43d69190-4513-443b-bcd2-7f195ad3852c",
+        "247663fc-6683-4368-8b34-3c1e8e27ecd2": "b9584d4e-0967-4492-94b5-0b96a501b6ea",
+        "5cb8ca0c-86c4-4596-8c43-35956535d241": "0d5ca18c-2d7c-4ba0-bb25-465f781fc2a7",
+        "27827cda-f3ae-452b-bbb7-88a6bd0d4665": "27317190-7978-422e-9275-73cb130279f9",
+        "39a12431-adc6-4808-9bd6-c78290d6cd7d": "7aae9083-290e-429c-a479-f55efcf4820c",
+        "5a3b06ae-7da8-44dc-b58e-576259cf5495": "e34cab14-9613-4dc8-9085-de7a781a80f7",
+        "eda7ae11-9084-46e4-8c60-6384a04b8729": "9042f7e7-a87b-4d6f-b9c2-957e1e30742c",
+        "050840cf-0a3d-4000-b5b2-a37d7b30607c": "8e818bed-2fd6-488f-bb45-9930073bf5ef",
+        "76d9bc1d-5695-460f-a043-d1e3ddca4ab3": "7884048b-53b4-4165-acae-640d2d9c2070",
+        "a4445eac-98c4-4152-8d35-ade77c29f69a": "fb51ccf2-8249-4f27-9408-0e359fc8898e",
+        "6790aa3d-c5a5-4a24-aeff-56226f6f302b": "ed3c3ab2-850f-4c37-a831-70098e0e1b7a",
+        "659a0f88-e26d-4f28-8810-825d8dd30016": "de26990c-b8bc-4f5a-af04-9fcc3da5562d",
+        "614401ba-1520-4fc6-b0e8-74b9f846a474": "4287dd59-02b8-4a23-a4c3-11ab6b4586f0",
+        "b3555513-9246-4794-95a4-fb047c668e15": "c8240f8b-5611-4426-82c5-f219e0c97be8",
+        "5c3d282d-55e5-40b7-bf84-5542f0793c40": "d72256f1-e3c3-4062-84c7-b70a0dc54e20",
+        "096b5509-e145-41ab-91ee-e1fba6087572": "69715f46-7540-4e97-90bc-44dd915da91c",
+        "c702b707-83ab-41ea-aa34-33a8104192bb": "df67f1dd-b08d-4f11-989f-6f46a7cfc00b",
+        "65cc87b2-6640-4b98-8ae8-da84bd7dda34": "e8df57cd-5645-489e-a2c4-c4fd3e5d0903",
+        "f8caf922-e472-4075-8851-5c280f6d2549": "0af590d4-c118-4991-822d-5273767073f4",
+        "f6239b57-bdc2-44bd-81f8-14b00d3ce679": "7dc8ef00-f135-4256-8c0c-d97a738c593f",
+        "80d34ed5-c9a3-428a-bc09-b4f1f4a492dc": "afa11cc9-d05f-4477-b26c-e9542fd4c9a8",
+        "7943e8a2-df11-4e9c-9de1-e16745248b56": "7b2702eb-e9cd-477c-8b6e-d44e23b16e4b",
+        "149ea365-0910-4a8c-83cb-cb666f7a3bf7": "e94afb65-3ecd-4989-904e-6636d96d553c",
+        "7d2e751e-6ecc-4e90-877c-e27db6a8a00f": "941c9d3e-1207-4629-bd4a-c632d65880b1",
+        "4315a98f-e364-44fb-bfa2-9a98fa34dd05": "32644b7d-e685-4450-9aed-c94e856bdd88",
+        "a1ac93ae-9e9d-4c50-b6f7-c52be784dcdd": "41ee7d24-97ec-4d9d-9ca4-af59f3c55f00",
+        "e81bc61f-4d4b-4724-bb76-ec536c9605e9": "82478869-cc25-41bd-a4df-cdfcbf80a01a",
+        "6164d85a-e8b2-4747-82e2-7d0f2d4ef01c": "28794391-8c9d-40e0-b42b-5eaa62dad78c",
+        "bbada587-2f47-4f21-9c54-7f710c10eb25": "02eff30f-6691-461e-9583-86e3bd83eb23",
+        "a1a97814-bbe7-41e7-ad96-78a4219dafc1": "c5245e66-5ec8-48a8-8294-fe47207d193a",
+        "83eeb660-c7d4-4a00-bde5-1bb306a7ef79": "a45a019b-dbf5-4dba-b20a-1ebe5e470a64",
+        "1a935166-8aa5-4876-8540-a27e34f44890": "418481d0-9b61-4b77-bf70-068e11de7d21",
+        "53a7d780-0536-41c6-97a0-210a3eec869a": "f8e535d2-5c30-406b-9726-d607b72ee8f8",
+        "f5fc2ab3-515b-49d3-8467-7052251daec8": "6253e491-00fd-4d44-9d39-8827ce431885",
+        "afdbb596-a543-47d1-aee0-416e205ef21c": "6889e88e-89b0-4551-8e74-88ed449b338b",
+        "eee132c3-54b1-439c-8f26-8467b7513af3": "ad6faca0-3644-47c8-a07a-02971674c855",
+        "773365ab-510a-4690-8e96-298cc9f92095": "2ead21dd-4218-454a-8aa2-1bcbaf82a479",
+        "85e6da14-1ace-4092-9928-6fdb38f8cdac": "5bb121c7-a80a-46b8-921b-75051dbf913b",
+        "89cdf4e3-a8fb-47a0-9b00-2b3738cc7969": "a96f0e78-629d-43b8-b9d1-431e5b00c539",
+        "7f848fd2-36d6-4aae-96c5-f566f7a49a69": "00b33e04-0356-4d54-80b8-c77fcf90af46",
+        "a3cebb8b-3e5f-43e6-87e1-8b578a1d822d": "f50c6837-e284-4e58-a53e-3c852b5ffc76",
+        "48601e88-ec98-4a0a-b421-98f32544652d": "8738521f-c9ea-4923-b738-7bdabc7fb4fd"
+      }
+    },
+    {
       "__guid": "49ea4d63-3f1f-409b-beb5-2887b7bd4f62",
       "__version": 2,
       "__Prefab": "wallbuy.prefab",
@@ -1777,7 +2816,7 @@
               "IdValue": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5"
             },
             "Property": "Position",
-            "Value": "631.2482,-85.06963,46.369"
+            "Value": "631.24823,-85.0696335,46.3689995"
           },
           {
             "Target": {
@@ -1785,7 +2824,7 @@
               "IdValue": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5"
             },
             "Property": "Rotation",
-            "Value": "0.00000005960464,-0.0000003894143,-0.9999999,0.00000000000002321091"
+            "Value": "5.96046412E-08,-3.89414311E-07,-0.999999881,2.32109101E-14"
           }
         ],
         "MovedObjects": []
@@ -1821,7 +2860,7 @@
               "IdValue": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5"
             },
             "Property": "Position",
-            "Value": "631.2482,-144.9445,46.369"
+            "Value": "631.24823,-144.944504,46.3689995"
           },
           {
             "Target": {
@@ -1829,7 +2868,7 @@
               "IdValue": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5"
             },
             "Property": "Rotation",
-            "Value": "0.00000005960464,-0.0000003894143,-0.9999999,0.00000000000002321091"
+            "Value": "5.96046412E-08,-3.89414311E-07,-0.999999881,2.32109101E-14"
           }
         ],
         "MovedObjects": []
@@ -1865,7 +2904,7 @@
               "IdValue": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5"
             },
             "Property": "Position",
-            "Value": "631.2482,-24.32752,46.369"
+            "Value": "631.24823,-24.3275204,46.3689995"
           },
           {
             "Target": {
@@ -1873,7 +2912,7 @@
               "IdValue": "b93a5ecf-7b27-45c5-a0b0-a554e88e34c5"
             },
             "Property": "Rotation",
-            "Value": "0.00000005960464,-0.0000003894143,-0.9999999,0.00000000000002321091"
+            "Value": "5.96046412E-08,-3.89414311E-07,-0.999999881,2.32109101E-14"
           },
           {
             "Target": {
@@ -1881,7 +2920,7 @@
               "IdValue": "71f0ba2d-b40b-4117-8544-bb6d3be19dd1"
             },
             "Property": "Center",
-            "Value": "6.589914,0.3625526,-9.916264"
+            "Value": "6.58991385,0.362552613,-9.91626358"
           },
           {
             "Target": {
@@ -1889,7 +2928,7 @@
               "IdValue": "71f0ba2d-b40b-4117-8544-bb6d3be19dd1"
             },
             "Property": "Scale",
-            "Value": "13.05364,51.61616,45.17658"
+            "Value": "13.0536404,51.6161613,45.1765785"
           },
           {
             "Target": {
@@ -1925,7 +2964,7 @@
               "IdValue": "c427ad0d-cd57-4361-b4ec-9fbe487cad02"
             },
             "Property": "Position",
-            "Value": "602.4335,368.6338,-13.77835"
+            "Value": "602.433472,368.633789,-13.7783499"
           },
           {
             "Target": {
@@ -1933,7 +2972,7 @@
               "IdValue": "c427ad0d-cd57-4361-b4ec-9fbe487cad02"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.7071067,0.7071068"
+            "Value": "0,0,0.707106709,0.707106829"
           },
           {
             "Target": {
@@ -1993,7 +3032,7 @@
               "IdValue": "c427ad0d-cd57-4361-b4ec-9fbe487cad02"
             },
             "Property": "Position",
-            "Value": "602.4335,223.5489,-13.77835"
+            "Value": "602.433472,223.548904,-13.7783499"
           },
           {
             "Target": {
@@ -2001,7 +3040,7 @@
               "IdValue": "c427ad0d-cd57-4361-b4ec-9fbe487cad02"
             },
             "Property": "Rotation",
-            "Value": "0,0,0.7071067,0.7071068"
+            "Value": "0,0,0.707106709,0.707106829"
           },
           {
             "Target": {
@@ -2053,7 +3092,7 @@
               "IdValue": "795dda7a-d915-406f-b056-4087c77d45d6"
             },
             "Property": "Position",
-            "Value": "630.2756,-262.7168,-16.414"
+            "Value": "630.275574,-262.716797,-16.4139996"
           },
           {
             "Target": {
@@ -2061,7 +3100,7 @@
               "IdValue": "795dda7a-d915-406f-b056-4087c77d45d6"
             },
             "Property": "Rotation",
-            "Value": "0,0,-0.9999999,0.0000001947072"
+            "Value": "0,0,-0.999999881,1.94707198E-07"
           },
           {
             "Target": {
@@ -2087,7 +3126,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "gnomenotext",
-      "Position": "-315.7222,178.42,30.28548",
+      "Position": "-315.722198,178.419998,30.2854805",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -2133,7 +3172,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "x2",
-      "Position": "28.06639,145.1111,30.60094",
+      "Position": "28.0663891,145.111099,30.6009407",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -2183,7 +3222,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "firesale2",
-      "Position": "-52.8246,154.7093,30.26076",
+      "Position": "-52.8246002,154.709305,30.2607594",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -2229,7 +3268,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "instakill2",
-      "Position": "-126.6511,149.1112,30.37468",
+      "Position": "-126.6511,149.111206,30.3746796",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -2275,7 +3314,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "maxammo2",
-      "Position": "-167.8533,165.53,26.81412",
+      "Position": "-167.853302,165.529999,26.8141193",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -2321,7 +3360,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "nuke2",
-      "Position": "-234.4614,176.0034,19.70224",
+      "Position": "-234.461395,176.003403,19.70224",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -2367,8 +3406,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "mysterybox_r",
-      "Position": "-236.9555,53.47697,-15.91095",
-      "Rotation": "0,0,-0.7071068,0.7071068",
+      "Position": "-236.955505,53.4769707,-15.9109497",
+      "Rotation": "0,0,-0.707106829,0.707106829",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
@@ -2431,7 +3470,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "boarder",
-      "Position": "-304.5436,39.37891,14.8483",
+      "Position": "-304.54361,39.3789101,14.8483",
       "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
       "Tags": "",
@@ -2495,8 +3534,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "perkcan",
-      "Position": "-222.0124,64.67514,-15.9188",
-      "Rotation": "0,-0.2156507,0,0.9764706",
+      "Position": "-222.012405,64.6751404,-15.9188004",
+      "Rotation": "0,-0.215650693,0,0.97647059",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
@@ -2541,9 +3580,9 @@
       "__version": 2,
       "Flags": 0,
       "Name": "perkcan",
-      "Position": "-233.5056,-45.9273,7.825177",
+      "Position": "-233.5056,-45.9272995,7.82517719",
       "Rotation": "0,0,0,1",
-      "Scale": "8.326764,8.326764,8.326764",
+      "Scale": "8.32676411,8.32676411,8.32676411",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -2596,38 +3635,14 @@
               "IdValue": "206877bf-ee2c-4e3a-9e5c-7bcf9c73e86f"
             },
             "Property": "Position",
-            "Value": "-220.8423,-181.7145,19.90897"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "a7fed07e-251b-4e0a-acf4-52df3674787a"
-            },
-            "Property": "__enabled",
-            "Value": true
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "a7fed07e-251b-4e0a-acf4-52df3674787a"
-            },
-            "Property": "Model",
-            "Value": "models/powerups/instakill/instakill2.vmdl"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "6b783f9c-9c64-46d6-849c-d8434f9d1ba2"
-            },
-            "Property": "__enabled",
-            "Value": true
+            "Value": "-220.8423,-181.714493,19.9089699"
           }
         ],
         "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {
         "206877bf-ee2c-4e3a-9e5c-7bcf9c73e86f": "1d1c5dc9-ff1f-4cae-add8-409395770066",
-        "a7fed07e-251b-4e0a-acf4-52df3674787a": "23cf8e3a-1c06-49b4-a6c8-06094cfe1733",
+        "f62fc2bf-ab97-43c1-83fc-90f10588bbb1": "74d9eb76-7a18-4417-bf0e-67001ef6feec",
         "412011bf-8653-4ded-9143-83e2f5ff5b55": "33cc4f31-d0be-4124-92cd-433622af8b6c",
         "6b783f9c-9c64-46d6-849c-d8434f9d1ba2": "2be11f26-b906-4bac-9dbd-78b74c46bde7",
         "50ee5b25-dab2-4756-a5eb-5f99f3af79a9": "54f99672-7dfc-491c-8b38-13ad4a8e6f64",
@@ -2636,7 +3651,12 @@
         "21199171-3340-4dc4-9b0f-e6acc6fd7526": "0101c36e-18f8-465d-8722-df26d85713b3",
         "95bc5edb-7c01-4948-91cf-25c259723aff": "b4641d8b-91d3-47f3-a6ea-ef024a24fac7",
         "d4c27348-8a67-48f4-9fc3-2b80063f4113": "87df2719-de8d-4924-8098-305245190791",
-        "40ab0d5c-380e-411c-b066-d0534b54a706": "51d7cd6a-7a35-4d95-8e7f-90299e6c4178"
+        "40ab0d5c-380e-411c-b066-d0534b54a706": "51d7cd6a-7a35-4d95-8e7f-90299e6c4178",
+        "c3aca1b7-da85-45bd-9995-46df2453f1f8": "abfe33b3-b79a-4a38-89b4-d6a564b1e273",
+        "777ef835-337d-4a4d-a138-0c5ad167fea5": "6395ac5b-d3db-4a21-97c9-bf82978e3600",
+        "b8e9d5fb-c1ca-4640-8731-a79def1ffbb1": "6a524111-530b-4325-9be1-11b31d00c734",
+        "afc9d878-523f-4bf2-b155-244773b3f71a": "71461c62-2cf9-4c44-a67e-18400085d373",
+        "f7fb1c74-a4d7-465e-aa11-250cc51985c0": "1f7343cc-000c-4cfa-8c73-e5801b655b96"
       }
     },
     {
@@ -2653,7 +3673,7 @@
               "IdValue": "78aed0ff-e60e-46f1-bc7c-1013e0921bd2"
             },
             "Property": "Position",
-            "Value": "-65.13426,-518.1996,-11.86743"
+            "Value": "-65.1342621,-682.983643,-11.8674297"
           },
           {
             "Target": {
@@ -2661,7 +3681,7 @@
               "IdValue": "78aed0ff-e60e-46f1-bc7c-1013e0921bd2"
             },
             "Property": "Rotation",
-            "Value": "0,0,1,0.0000001947072"
+            "Value": "0,0,1,1.94707198E-07"
           },
           {
             "Target": {
@@ -2712,7 +3732,7 @@
               "IdValue": "2233546d-8b8f-4ff1-b738-a188d46a6044"
             },
             "Property": "Position",
-            "Value": "207.9857,-418.1067,-12.35439"
+            "Value": "207.985703,-620.032471,-12.3543901"
           },
           {
             "Target": {
@@ -2777,7 +3797,7 @@
               "IdValue": "2233546d-8b8f-4ff1-b738-a188d46a6044"
             },
             "Property": "Position",
-            "Value": "207.9857,-631.8968,-12.35439"
+            "Value": "207.985703,-833.822571,-12.3543901"
           },
           {
             "Target": {
@@ -2877,7 +3897,7 @@
               "IdValue": "2233546d-8b8f-4ff1-b738-a188d46a6044"
             },
             "Property": "Position",
-            "Value": "424.7792,-418.1067,-12.35439"
+            "Value": "424.779205,-620.032471,-12.3543901"
           },
           {
             "Target": {
@@ -2932,7 +3952,7 @@
               "IdValue": "bed4439d-39fa-495e-8344-ebc07f5a35ad"
             },
             "Property": "Position",
-            "Value": "639.0974,-836.8115,-13.91907"
+            "Value": "639.097412,-836.811523,-13.9190702"
           }
         ],
         "MovedObjects": []
@@ -2947,9 +3967,9 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Cube",
-      "Position": "1899.994,-641.8799,-95.41705",
+      "Position": "1899.99402,-641.879883,-95.4170532",
       "Rotation": "0,0,0,1",
-      "Scale": "7.906966,11.03032,5.089632",
+      "Scale": "7.90696621,11.0303202,5.08963203",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -3015,6 +4035,78 @@
       "Children": []
     },
     {
+      "__guid": "40a3bf06-6044-4232-8f50-5c6a2db7ea68",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Cube (1)",
+      "Position": "219.041595,2072.29199,-95.4170532",
+      "Rotation": "0,0,0,1",
+      "Scale": "7.90696621,11.0303202,5.08963203",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "4a9044f3-bad6-438b-bdc3-845807bc7ae2",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "fe7f7e6d-dcde-4b61-ba16-4025363b6828",
+          "__enabled": true,
+          "Flags": 0,
+          "Center": "0,0,0",
+          "ColliderFlags": 0,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
+    },
+    {
       "__guid": "f1371e83-baef-4cce-8194-cfe153c390de",
       "__version": 2,
       "__Prefab": "prefabs/teleporters/teleportlocation.prefab",
@@ -3036,7 +4128,7 @@
               "IdValue": "bed4439d-39fa-495e-8344-ebc07f5a35ad"
             },
             "Property": "Position",
-            "Value": "1932.588,-692.4606,36.07033"
+            "Value": "1932.58801,-692.460571,36.0703316"
           }
         ],
         "MovedObjects": []
@@ -3044,50 +4136,6 @@
       "__PrefabIdToInstanceId": {
         "bed4439d-39fa-495e-8344-ebc07f5a35ad": "f1371e83-baef-4cce-8194-cfe153c390de",
         "2948e9f1-9a4f-4c99-a06f-0f48b37e2fc9": "a40c369a-1773-4b4b-8bee-55c3a773a86e"
-      }
-    },
-    {
-      "__guid": "7c4f01d2-b914-4ce8-ba0f-9cdaba1a914a",
-      "__version": 2,
-      "__Prefab": "prefabs/luckylead/luckylead.prefab",
-      "__PrefabInstancePatch": {
-        "AddedObjects": [],
-        "RemovedObjects": [],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "1147df34-8251-4a2f-a3df-e546180b73b4"
-            },
-            "Property": "Position",
-            "Value": "602.7692,76.18573,8.19548"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "1147df34-8251-4a2f-a3df-e546180b73b4"
-            },
-            "Property": "NetworkMode",
-            "Value": 1
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "e26a28a4-0f0d-4174-8fa8-1be8feec8026"
-            },
-            "Property": "Cost",
-            "Value": 1
-          }
-        ],
-        "MovedObjects": []
-      },
-      "__PrefabIdToInstanceId": {
-        "1147df34-8251-4a2f-a3df-e546180b73b4": "7c4f01d2-b914-4ce8-ba0f-9cdaba1a914a",
-        "e26a28a4-0f0d-4174-8fa8-1be8feec8026": "ce88bca1-c489-4ecc-80bc-9980bb2e2496",
-        "eccad870-7d48-425c-adb9-2a7538bfc118": "c0dc8712-9865-40f7-a497-ad2f1e797138",
-        "6f21801b-1c20-4c63-ac9a-a46bee85a028": "26a5fb2c-c45e-44b2-a802-01743be00afe",
-        "b4dbb8bc-5034-4b84-9510-ff3f279fa423": "10eeb81e-d23a-4c1f-a175-87a95c5b7138",
-        "c685389b-bde2-4eab-8603-5bc21dde5b16": "4764b773-1c13-4b00-a6a5-259b0a129f0d"
       }
     },
     {
@@ -3099,7 +4147,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "13796f2a-2178-49c8-857d-3f345f6f7cb6"
+              "IdValue": "9f24f4cf-6a41-44e4-9b3e-0c09419dc5c4"
             },
             "Parent": {
               "Type": "GameObject",
@@ -3112,10 +4160,10 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "13796f2a-2178-49c8-857d-3f345f6f7cb6",
+              "__guid": "9f24f4cf-6a41-44e4-9b3e-0c09419dc5c4",
               "__version": 2,
               "Flags": 0,
-              "Name": "Clothing - shorts",
+              "Name": "Clothing - loose_jeans",
               "Position": "0,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
@@ -3133,18 +4181,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "7d3140a1-48c8-4ac2-a3bf-7b9b1de58786"
+              "IdValue": "28f0817e-33bd-4c3a-9794-5ca307b5020c"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "13796f2a-2178-49c8-857d-3f345f6f7cb6"
+              "IdValue": "9f24f4cf-6a41-44e4-9b3e-0c09419dc5c4"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "7d3140a1-48c8-4ac2-a3bf-7b9b1de58786",
+              "__guid": "28f0817e-33bd-4c3a-9794-5ca307b5020c",
               "__enabled": true,
               "Flags": 0,
               "AnimationGraph": null,
@@ -3161,7 +4209,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_clothes/shorts/shorts/models/shorts_m_human.vmdl",
+              "Model": "models/citizen_clothes/trousers/loosejeans/models/loose_jeans_m_human.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -3198,13 +4246,13 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "94ab05bd-4c62-42ec-ba7e-dfe04673958a"
+              "IdValue": "b8fac12c-f2b7-4204-82ed-9bf6f18dfe2d"
             }
           },
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "f946cad0-1cd9-4f22-80b3-3028fcf689c2"
+              "IdValue": "40a21a6d-a59c-4ca4-b112-baf5f8d3543d"
             }
           }
         ],
@@ -3223,7 +4271,24 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Position",
-            "Value": "-268.6823,367.7382,-12.16076"
+            "Value": "-268.682312,367.73819,-12.1607599"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "348a4a83-5c87-4ea7-a169-7dffcabd2392"
+            },
+            "Property": "Parameters",
+            "Value": {
+              "bools": {},
+              "ints": {
+                "holdtype": 5,
+                "character_type": 1
+              },
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            }
           }
         ],
         "MovedObjects": []
@@ -3242,19 +4307,12 @@
         "a0eb7230-1ae6-4d7d-96ac-412ec3b435ec": "7c3fd2b5-ddf1-4355-a3f3-aef3c7d450dc",
         "991c9a03-5d7c-4d33-9fa9-495d5066cc4d": "15b94c5e-e4bb-428e-859e-1f0c89b79173",
         "e4fe4506-0057-422d-a2fb-895e1c6a4543": "eeac5633-f5dc-4393-9c94-277c532a9592",
-        "7ea05261-9f6a-4394-9616-4f12b0815592": "0065dc9b-bba3-4838-a16d-e7bef6e6e23d",
-        "66e7e4a0-b4a5-43dc-a7d8-d676a10c0ed4": "d1f156bd-c449-4385-ae3a-32e63c41b698",
-        "60c2dd88-874a-4972-aa6c-91097dcf53e0": "5dd2d9fc-57bf-46eb-99f5-85b7dfd50410",
         "fd05d57d-534c-437c-b013-be7dc476b920": "bca63b8d-00ed-4067-9c0f-0615f3c9b3b9",
         "5c0d1fab-ae19-437f-ac52-c8b30e809ada": "07b89de0-f43e-4535-bffd-869e0715a073",
-        "4fcaff2c-f6bc-437d-b3ac-1cad0c189ae0": "ec2a6613-fdb6-422e-b607-3440ff5abcd1",
         "f004fff7-6d85-4f7a-a250-37c73cf80f75": "cce62dc9-f661-48b8-ae28-063e5adc6161",
-        "abcff50e-1361-44b8-9b66-adc2388dde40": "23c784b9-73b2-4b83-8dd7-a8faf66e733d",
         "d3bb1c1b-5e57-4e06-9080-a94f87900b69": "cfc1921c-406c-49d3-baad-2d633080bd8a",
         "b322a5e6-cb92-4bd7-81c5-a36bb98807f1": "4b9d4cb3-4a06-4ac9-8b09-7a49db481749",
-        "66075742-9909-45a3-ad99-809b62d9738c": "80f6ab90-678e-40f0-8a45-12b9ef02ebf1",
         "f29c533e-6ba1-4db3-8f3c-964d484d98e4": "56db73d2-79a6-4d8f-936b-2feaf068771c",
-        "a77ee3c4-84bb-40b3-9b96-192b4556c679": "db82dede-1a2f-41cd-a810-b4a936ff5eff",
         "4961f202-6c5c-400e-9314-7080c300b1c9": "0077e891-dd1e-44a5-85e4-dd58e8bec8bd",
         "24a7c892-7977-470c-9d3c-9c934a6e8db8": "bb767b78-1a9b-47c0-abf7-b2437ea35487",
         "803f8ab1-fb1b-4042-8c33-3456ce2ff55f": "3b6b4db8-f8b7-432f-afac-322b0268d827",
@@ -3265,9 +4323,7 @@
         "884bd44c-a9f7-448a-9a1d-c17c1cd881df": "74a4b4de-12fe-4086-98d4-5c34cacfe00c",
         "93dbb5c6-3a7f-4ac5-ad95-f39a047c88d6": "37b286eb-5cea-4579-bf05-024e6f9e9e9d",
         "2b35f2c5-401b-48b4-91e4-87fe23f8c39b": "3a411c87-15bc-4aad-8eea-6389bd881682",
-        "ff18d2a8-658a-4b0a-839f-571d827d6e93": "e6c8c29b-eacd-44fb-a822-06506a3a9dad",
         "32f46a70-e6c9-498f-abef-28eac4c51e74": "2484c86f-4b15-4cdd-a485-79800ea24609",
-        "0d48c976-619f-4582-b9c4-b491a8de1117": "3f5e1c42-85f1-4a12-a65e-f6d5015329f2",
         "c21396f2-6a1f-479a-9472-610b666c3d64": "69fea8bb-8a41-4457-9970-c9b6f53c127e",
         "2890f797-d885-4e86-9904-7466beb83baf": "65e54b71-9683-41ef-b632-60ffa50de06c",
         "65a21f26-7051-438e-83c5-0e19847b5871": "6846a10a-603b-48ac-b743-44e22dac4557",
@@ -3432,8 +4488,8 @@
         "2f058b07-e034-4905-a99f-d6545faa598e": "611a1d13-1b14-4a2b-9570-5ebe46104b98",
         "d5b2040b-97db-4c35-ad56-2f1c27281b57": "030ac21c-4e75-4269-a521-dcd3f5ffae82",
         "8ff0bf0e-2604-4cba-9dbf-e9948405cb04": "13f4555d-80a1-4bd7-8832-f20e98662601",
-        "94ab05bd-4c62-42ec-ba7e-dfe04673958a": "b558751d-2184-471d-85b1-0a37681c25bf",
-        "f946cad0-1cd9-4f22-80b3-3028fcf689c2": "e9c348dc-ff98-40fc-919a-47435b2d924b",
+        "93ea0345-66f8-46f8-93b6-2b5e56c71c1b": "29bd90bd-7d1b-435d-b5ce-342b6f732918",
+        "edbf8b57-d320-416f-90e9-1765384a552d": "a30107c8-9633-4a60-941c-f4c86d158585",
         "25b9c859-5a0b-4d01-99c3-98273076a3ae": "b61a4602-f8b3-4026-ba0f-f348c87c7d83",
         "a7b26063-3e69-4bc0-8e1d-2b9a2442492b": "596dd406-cf18-45b9-8029-4ed421c4859e",
         "e392c2ef-a29f-4fcc-bb37-d46cf801d59d": "384585cb-9f03-4149-939c-4c83c9508433",
@@ -3452,7 +4508,31 @@
         "564fa76b-cd81-49e3-8d6d-c4002c0befeb": "0a513079-58da-4715-9294-954d5268662e",
         "d1a50bdb-055e-4a99-9ff8-aaec50c5c187": "e5f73bb6-a313-4d2c-95f4-c35ff8859386",
         "c9c5f71a-365d-4391-a0e1-bd7b3be4a2cc": "dcaed98d-e013-4f85-befa-dc36d4510887",
-        "eb00ca16-a638-4993-aa63-111a98c01ce7": "6d3143d5-64a5-4b74-b93e-1a8e3b1cb335"
+        "eb00ca16-a638-4993-aa63-111a98c01ce7": "6d3143d5-64a5-4b74-b93e-1a8e3b1cb335",
+        "ea3be825-fc9d-4937-ac88-bebf4860d318": "7fefea38-0989-4d66-9e57-4ced102a6b1a",
+        "26bad5b1-93a5-4eb2-91e0-85547d46b332": "25c3a192-4dd8-4afe-b57f-e99639bd31e1",
+        "c5b2c402-45fe-408a-acb0-93c941956308": "9fb8f22d-6d41-4078-a647-ca5adf08b459",
+        "179e8d53-3e7a-457a-8330-5ddd23807f80": "ba0ade69-881b-4cf7-aea5-7f7e4a1cc75b",
+        "dbc4ed65-9a2c-4cfa-85f5-c3f8df3c8651": "b8c07224-7dbd-4822-b496-7a0e7067ce08",
+        "94062c2e-5c68-4651-ac88-ff3cbffb3326": "ae90e502-12d4-4af0-960e-a5a5ee3c95b0",
+        "39e3245c-2a76-4636-afb1-a7a72e4745e0": "9e4ef118-21ab-4039-8c3d-d07921e3345c",
+        "985689bb-68b7-489e-b15d-eb3e75201786": "88d97f50-3159-42ea-be55-1c229f7650bb",
+        "b8ea0cc6-0b1f-4c28-a4c5-0defe3438aa8": "ba175816-6e19-480d-8fe3-74e8efd91787",
+        "7e0247c2-e787-49b2-8e21-40fc5c6c9725": "da6894e2-32e5-4b41-8d85-351c8a53d999",
+        "39a9dd21-8926-4941-8b01-bc24c7ee9189": "6ce8d3d2-7702-4b3f-9da4-5ff42ed6d59e",
+        "c74aed38-46fe-4922-9a3c-502b4d7d028b": "f5c984d3-f691-4954-ab20-67eed79561ae",
+        "17dd639b-7751-44e5-bc3f-e7ca4508cef9": "b9ac3594-c0ed-4a8a-af36-b1a901c09bb6",
+        "67fce0ad-9a54-40c2-9a7e-640387b9793b": "3d5eefd0-34aa-42b5-81b6-64203d426005",
+        "fdd2d4c5-3668-42ab-a5f4-cf158d376e9e": "5480d6fb-a282-4c7a-b69a-15b799e56472",
+        "04e5adf3-ff50-47d8-8756-43199ff652dc": "9cb58bc5-d1f2-47e7-94d4-af672bcc0763",
+        "3beb74f8-2884-474c-84ab-c3d120e318d1": "d1caf119-df97-4079-abf0-eb5fbf7f68e6",
+        "615d7d70-57c8-48cc-81af-ecaa8595cdd9": "36bef00e-0f2c-4b92-b3e9-1dee1f6553ad",
+        "6c7a7c7e-dd63-42a3-b19c-112f4248598a": "b427a24e-ab32-4c81-bea8-34e2fee1e6e7",
+        "eef53a85-5ce2-4fcc-8a73-c89cc8746680": "e3163e2a-ae47-4c3c-b21a-60b4a511304d",
+        "fa80c451-84d2-4980-aaff-3b527b6ea3d7": "f48cd04a-4e05-4f02-8b7c-7c53a83b7c85",
+        "fca62479-8ed4-4a64-a64e-4f6f31f9a019": "0b8f75dd-785a-4f04-9817-165a5b0f5d6d",
+        "eef81ad3-af1e-4fed-9584-502d1614298d": "a629d05e-5660-4bae-bb10-a45432a987c5",
+        "9a756c80-3c43-46c7-9bfa-e9f390b33dab": "41020a5e-8a70-43c8-a314-e2eefd6b041a"
       }
     },
     {
@@ -3464,7 +4544,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "fe6c22a5-69b0-446f-8d27-f6b9734f619e"
+              "IdValue": "4a0f3e6e-5239-488b-9d1c-977588727ca6"
             },
             "Parent": {
               "Type": "GameObject",
@@ -3477,10 +4557,10 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "fe6c22a5-69b0-446f-8d27-f6b9734f619e",
+              "__guid": "4a0f3e6e-5239-488b-9d1c-977588727ca6",
               "__version": 2,
               "Flags": 0,
-              "Name": "Clothing - shorts",
+              "Name": "Clothing - loose_jeans",
               "Position": "0,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
@@ -3498,18 +4578,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "dfab83cc-78a1-4946-8955-901b6f08ab85"
+              "IdValue": "aa1aeb60-dded-4f6b-8566-d869b73991ba"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "fe6c22a5-69b0-446f-8d27-f6b9734f619e"
+              "IdValue": "4a0f3e6e-5239-488b-9d1c-977588727ca6"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "dfab83cc-78a1-4946-8955-901b6f08ab85",
+              "__guid": "aa1aeb60-dded-4f6b-8566-d869b73991ba",
               "__enabled": true,
               "Flags": 0,
               "AnimationGraph": null,
@@ -3526,7 +4606,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_clothes/shorts/shorts/models/shorts_m_human.vmdl",
+              "Model": "models/citizen_clothes/trousers/loosejeans/models/loose_jeans_m_human.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -3563,13 +4643,13 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "94ab05bd-4c62-42ec-ba7e-dfe04673958a"
+              "IdValue": "b8fac12c-f2b7-4204-82ed-9bf6f18dfe2d"
             }
           },
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "f946cad0-1cd9-4f22-80b3-3028fcf689c2"
+              "IdValue": "40a21a6d-a59c-4ca4-b112-baf5f8d3543d"
             }
           }
         ],
@@ -3588,7 +4668,28 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Position",
-            "Value": "-179.2895,357.7263,-12.16079"
+            "Value": "-179.289505,357.726288,-12.1607904"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "348a4a83-5c87-4ea7-a169-7dffcabd2392"
+            },
+            "Property": "Parameters",
+            "Value": {
+              "bools": {
+                "ik.hand_left.enabled": true
+              },
+              "ints": {},
+              "floats": {
+                "thrill": 1,
+                "holdtype_pose_hand": 0.091803275,
+                "wish_x": 1000,
+                "wish_y": -22.950806
+              },
+              "vectors": {},
+              "rotations": {}
+            }
           }
         ],
         "MovedObjects": []
@@ -3607,19 +4708,12 @@
         "a0eb7230-1ae6-4d7d-96ac-412ec3b435ec": "65ac0725-3735-4bfd-bd1a-6f0aca61b28f",
         "991c9a03-5d7c-4d33-9fa9-495d5066cc4d": "f4a7ce1d-beae-4957-acc3-71fe553e6e84",
         "e4fe4506-0057-422d-a2fb-895e1c6a4543": "19e3ea13-6985-4f07-8436-51de35e72ade",
-        "7ea05261-9f6a-4394-9616-4f12b0815592": "9a7b8a53-b8b1-4f4c-9fad-8e0b72f5a710",
-        "66e7e4a0-b4a5-43dc-a7d8-d676a10c0ed4": "2d7a5960-e232-4ec8-9e4c-7750a9eefd9f",
-        "60c2dd88-874a-4972-aa6c-91097dcf53e0": "02478899-0e39-404f-94d9-c586936e9a67",
         "fd05d57d-534c-437c-b013-be7dc476b920": "f0ecc244-7436-41bd-8f20-092ca229e70a",
         "5c0d1fab-ae19-437f-ac52-c8b30e809ada": "9128373a-e87b-4058-9184-c935cf88e682",
-        "4fcaff2c-f6bc-437d-b3ac-1cad0c189ae0": "4c327507-904d-4ab4-92f2-5a66b0b53a90",
         "f004fff7-6d85-4f7a-a250-37c73cf80f75": "b10e41c4-a94a-4250-94d1-ccd4de4830a3",
-        "abcff50e-1361-44b8-9b66-adc2388dde40": "58561478-b808-49b9-a3a4-627e9eb02d1f",
         "d3bb1c1b-5e57-4e06-9080-a94f87900b69": "9d121e20-2ad1-4f12-98b5-f4eb223d8580",
         "b322a5e6-cb92-4bd7-81c5-a36bb98807f1": "e1b3ff66-5dbc-42f7-93ce-3c28398df97b",
-        "66075742-9909-45a3-ad99-809b62d9738c": "a60dfed4-4663-44ba-8f9d-6579518924d7",
         "f29c533e-6ba1-4db3-8f3c-964d484d98e4": "c13beb5d-e66b-46bf-9b9e-19fc01131def",
-        "a77ee3c4-84bb-40b3-9b96-192b4556c679": "3eefefc3-0713-4d83-afae-a442d6964f42",
         "4961f202-6c5c-400e-9314-7080c300b1c9": "36dc117a-c0bf-4a41-9daa-276b002f2aea",
         "24a7c892-7977-470c-9d3c-9c934a6e8db8": "8cbeb813-dc0f-4cc2-8ff0-fdccd948d2e7",
         "803f8ab1-fb1b-4042-8c33-3456ce2ff55f": "8d2f67d1-711f-4c66-b753-3ccbf64a148e",
@@ -3630,9 +4724,7 @@
         "884bd44c-a9f7-448a-9a1d-c17c1cd881df": "fa3f6500-18c7-4898-ba44-adc481e9f87e",
         "93dbb5c6-3a7f-4ac5-ad95-f39a047c88d6": "b93654e8-1586-483e-8eb3-5f7a79cd2482",
         "2b35f2c5-401b-48b4-91e4-87fe23f8c39b": "9504b12b-2cae-4896-980f-9c300720b79d",
-        "ff18d2a8-658a-4b0a-839f-571d827d6e93": "5e684daf-de39-4d43-a236-ca309bd9439f",
         "32f46a70-e6c9-498f-abef-28eac4c51e74": "12b952d7-c2e2-4807-93dd-0e3440eb2e33",
-        "0d48c976-619f-4582-b9c4-b491a8de1117": "dad7e579-13e4-4e63-8531-af5709bc89d7",
         "c21396f2-6a1f-479a-9472-610b666c3d64": "5b70b667-96f5-4ca5-b28c-5cbee2ede079",
         "2890f797-d885-4e86-9904-7466beb83baf": "fb9a413c-5eca-4fec-844f-2cc5e6a941af",
         "65a21f26-7051-438e-83c5-0e19847b5871": "e956b96a-1608-4063-bf4d-ac0e50fc8e00",
@@ -3797,8 +4889,8 @@
         "2f058b07-e034-4905-a99f-d6545faa598e": "233e3b12-319f-4e83-8332-9dec8e24dc23",
         "d5b2040b-97db-4c35-ad56-2f1c27281b57": "562580d1-a7f3-4424-aecf-506ab3f49ae5",
         "8ff0bf0e-2604-4cba-9dbf-e9948405cb04": "e60af50f-a5da-4999-9a77-e46997280c6d",
-        "94ab05bd-4c62-42ec-ba7e-dfe04673958a": "d35e8104-4e4b-4d53-94c0-89ea391ffb43",
-        "f946cad0-1cd9-4f22-80b3-3028fcf689c2": "16b5c4e8-f526-44e8-9bc7-5c877928286e",
+        "93ea0345-66f8-46f8-93b6-2b5e56c71c1b": "5412bece-1b7d-44d7-8003-348fab866a40",
+        "edbf8b57-d320-416f-90e9-1765384a552d": "450a0347-f33b-45f0-be25-467cdd88d274",
         "25b9c859-5a0b-4d01-99c3-98273076a3ae": "6ceff390-9963-42db-8617-6da4e6610954",
         "a7b26063-3e69-4bc0-8e1d-2b9a2442492b": "f4e9f0b1-4628-42e3-8845-18df8905f45b",
         "e392c2ef-a29f-4fcc-bb37-d46cf801d59d": "249f024f-56da-4338-9d95-e25ce5c930db",
@@ -3817,7 +4909,31 @@
         "564fa76b-cd81-49e3-8d6d-c4002c0befeb": "d135b458-f3d7-4233-9c36-6ff5273f36b6",
         "d1a50bdb-055e-4a99-9ff8-aaec50c5c187": "053c92cb-b540-42bc-baa6-21e598a68343",
         "c9c5f71a-365d-4391-a0e1-bd7b3be4a2cc": "6f25fbf9-4b7a-4d09-a8e3-0a6b9609394d",
-        "eb00ca16-a638-4993-aa63-111a98c01ce7": "0c162b5a-b3f2-4ff9-bc02-2533b49ce057"
+        "eb00ca16-a638-4993-aa63-111a98c01ce7": "0c162b5a-b3f2-4ff9-bc02-2533b49ce057",
+        "ea3be825-fc9d-4937-ac88-bebf4860d318": "a82b1784-848d-4e1e-b90f-843d57b3611f",
+        "26bad5b1-93a5-4eb2-91e0-85547d46b332": "cac14c3c-4d7e-4606-b54e-ef840f7d9d4d",
+        "c5b2c402-45fe-408a-acb0-93c941956308": "b53acdc2-e121-4141-8701-e6aa4d261f13",
+        "179e8d53-3e7a-457a-8330-5ddd23807f80": "ffe24ed7-cf34-419d-a521-77fa570ac190",
+        "dbc4ed65-9a2c-4cfa-85f5-c3f8df3c8651": "a26bed7e-d69a-4df1-bd94-9fa6c36dcd0b",
+        "94062c2e-5c68-4651-ac88-ff3cbffb3326": "ef37f5b9-a41e-4e32-a641-4df56a61eca8",
+        "39e3245c-2a76-4636-afb1-a7a72e4745e0": "9b3fbb0e-c45d-423c-b5a9-15c77a1fc262",
+        "985689bb-68b7-489e-b15d-eb3e75201786": "3896cd55-4491-48a1-9190-293f1ccfe81d",
+        "b8ea0cc6-0b1f-4c28-a4c5-0defe3438aa8": "a1f6754e-d461-41f9-afd2-43c5e56b8394",
+        "7e0247c2-e787-49b2-8e21-40fc5c6c9725": "81027658-cc8d-4e9c-ae9e-e41dacf4c49b",
+        "39a9dd21-8926-4941-8b01-bc24c7ee9189": "6c23990b-8cd0-4a65-8014-80489b87e7dc",
+        "c74aed38-46fe-4922-9a3c-502b4d7d028b": "5f221547-519a-4cec-9a7b-ee29845c5696",
+        "17dd639b-7751-44e5-bc3f-e7ca4508cef9": "dab07595-d34b-4834-916a-23a87bb2c2cb",
+        "67fce0ad-9a54-40c2-9a7e-640387b9793b": "79161cf0-ac1f-49e4-a117-66ddce2ed746",
+        "fdd2d4c5-3668-42ab-a5f4-cf158d376e9e": "7af9bc8b-4951-45bc-b58d-5714ab0f037c",
+        "04e5adf3-ff50-47d8-8756-43199ff652dc": "b15580ef-7d53-4302-ac0a-a5468f784e11",
+        "3beb74f8-2884-474c-84ab-c3d120e318d1": "2ee18fc2-7774-4337-987f-391763c4161c",
+        "615d7d70-57c8-48cc-81af-ecaa8595cdd9": "06d3f60c-bf94-47a8-b021-01a5b52de07a",
+        "6c7a7c7e-dd63-42a3-b19c-112f4248598a": "da7ab73b-9033-4ba1-8f51-cb3d793fd20c",
+        "eef53a85-5ce2-4fcc-8a73-c89cc8746680": "0d1377c3-49c1-44d3-8b93-1ecf94ae60bf",
+        "fa80c451-84d2-4980-aaff-3b527b6ea3d7": "5e0d774c-0468-44fb-a975-555531af9a9f",
+        "fca62479-8ed4-4a64-a64e-4f6f31f9a019": "475a5e63-56a3-4efe-a2e7-9432c3ad6cdf",
+        "eef81ad3-af1e-4fed-9584-502d1614298d": "708c6ba9-56e2-4970-9752-d24a6aeb9267",
+        "9a756c80-3c43-46c7-9bfa-e9f390b33dab": "a8f5303e-5e5d-4272-9067-6e9bafe87860"
       }
     },
     {
@@ -3829,7 +4945,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "bf3fc896-2e72-4883-9e5e-ae458538d7c4"
+              "IdValue": "e83d5e95-c0f6-4778-9730-243f37137eb6"
             },
             "Parent": {
               "Type": "GameObject",
@@ -3842,10 +4958,10 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "bf3fc896-2e72-4883-9e5e-ae458538d7c4",
+              "__guid": "e83d5e95-c0f6-4778-9730-243f37137eb6",
               "__version": 2,
               "Flags": 0,
-              "Name": "Clothing - shorts",
+              "Name": "Clothing - loose_jeans",
               "Position": "0,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
@@ -3863,18 +4979,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "5aadf36d-82bf-4489-87d7-724d798c39c1"
+              "IdValue": "31bc961c-5272-4c3a-b7b6-5a05c6934eb8"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "bf3fc896-2e72-4883-9e5e-ae458538d7c4"
+              "IdValue": "e83d5e95-c0f6-4778-9730-243f37137eb6"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "5aadf36d-82bf-4489-87d7-724d798c39c1",
+              "__guid": "31bc961c-5272-4c3a-b7b6-5a05c6934eb8",
               "__enabled": true,
               "Flags": 0,
               "AnimationGraph": null,
@@ -3891,7 +5007,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_clothes/shorts/shorts/models/shorts_m_human.vmdl",
+              "Model": "models/citizen_clothes/trousers/loosejeans/models/loose_jeans_m_human.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -3928,13 +5044,13 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "94ab05bd-4c62-42ec-ba7e-dfe04673958a"
+              "IdValue": "b8fac12c-f2b7-4204-82ed-9bf6f18dfe2d"
             }
           },
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "f946cad0-1cd9-4f22-80b3-3028fcf689c2"
+              "IdValue": "40a21a6d-a59c-4ca4-b112-baf5f8d3543d"
             }
           }
         ],
@@ -3953,7 +5069,7 @@
               "IdValue": "5e2362d5-bf73-44b1-9080-887f0e7cbf02"
             },
             "Property": "Position",
-            "Value": "-251.0228,290.7195,-12.16074"
+            "Value": "-251.022797,290.719513,-12.1607399"
           }
         ],
         "MovedObjects": []
@@ -3972,19 +5088,12 @@
         "a0eb7230-1ae6-4d7d-96ac-412ec3b435ec": "a3554e1a-3bb5-44d2-bc33-d561a1c40913",
         "991c9a03-5d7c-4d33-9fa9-495d5066cc4d": "18af4efe-d758-4e73-b903-6a50338dd896",
         "e4fe4506-0057-422d-a2fb-895e1c6a4543": "3d9e6e10-3698-4f44-a7fb-e165ce501b66",
-        "7ea05261-9f6a-4394-9616-4f12b0815592": "65ff1dd3-a44e-4b0e-ac95-b8cfbda8d3f2",
-        "66e7e4a0-b4a5-43dc-a7d8-d676a10c0ed4": "bbd9a46f-a2e8-4311-9949-62c4847a1a59",
-        "60c2dd88-874a-4972-aa6c-91097dcf53e0": "ce6d1e1e-7182-4e4b-a772-5adb2fd9323f",
         "fd05d57d-534c-437c-b013-be7dc476b920": "00251f5c-0d8b-4f19-9499-8a778e8a1218",
         "5c0d1fab-ae19-437f-ac52-c8b30e809ada": "2933caed-e2da-4916-a0a0-cc0b25bec76c",
-        "4fcaff2c-f6bc-437d-b3ac-1cad0c189ae0": "05e384e9-c8c9-4a39-aa59-9a438be8087c",
         "f004fff7-6d85-4f7a-a250-37c73cf80f75": "5557c00e-89f6-44d3-962b-ee552fd49bdf",
-        "abcff50e-1361-44b8-9b66-adc2388dde40": "6685f0b3-9b55-4605-bd20-0d4ed34b934b",
         "d3bb1c1b-5e57-4e06-9080-a94f87900b69": "7273532c-d711-49ae-8925-cc40d5056e07",
         "b322a5e6-cb92-4bd7-81c5-a36bb98807f1": "6732c9e8-6710-4537-b803-09d7d8ea022f",
-        "66075742-9909-45a3-ad99-809b62d9738c": "f3935a17-d18c-439b-8a4d-237210e7262f",
         "f29c533e-6ba1-4db3-8f3c-964d484d98e4": "b20cbe6b-a66c-4e2b-9971-27a6fe005345",
-        "a77ee3c4-84bb-40b3-9b96-192b4556c679": "dc9947ec-f782-4d12-85ae-52e35088a8dc",
         "4961f202-6c5c-400e-9314-7080c300b1c9": "c6129b28-d25f-4751-8fbf-c3bd3d86b118",
         "24a7c892-7977-470c-9d3c-9c934a6e8db8": "39424d62-302d-466d-a8d9-a5e371d8eaa0",
         "803f8ab1-fb1b-4042-8c33-3456ce2ff55f": "614d1009-f166-4159-b2f8-09237a9035a2",
@@ -3995,9 +5104,7 @@
         "884bd44c-a9f7-448a-9a1d-c17c1cd881df": "e764f93e-7fdd-4a87-87e5-f64446184ba2",
         "93dbb5c6-3a7f-4ac5-ad95-f39a047c88d6": "e769c47e-27c1-42cb-bbc1-aa07c1bbe57f",
         "2b35f2c5-401b-48b4-91e4-87fe23f8c39b": "9d90fa77-d173-4bc1-8a15-e37cb095a345",
-        "ff18d2a8-658a-4b0a-839f-571d827d6e93": "648dd4e9-4bda-4ab6-b834-0098404d350f",
         "32f46a70-e6c9-498f-abef-28eac4c51e74": "c891fc7d-b8e4-4a63-ab44-1c3eb57097c7",
-        "0d48c976-619f-4582-b9c4-b491a8de1117": "4a38ae77-1dcd-41e8-a3d6-c686539a48a6",
         "c21396f2-6a1f-479a-9472-610b666c3d64": "f6a40c1b-7776-4465-bd15-38fdbf020fa9",
         "2890f797-d885-4e86-9904-7466beb83baf": "54369ecb-7031-4313-bebd-3761ab225afb",
         "65a21f26-7051-438e-83c5-0e19847b5871": "11abdfea-ba52-4c69-97aa-342658ee33e1",
@@ -4162,8 +5269,8 @@
         "2f058b07-e034-4905-a99f-d6545faa598e": "e3f29c84-ba5f-43f3-96a8-02601dba597e",
         "d5b2040b-97db-4c35-ad56-2f1c27281b57": "5378ac33-f0ab-45b9-9beb-90d6d65260c2",
         "8ff0bf0e-2604-4cba-9dbf-e9948405cb04": "c97c7c5f-976d-4788-aad2-01c918b96784",
-        "94ab05bd-4c62-42ec-ba7e-dfe04673958a": "5e3d46a1-4426-44e1-8a06-c8fbbca573f6",
-        "f946cad0-1cd9-4f22-80b3-3028fcf689c2": "ba027b3f-2eee-41f7-acdf-8c0bc2126c87",
+        "93ea0345-66f8-46f8-93b6-2b5e56c71c1b": "cf2cbb73-e8b2-401c-b087-cb4f79a69024",
+        "edbf8b57-d320-416f-90e9-1765384a552d": "77cebf15-ac6f-4ded-84ab-1b83530bcf8b",
         "25b9c859-5a0b-4d01-99c3-98273076a3ae": "e035244d-4540-4cbf-b10f-7afa09a9f2e6",
         "a7b26063-3e69-4bc0-8e1d-2b9a2442492b": "54938d3d-c601-4161-b754-2ee5a4cb59cf",
         "e392c2ef-a29f-4fcc-bb37-d46cf801d59d": "9ccec228-f678-48c6-a33a-1d9fa6a42e2d",
@@ -4182,7 +5289,2286 @@
         "564fa76b-cd81-49e3-8d6d-c4002c0befeb": "e66c69ac-57cb-4d0e-9e33-e6cc03ba166a",
         "d1a50bdb-055e-4a99-9ff8-aaec50c5c187": "4bc8bdf3-ee7e-425a-a20a-c9375ed34a04",
         "c9c5f71a-365d-4391-a0e1-bd7b3be4a2cc": "fb8acd7b-4f67-4276-839f-c03bbdba5a03",
-        "eb00ca16-a638-4993-aa63-111a98c01ce7": "ce8660d3-9f34-422f-822f-77e04f989424"
+        "eb00ca16-a638-4993-aa63-111a98c01ce7": "ce8660d3-9f34-422f-822f-77e04f989424",
+        "ea3be825-fc9d-4937-ac88-bebf4860d318": "3dd5bc88-8865-4cde-bb30-f91e1d822d5e",
+        "26bad5b1-93a5-4eb2-91e0-85547d46b332": "08ccfb08-a44a-4406-8d2c-a8b8026d83d6",
+        "c5b2c402-45fe-408a-acb0-93c941956308": "18a25721-3048-44b6-b8e6-0c907c1febab",
+        "179e8d53-3e7a-457a-8330-5ddd23807f80": "4c42134b-37d8-4f87-ad16-2fea939eb9ae",
+        "dbc4ed65-9a2c-4cfa-85f5-c3f8df3c8651": "24e00ca8-7fdb-4611-a87b-a5fdef66a1ab",
+        "94062c2e-5c68-4651-ac88-ff3cbffb3326": "007b79ab-eeff-4fbd-8aef-7e622ee71c51",
+        "39e3245c-2a76-4636-afb1-a7a72e4745e0": "d8b91889-88e0-41be-b2e6-fbdd4c713ced",
+        "985689bb-68b7-489e-b15d-eb3e75201786": "71791777-a229-4cca-8a53-3fdaf9ce5580",
+        "b8ea0cc6-0b1f-4c28-a4c5-0defe3438aa8": "c3b34730-e760-437d-a7e5-12bb768c4512",
+        "7e0247c2-e787-49b2-8e21-40fc5c6c9725": "b1c56d2f-e9e1-462e-a5d6-7f4a1786442f",
+        "39a9dd21-8926-4941-8b01-bc24c7ee9189": "d3b72949-eeeb-4990-b390-650f4ebe8a4e",
+        "c74aed38-46fe-4922-9a3c-502b4d7d028b": "1bf41017-f2ec-4e01-9a04-254d33ec8200",
+        "17dd639b-7751-44e5-bc3f-e7ca4508cef9": "91e594ba-be93-490f-8c3b-751b7889007f",
+        "67fce0ad-9a54-40c2-9a7e-640387b9793b": "28277cc7-fd0d-4cc9-b364-74484addf61f",
+        "fdd2d4c5-3668-42ab-a5f4-cf158d376e9e": "9f883383-afdb-46fc-b7e5-ee78f56600a4",
+        "04e5adf3-ff50-47d8-8756-43199ff652dc": "f6d349ac-b02e-4fba-8e4e-458520ce33b1",
+        "3beb74f8-2884-474c-84ab-c3d120e318d1": "8dc552a7-ffd4-496f-a272-d6ab3cd72ea0",
+        "615d7d70-57c8-48cc-81af-ecaa8595cdd9": "d54d6e2e-2ae3-4de6-acb9-334af7340ca4",
+        "6c7a7c7e-dd63-42a3-b19c-112f4248598a": "7c05c10b-01fd-4751-952b-2653fcd27e11",
+        "eef53a85-5ce2-4fcc-8a73-c89cc8746680": "8239cb14-77ab-43d0-990c-e32125ed2ff9",
+        "fa80c451-84d2-4980-aaff-3b527b6ea3d7": "d8489ae6-538d-4df4-ba59-070d48620031",
+        "fca62479-8ed4-4a64-a64e-4f6f31f9a019": "e72d2e7d-228e-4460-9e64-4797d9e2c5dd",
+        "eef81ad3-af1e-4fed-9584-502d1614298d": "2e9f039c-bffb-421e-906d-e5331509627f",
+        "9a756c80-3c43-46c7-9bfa-e9f390b33dab": "05f259c4-ece5-4201-8473-f72ad4116bd0"
+      }
+    },
+    {
+      "__guid": "24d990c7-ea2c-4a35-88d0-98db25bf9e77",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Point Light",
+      "Position": "-247.414093,363.559814,43.2110901",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "cb5f2198-0e9f-4c3f-8dc1-e26e04688884",
+          "__enabled": true,
+          "Flags": 0,
+          "Attenuation": 0,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 400,
+          "ShadowBias": 0.0005,
+          "ShadowHardness": 0,
+          "Shadows": true
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "24c9e18e-9975-4082-bf0e-42f71ef89978",
+      "__version": 2,
+      "__Prefab": "prefabs/luckylead/luckylead.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "1147df34-8251-4a2f-a3df-e546180b73b4"
+            },
+            "Property": "Position",
+            "Value": "613.678528,81.1761627,-16.4489098"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "1147df34-8251-4a2f-a3df-e546180b73b4"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0.707106829,0.707106829"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "6f21801b-1c20-4c63-ac9a-a46bee85a028"
+            },
+            "Property": "Materials",
+            "Value": {
+              "indexed": {
+                "0": "materials/luckyleaded/luckyleadmachine/luckylead.vmat",
+                "1": "materials/luckyleaded/luckyleadmachine/mesh.vmat"
+              }
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "6f21801b-1c20-4c63-ac9a-a46bee85a028"
+            },
+            "Property": "Sequence",
+            "Value": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            }
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "1147df34-8251-4a2f-a3df-e546180b73b4": "24c9e18e-9975-4082-bf0e-42f71ef89978",
+        "e26a28a4-0f0d-4174-8fa8-1be8feec8026": "0b42517f-49df-48cf-a597-2c1e4c653a5e",
+        "eccad870-7d48-425c-adb9-2a7538bfc118": "9cedd78b-dbad-43fd-9e88-1ad6abe5d80a",
+        "6f21801b-1c20-4c63-ac9a-a46bee85a028": "511b3d3d-ce18-48d0-8554-27df4be10d79",
+        "b4dbb8bc-5034-4b84-9510-ff3f279fa423": "ca48b542-e13a-4b5d-8730-ac10e2a722b5",
+        "c685389b-bde2-4eab-8603-5bc21dde5b16": "859f287a-852f-43e8-a991-33eb708bc032"
+      }
+    },
+    {
+      "__guid": "26b76570-c27f-4490-a56a-edf5c4bda8a6",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "mp40idle",
+      "Position": "-360.310699,211.4328,23.0204201",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.300000012,0.300000012,0.300000012",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "b4060555-e281-4ea0-90b1-979b932bf414",
+          "__enabled": true,
+          "Flags": 0,
+          "AnimationGraph": "animgraphs/mp40idle.vanmgrph",
+          "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
+          "CreateAttachments": false,
+          "CreateBoneObjects": true,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/delete/mp40idle.vmdl",
+          "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "PlaybackRate": 1,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Sequence": {
+            "Name": null,
+            "Looping": true,
+            "Blending": false
+          },
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "7a469b56-f763-4e19-86f9-36f5c7aa16aa",
+          "__version": 2,
+          "Flags": 4,
+          "Name": "j_shoulder_le",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "fd3ed3b1-da4e-4069-af2d-0b14cf2ccc9e",
+              "__version": 2,
+              "Flags": 4,
+              "Name": "j_elbow_le",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": [
+                {
+                  "__guid": "db7e7336-358c-4e8c-a289-27a2806006c4",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_elbow_bulge_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "d42008d2-fa1a-4456-87e4-7fdbc03479eb",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve2_06_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "bc0857e3-0d6a-46fc-8045-0cf02a5da818",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_01_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "2c590aa9-d93c-4ead-a451-bcf94de724a9",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_02_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "6a0e39ff-57a4-4068-ae9f-a8f6fa8255e3",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_03_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "ff0fe949-1958-47dc-acdb-39d2081cc991",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_05_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "a782803c-fa6c-4a7c-b163-5f54fd7ddf82",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_06_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "9d773165-2ebb-422d-b6d7-1286f3bb43e5",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wrist_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": [
+                    {
+                      "__guid": "b2e8f349-2675-4994-bacb-1ee49789c210",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_indexbase_le",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "73fc47b3-90ec-465b-a481-1f1f94e10cdb",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_index_le_1",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "3543dbb7-0941-48b1-8557-f417fafbcbaa",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_index_le_2",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": [
+                                {
+                                  "__guid": "d9f15d9e-07f0-43c1-bf97-dc88f2514302",
+                                  "__version": 2,
+                                  "Flags": 4,
+                                  "Name": "j_index_le_3",
+                                  "Position": "0,0,0",
+                                  "Rotation": "0,0,0,1",
+                                  "Scale": "1,1,1",
+                                  "Tags": "",
+                                  "Enabled": true,
+                                  "NetworkMode": 2,
+                                  "NetworkFlags": 0,
+                                  "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
+                                  "OwnerTransfer": 1,
+                                  "Components": [],
+                                  "Children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "__guid": "dcb1de69-e9a7-4846-9eb7-1df54647e2f7",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_indexretract_le",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": []
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "007e0daa-b1a3-4283-9cfc-16a88cf24bed",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_mid_le_1",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "1f132100-d241-4766-9f8d-eea32a08f4b7",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_mid_le_2",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "1bd9c3b0-0b7f-456d-a7f8-d717e4d11ffd",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_mid_le_3",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "feb5f330-6702-43bd-a09d-98cee2d00223",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_pinkybase_le",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "5bf51fbc-b04f-4208-8d8e-f8ad8c68a79f",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_pinky_le_1",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "6304b54c-d6f6-4d5b-b7e8-bc0f0c503e5c",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_pinky_le_2",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": [
+                                {
+                                  "__guid": "f7b23aa3-3a8b-4d28-b2e9-284ec673dc15",
+                                  "__version": 2,
+                                  "Flags": 4,
+                                  "Name": "j_pinky_le_3",
+                                  "Position": "0,0,0",
+                                  "Rotation": "0,0,0,1",
+                                  "Scale": "1,1,1",
+                                  "Tags": "",
+                                  "Enabled": true,
+                                  "NetworkMode": 2,
+                                  "NetworkFlags": 0,
+                                  "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
+                                  "OwnerTransfer": 1,
+                                  "Components": [],
+                                  "Children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "1284a46b-7fa7-4623-bbc7-d73dd2eef68f",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_ringbase_le",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "6110f97c-4510-46b1-9935-b142ce429222",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_ring_le_1",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "77928bd8-2988-443c-809d-52cccad7dcfb",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_ring_le_2",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": [
+                                {
+                                  "__guid": "d24cec94-a35f-4cc6-bedc-82ea89b37d92",
+                                  "__version": 2,
+                                  "Flags": 4,
+                                  "Name": "j_ring_le_3",
+                                  "Position": "0,0,0",
+                                  "Rotation": "0,0,0,1",
+                                  "Scale": "1,1,1",
+                                  "Tags": "",
+                                  "Enabled": true,
+                                  "NetworkMode": 2,
+                                  "NetworkFlags": 0,
+                                  "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
+                                  "OwnerTransfer": 1,
+                                  "Components": [],
+                                  "Children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "b19a61f0-6d57-4756-b415-9f3bf24822b4",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_thumb_le_1",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "5f47e385-51ae-44d6-8757-592c4c419e0b",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_thumb_le_2",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "da65b161-e5da-4f58-8e73-110ab893b21d",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_thumb_le_3",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "__guid": "bab595e3-1373-4606-bb4f-b94752900c63",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist1_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "b9893fcc-2be9-466d-b546-bb2233c96bf5",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist2_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "a203b795-f088-4007-995e-279efad62acd",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist3_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "0320054a-acfb-4849-b968-51cf9028a7ec",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist4_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "e2e87d89-7472-493f-ab07-de64504529a4",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist5_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "66c9ad0c-785c-4860-ac3c-28e98362758b",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist6_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "a10a3fd2-78f5-427b-bdf2-7d4d89c98ca0",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist_le",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": [
+                    {
+                      "__guid": "37faf029-6773-4593-9fca-56f2661c9ce9",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_wristcrease2_le",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": []
+                    },
+                    {
+                      "__guid": "dde1e036-52da-4ca7-b3a3-f51240e3d9bb",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_wristcrease_le",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "b0841157-a28a-4d5f-9176-56f2d56b7c3f",
+          "__version": 2,
+          "Flags": 4,
+          "Name": "j_shoulder_ri",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "1e915fee-8dd6-4ae2-b32d-424ea4b0a83a",
+              "__version": 2,
+              "Flags": 4,
+              "Name": "j_elbow_ri",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": [
+                {
+                  "__guid": "ef79e18b-b4e5-4fa0-9039-7767bd539a97",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_elbow_bulge_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "984dc617-270b-46d7-8a7d-5557f3dcdbd9",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve1_01_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "6703efb0-01be-4407-aae0-047cf4a38a1e",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_01_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "011506a8-a96c-4c17-a8ce-95653f5e7fae",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_02_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "396cbf1f-2906-4344-a208-64b0da98c5be",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_03_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "b343b82b-c595-4d29-95fb-95cdb22d0e4d",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_05_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "eb986d81-1a69-4926-8f46-cec8115342de",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_sleeve3_06_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "bc371515-a239-4bf2-8328-306c8ba5465e",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wrist_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": [
+                    {
+                      "__guid": "1226adc9-98f1-445d-877c-db834bcab47b",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_indexbase_ri",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "6270ae54-1a07-45c6-b7ae-ddcd8e371966",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_index_ri_1",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "fe857817-e7c0-4e59-b699-942d47da9260",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_index_ri_2",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": [
+                                {
+                                  "__guid": "93b89864-54b6-4f23-bf3d-95001e5dc4fe",
+                                  "__version": 2,
+                                  "Flags": 4,
+                                  "Name": "j_index_ri_3",
+                                  "Position": "0,0,0",
+                                  "Rotation": "0,0,0,1",
+                                  "Scale": "1,1,1",
+                                  "Tags": "",
+                                  "Enabled": true,
+                                  "NetworkMode": 2,
+                                  "NetworkFlags": 0,
+                                  "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
+                                  "OwnerTransfer": 1,
+                                  "Components": [],
+                                  "Children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "__guid": "5060e879-baf5-4c4a-8fa8-3ef7dd960135",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_indexretract_ri",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": []
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "713a588d-16d2-472b-a125-02801f9da460",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_mid_ri_1",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "522c829b-920a-4177-a8e1-8b0a7386fd99",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_mid_ri_2",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "0eb20f92-9c07-438b-84db-725cf12f9afc",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_mid_ri_3",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "d5c1ab26-3c96-4685-b80d-8997962e422f",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_pinkybase_ri",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "91f5f683-db4b-48bc-a29a-c3ad4281274e",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_pinky_ri_1",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "2ba3f9a8-cda9-4cfc-bb82-1db45d0f2279",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_pinky_ri_2",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": [
+                                {
+                                  "__guid": "a7d5bf92-144c-437b-b7c3-df14343673a4",
+                                  "__version": 2,
+                                  "Flags": 4,
+                                  "Name": "j_pinky_ri_3",
+                                  "Position": "0,0,0",
+                                  "Rotation": "0,0,0,1",
+                                  "Scale": "1,1,1",
+                                  "Tags": "",
+                                  "Enabled": true,
+                                  "NetworkMode": 2,
+                                  "NetworkFlags": 0,
+                                  "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
+                                  "OwnerTransfer": 1,
+                                  "Components": [],
+                                  "Children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "d575de60-e23a-4528-ba69-71fdc621cbd2",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_ringbase_ri",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "32e761d8-9796-4a3b-ba0f-7f01593a7126",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_ring_ri_1",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "c44025ef-e872-4bd5-9a89-e496b0a7f72c",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_ring_ri_2",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": [
+                                {
+                                  "__guid": "0255c0eb-724f-4aed-8a46-e1772eb9b628",
+                                  "__version": 2,
+                                  "Flags": 4,
+                                  "Name": "j_ring_ri_3",
+                                  "Position": "0,0,0",
+                                  "Rotation": "0,0,0,1",
+                                  "Scale": "1,1,1",
+                                  "Tags": "",
+                                  "Enabled": true,
+                                  "NetworkMode": 2,
+                                  "NetworkFlags": 0,
+                                  "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
+                                  "OwnerTransfer": 1,
+                                  "Components": [],
+                                  "Children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "__guid": "0c17b3e4-c590-41b9-8d01-35fed4d3de4a",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_thumb_ri_1",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": [
+                        {
+                          "__guid": "a7362666-5eee-420b-837b-d265dad9fadc",
+                          "__version": 2,
+                          "Flags": 4,
+                          "Name": "j_thumb_ri_2",
+                          "Position": "0,0,0",
+                          "Rotation": "0,0,0,1",
+                          "Scale": "1,1,1",
+                          "Tags": "",
+                          "Enabled": true,
+                          "NetworkMode": 2,
+                          "NetworkFlags": 0,
+                          "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
+                          "OwnerTransfer": 1,
+                          "Components": [],
+                          "Children": [
+                            {
+                              "__guid": "61059088-488d-4ffd-a470-46e55821e72c",
+                              "__version": 2,
+                              "Flags": 4,
+                              "Name": "j_thumb_ri_3",
+                              "Position": "0,0,0",
+                              "Rotation": "0,0,0,1",
+                              "Scale": "1,1,1",
+                              "Tags": "",
+                              "Enabled": true,
+                              "NetworkMode": 2,
+                              "NetworkFlags": 0,
+                              "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
+                              "OwnerTransfer": 1,
+                              "Components": [],
+                              "Children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "__guid": "72f1c825-10d9-44d1-8eef-06b4ecf40205",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist1_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "3c2d159b-3f5c-40d7-bb1c-2b8f8f794645",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist2_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "5249779a-f83c-4db1-944d-f08aa1ac4459",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist3_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "a8551d47-d51f-4289-b25a-436838654024",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist4_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "d9766aba-8ca1-44d4-bdcc-2aa35572be6a",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist5_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "1aa2a540-d93e-4404-9934-7c751d050d84",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist6_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "9b596bbe-4ef9-4e61-9dbf-a82680223a05",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_wristtwist_ri",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": [
+                    {
+                      "__guid": "d79cf960-76cb-42f8-9a19-ebe66ef274b4",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_wristcrease2_ri",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": []
+                    },
+                    {
+                      "__guid": "07e4c8ee-e016-4ad3-9ee4-ef72d8ba4b76",
+                      "__version": 2,
+                      "Flags": 4,
+                      "Name": "j_wristcrease_ri",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "1,1,1",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [],
+                      "Children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "c1edc1b3-7c87-470c-8ffa-be6c01364425",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "tag_weapon",
+          "Position": "0,0,0",
+          "Rotation": "3.23116396E-08,3.23116289E-08,0.707106471,0.707106888",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "05ba7536-ee57-477f-a83f-225687acd51a",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "j_bolt",
+              "Position": "17.8631992,0.112527803,11.8220596",
+              "Rotation": "0,1.77635599E-15,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "2cafb3d8-bfdc-48a3-bd48-7142daa17b85",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "j_mag_release",
+              "Position": "44.6894112,3.47919011,5.93319178",
+              "Rotation": "0,1.77635599E-15,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "bd916c93-d0b3-4885-b3e8-9fd8a92c79e3",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "j_stock",
+              "Position": "-9.29637432,0.122178003,3.49729991",
+              "Rotation": "0,1.77635599E-15,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "399dc997-aea9-40f1-b65a-d035a419613d",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "tag_sights",
+              "Position": "18.0576191,0.122179002,14.4408503",
+              "Rotation": "0,1.77635599E-15,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "8eafd277-5282-4edc-a2e6-6afc336add04",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "mp40idle2",
+          "Position": "-2.67038989,75.3455582,-97.0203705",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "353ac494-b365-47fd-9d1d-25f6f0c1d284",
+              "__enabled": true,
+              "Flags": 0,
+              "AnimationGraph": null,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "b4060555-e281-4ea0-90b1-979b932bf414",
+                "go": "26b76570-c27f-4490-a56a-edf5c4bda8a6",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateAttachments": false,
+              "CreateBoneObjects": true,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/delete/mp40idle2.vmdl",
+              "Morphs": {},
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Parameters": {
+                "bools": {},
+                "ints": {},
+                "floats": {},
+                "vectors": {},
+                "rotations": {}
+              },
+              "PlaybackRate": 1,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Sequence": {
+                "Name": null,
+                "Looping": true,
+                "Blending": false
+              },
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "8c6cee7f-0f03-48f6-8346-c6973c52bc24",
+              "__version": 2,
+              "Flags": 4,
+              "Name": "tag_weapon",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": [
+                {
+                  "__guid": "9d9dfdf9-1b45-41eb-90e8-7a0eca62a875",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_bolt",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "bf9f6ba7-e31f-49a3-9d0e-9026737e94e7",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_mag_release",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "e792a245-a040-4fe0-b80c-7a14b1bda708",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "j_stock",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "1d97dd80-32d0-4a17-9c65-cd6eee0590d9",
+                  "__version": 2,
+                  "Flags": 4,
+                  "Name": "tag_sights",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [],
+                  "Children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "fcb074e3-25ac-4533-8806-8da4811c582d",
+      "__version": 2,
+      "__Prefab": "prefabs/eastereggs/eastereggcontroller.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "99a314a3-ad47-4f49-83cf-ab8c2a596c44"
+            },
+            "Property": "Position",
+            "Value": "304.792114,542.39679,-13.9190702"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "54984d32-0060-4a0a-a83f-48f7f6984e48"
+            },
+            "Property": "EasterEggComplete",
+            "Value": {
+              "__version": 9,
+              "__guid": "dee27ff9-d41d-442d-8837-882e9eebfd56",
+              "__changeId": 31,
+              "UserData": {
+                "Title": "Easter Egg Complete",
+                "ReferencedComponentTypes": []
+              },
+              "Variables": [],
+              "Nodes": [
+                {
+                  "Id": 0,
+                  "Type": "input",
+                  "UserData": {
+                    "Position": "-108,36"
+                  }
+                },
+                {
+                  "Id": 1,
+                  "Type": "scene.getall.inscene",
+                  "Properties": {
+                    "T": "Player"
+                  },
+                  "UserData": {
+                    "Position": "-204,132"
+                  }
+                },
+                {
+                  "Id": 2,
+                  "Type": "foreach",
+                  "Properties": {
+                    "T": "Player"
+                  },
+                  "UserData": {
+                    "Position": "36,108"
+                  }
+                },
+                {
+                  "Id": 3,
+                  "Type": "property",
+                  "Properties": {
+                    "_name": "GameObject",
+                    "_type": "Sandbox.Component"
+                  },
+                  "UserData": {
+                    "Position": "-48,228"
+                  }
+                },
+                {
+                  "Id": 5,
+                  "Type": "call",
+                  "Properties": {
+                    "_isStatic": false,
+                    "_name": "PlaySound",
+                    "_type": "Sandbox.GameObject"
+                  },
+                  "UserData": {
+                    "Position": "336,132"
+                  }
+                },
+                {
+                  "Id": 7,
+                  "Type": "resource.ref",
+                  "Properties": {
+                    "T": "Sandbox.SoundEvent",
+                    "value": "sound/music/mainmenu/concrete-shadows2.sound"
+                  },
+                  "UserData": {
+                    "Position": "216,300"
+                  }
+                },
+                {
+                  "Id": 8,
+                  "Type": "call",
+                  "Properties": {
+                    "_isStatic": false,
+                    "_name": "AddPoints",
+                    "_type": "Player"
+                  },
+                  "UserData": {
+                    "Position": "648,132"
+                  }
+                }
+              ],
+              "Links": [
+                {
+                  "SrcId": 0,
+                  "SrcName": "_signal",
+                  "DstId": 2,
+                  "DstName": "_signal"
+                },
+                {
+                  "SrcId": 1,
+                  "SrcName": "_result",
+                  "DstId": 2,
+                  "DstName": "enumerable"
+                },
+                {
+                  "SrcId": 2,
+                  "SrcName": "body.value",
+                  "DstId": 3,
+                  "DstName": "_target"
+                },
+                {
+                  "SrcId": 2,
+                  "SrcName": "body",
+                  "DstId": 5,
+                  "DstName": "_signal"
+                },
+                {
+                  "SrcId": 3,
+                  "SrcName": "_result",
+                  "DstId": 5,
+                  "DstName": "_target"
+                },
+                {
+                  "SrcId": 7,
+                  "SrcName": "_result",
+                  "DstId": 5,
+                  "DstName": "sound"
+                },
+                {
+                  "SrcId": 5,
+                  "SrcName": "_signal",
+                  "DstId": 8,
+                  "DstName": "_signal"
+                },
+                {
+                  "SrcId": 2,
+                  "SrcName": "body.value",
+                  "DstId": 8,
+                  "DstName": "_target"
+                },
+                {
+                  "Id": 9,
+                  "Value": 50000,
+                  "DstId": 8,
+                  "DstName": "points"
+                }
+              ]
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "54984d32-0060-4a0a-a83f-48f7f6984e48"
+            },
+            "Property": "InteractableEE",
+            "Value": [
+              {
+                "_type": "component",
+                "component_id": "623da9fc-390b-4f2f-a26c-f5c21ac721d4",
+                "go": "0a159491-a9a6-42f0-a55c-a115bb268004",
+                "component_type": "InteractionEE"
+              },
+              {
+                "_type": "component",
+                "component_id": "add529b9-d66e-4b38-a98f-dcf3471f339e",
+                "go": "675c89ae-f3c9-4872-bd43-bab541f7ca7b",
+                "component_type": "InteractionEE"
+              }
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "54984d32-0060-4a0a-a83f-48f7f6984e48"
+            },
+            "Property": "PieceComplete",
+            "Value": {
+              "__version": 9,
+              "__guid": "0d7c155c-de8d-4621-adac-e32f8cd66c47",
+              "__changeId": 23,
+              "UserData": {
+                "Title": "Piece Complete",
+                "ReferencedComponentTypes": []
+              },
+              "Variables": [],
+              "Nodes": [
+                {
+                  "Id": 0,
+                  "Type": "input",
+                  "UserData": {
+                    "Position": "-72,60"
+                  }
+                },
+                {
+                  "Id": 2,
+                  "Type": "resource.ref",
+                  "Properties": {
+                    "T": "Sandbox.SoundEvent",
+                    "value": "sound/mysterybox/latchopen.sound"
+                  },
+                  "UserData": {
+                    "Position": "-24,168"
+                  }
+                },
+                {
+                  "Id": 6,
+                  "Type": "sound.playat",
+                  "UserData": {
+                    "Position": "132,60"
+                  }
+                },
+                {
+                  "Id": 7,
+                  "Type": "property",
+                  "Properties": {
+                    "_name": "WorldPosition",
+                    "_type": "Sandbox.GameObject"
+                  },
+                  "UserData": {
+                    "Position": "-228,120"
+                  }
+                }
+              ],
+              "Links": [
+                {
+                  "SrcId": 0,
+                  "SrcName": "_signal",
+                  "DstId": 6,
+                  "DstName": "_signal"
+                },
+                {
+                  "SrcId": 7,
+                  "SrcName": "_result",
+                  "DstId": 6,
+                  "DstName": "position"
+                },
+                {
+                  "SrcId": 2,
+                  "SrcName": "_result",
+                  "DstId": 6,
+                  "DstName": "soundEvent"
+                },
+                {
+                  "SrcId": 0,
+                  "SrcName": "_target",
+                  "DstId": 7,
+                  "DstName": "_target"
+                }
+              ]
+            }
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "54984d32-0060-4a0a-a83f-48f7f6984e48"
+            },
+            "Property": "ShootableEE",
+            "Value": [
+              {
+                "_type": "component",
+                "component_id": "062d37b1-c2ae-4329-b784-23261808d142",
+                "go": "6b12f3a8-ba6a-4cc2-bbee-29a3802776ec",
+                "component_type": "ShootableEE"
+              },
+              {
+                "_type": "component",
+                "component_id": "59e9d133-8a63-4900-abf3-3dc48ec16245",
+                "go": "420754fd-5d32-4df7-b14a-cdf58c805659",
+                "component_type": "ShootableEE"
+              }
+            ]
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "99a314a3-ad47-4f49-83cf-ab8c2a596c44": "fcb074e3-25ac-4533-8806-8da4811c582d",
+        "54984d32-0060-4a0a-a83f-48f7f6984e48": "d2f0bb02-fd53-482b-8596-0d265ee80fcb",
+        "3c118342-c3b6-4b0d-98e2-ff4f9b607e1e": "f54e5ed0-5855-49f9-8073-f6e72e25adbf"
+      }
+    },
+    {
+      "__guid": "afc54fda-6f2f-4c7b-b195-80fa1c6d603c",
+      "__version": 2,
+      "__Prefab": "prefabs/eastereggs/interactableee.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e2e521a-ceca-4e81-a3f1-5489c96477fb"
+            },
+            "Property": "Position",
+            "Value": "632.130676,448.131195,9.08092499"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "7e2e521a-ceca-4e81-a3f1-5489c96477fb": "afc54fda-6f2f-4c7b-b195-80fa1c6d603c",
+        "7121ab5d-a657-4d33-ba83-25fd77453932": "623da9fc-390b-4f2f-a26c-f5c21ac721d4",
+        "26547085-7ed9-47f6-9c7e-6f7464c54dd2": "0a159491-a9a6-42f0-a55c-a115bb268004",
+        "26fa79dc-82b9-425f-9a3b-a8c3d5d1fdcb": "4026256a-77f1-42e4-8bd9-c7e70522eb6b",
+        "b858854b-af25-4f3a-88e2-508219e65268": "c0d1c098-2e99-4b2b-a814-2a811574b70b"
+      }
+    },
+    {
+      "__guid": "0112ff5f-457c-4014-b202-ceedba8a5f11",
+      "__version": 2,
+      "__Prefab": "prefabs/eastereggs/interactableee.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e2e521a-ceca-4e81-a3f1-5489c96477fb"
+            },
+            "Property": "Name",
+            "Value": "interactableee (1)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e2e521a-ceca-4e81-a3f1-5489c96477fb"
+            },
+            "Property": "Position",
+            "Value": "678.508118,769.870972,9.08093262"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "7e2e521a-ceca-4e81-a3f1-5489c96477fb": "0112ff5f-457c-4014-b202-ceedba8a5f11",
+        "7121ab5d-a657-4d33-ba83-25fd77453932": "add529b9-d66e-4b38-a98f-dcf3471f339e",
+        "26547085-7ed9-47f6-9c7e-6f7464c54dd2": "675c89ae-f3c9-4872-bd43-bab541f7ca7b",
+        "26fa79dc-82b9-425f-9a3b-a8c3d5d1fdcb": "e56f92b2-e043-44e3-8d43-0995821b43e9",
+        "b858854b-af25-4f3a-88e2-508219e65268": "cfea92b1-d13f-4878-93ef-7ef356116fc0"
+      }
+    },
+    {
+      "__guid": "005356d1-df57-430a-9b95-a5a4e6e87353",
+      "__version": 2,
+      "__Prefab": "prefabs/eastereggs/shootableee.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "01db2050-e200-424f-83d3-a8762df29274"
+            },
+            "Property": "Position",
+            "Value": "606.450989,-212.698196,115.573303"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "01db2050-e200-424f-83d3-a8762df29274"
+            },
+            "Property": "Rotation",
+            "Value": "-0.707106829,0,0.707106829,0"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "01db2050-e200-424f-83d3-a8762df29274": "005356d1-df57-430a-9b95-a5a4e6e87353",
+        "a06af837-13c4-43d8-a842-9d88c76b24c7": "062d37b1-c2ae-4329-b784-23261808d142",
+        "b9c8e628-af84-475f-ac79-0af61b8e99c1": "6b12f3a8-ba6a-4cc2-bbee-29a3802776ec",
+        "33d9e45e-5240-41fd-bc93-3b22ce4d6c34": "5180c842-601a-443a-b6c7-204b85890009",
+        "72de46a5-e4f3-40ba-b4d1-999514df3097": "b657eeea-61f9-4fda-b612-66edc2a2b855"
+      }
+    },
+    {
+      "__guid": "9d8a3634-4b98-4300-b6af-1a1d45a18a71",
+      "__version": 2,
+      "__Prefab": "prefabs/eastereggs/shootableee.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "01db2050-e200-424f-83d3-a8762df29274"
+            },
+            "Property": "Name",
+            "Value": "shootableee (1)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "01db2050-e200-424f-83d3-a8762df29274"
+            },
+            "Property": "Position",
+            "Value": "251.928497,1802.38306,-42.3252907"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "01db2050-e200-424f-83d3-a8762df29274"
+            },
+            "Property": "Rotation",
+            "Value": "0.5,0.5,-0.5,0.5"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "01db2050-e200-424f-83d3-a8762df29274": "9d8a3634-4b98-4300-b6af-1a1d45a18a71",
+        "a06af837-13c4-43d8-a842-9d88c76b24c7": "59e9d133-8a63-4900-abf3-3dc48ec16245",
+        "b9c8e628-af84-475f-ac79-0af61b8e99c1": "420754fd-5d32-4df7-b14a-cdf58c805659",
+        "33d9e45e-5240-41fd-bc93-3b22ce4d6c34": "b1815025-5675-4c98-b78b-50317e247dd1",
+        "72de46a5-e4f3-40ba-b4d1-999514df3097": "dad6d82c-8805-4ec0-ae16-b847a65787ef"
       }
     }
   ],
@@ -4201,13 +7587,23 @@
       "AgentStepSize": 18,
       "AgentMaxSlope": 40,
       "ExcludedBodies": "",
-      "IncludedBodies": ""
+      "IncludedBodies": "",
+      "DeferGeneration": false,
+      "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
+        }
+      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "25782ace-e6f5-4c38-94c5-47cf820e66de"
+          "$blob": "a9144b36-120a-40c2-9a36-f6e726709376"
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },

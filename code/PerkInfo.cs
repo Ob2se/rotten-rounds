@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 public class PerkInfo
 {
@@ -6,5 +7,5 @@ public class PerkInfo
 	public string PerkIcon;
 	public string PerkMachineTexture;
 	public int PerkCost;
-	public string PerkCompName;
+	public Type PerkComp;
 }

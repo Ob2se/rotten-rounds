@@ -2,12 +2,9 @@
 
 Layer0
 {
-	shader "shaders/windowraineffect.shader"
+	shader "shaders/windowraindrop.shader"
 
 	raindripmask "shaders/rain_drip_mask.tga"
 	raindripscomb "shaders/rain_drips.tga"
-	Texture_ps_2 "shaders/rain_drops.tga"
-
-	//---- Fog ----
-	g_bFogEnabled "1"
+	Texture_ps_0 "shaders/publicdomainpictures-rain-316580_1920.jpg"
 }

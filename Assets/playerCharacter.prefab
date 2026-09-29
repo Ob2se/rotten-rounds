@@ -7,7 +7,7 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "player,flesh",
+    "Tags": "player,flesh,capplay",
     "Enabled": true,
     "NetworkMode": 1,
     "NetworkFlags": 0,
@@ -187,6 +187,10 @@
           "component_type": "SoundPointComponent"
         },
         "DebugInteractionSelection": false,
+        "downedPanel": {
+          "_type": "gameobject",
+          "go": "6b611ebf-98ee-4666-a045-aa0b788cddee"
+        },
         "fpsArms": {
           "_type": "component",
           "component_id": "d4a1ee47-838f-4f5c-a0d7-58c27a142d4f",
@@ -254,6 +258,10 @@
           "go": "eac9a0c3-a154-43d7-a97a-8b810e4862d7",
           "component_type": "SniperRifleScope"
         },
+        "SpectatorPoint": {
+          "_type": "gameobject",
+          "go": "73e9ebd6-cb7a-4976-893c-f51df1bf3bb5"
+        },
         "ThirdPersonWeaponModel": null,
         "ThirdPersonWeaponModelContainer": {
           "_type": "gameobject",
@@ -318,6 +326,12 @@
           "component_id": "ec08d377-ec04-463b-b0c1-e514c4888121",
           "go": "eac9a0c3-a154-43d7-a97a-8b810e4862d7",
           "component_type": "Player"
+        },
+        "textChatComp": {
+          "_type": "component",
+          "component_id": "e7c1a317-f978-4448-a7f5-e9fbf9c4d59c",
+          "go": "eac9a0c3-a154-43d7-a97a-8b810e4862d7",
+          "component_type": "TextChatComp"
         }
       },
       {
@@ -460,6 +474,42 @@
         },
         "Volume": 1,
         "WorldspacePlayback": false
+      },
+      {
+        "__type": "TextChatComp",
+        "__guid": "e7c1a317-f978-4448-a7f5-e9fbf9c4d59c",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.ChatHud",
+        "__guid": "4cc62394-9de4-433a-bded-31a70f0de0b3",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "player": {
+          "_type": "component",
+          "component_id": "ec08d377-ec04-463b-b0c1-e514c4888121",
+          "go": "eac9a0c3-a154-43d7-a97a-8b810e4862d7",
+          "component_type": "Player"
+        },
+        "textChatComp": {
+          "_type": "component",
+          "component_id": "e7c1a317-f978-4448-a7f5-e9fbf9c4d59c",
+          "go": "eac9a0c3-a154-43d7-a97a-8b810e4862d7",
+          "component_type": "TextChatComp"
+        }
       }
     ],
     "Children": [
@@ -3445,7 +3495,7 @@
                     "Rotation": "0,0,0,1",
                     "Scale": "1,1,1",
                     "Tags": "",
-                    "Enabled": true,
+                    "Enabled": false,
                     "NetworkMode": 2,
                     "NetworkFlags": 0,
                     "NetworkOrphaned": 0,
@@ -5176,6 +5226,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "RemoveUnownedItems": true,
             "Source": "OwnerConnection",
             "WorkshopItems": []
           }
@@ -7009,6 +7060,24 @@
               }
             ],
             "Children": []
+          },
+          {
+            "__guid": "73e9ebd6-cb7a-4976-893c-f51df1bf3bb5",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "SpectateCameraPoint",
+            "Position": "-83.0437,0,88.67027",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
           }
         ]
       },
@@ -7055,7 +7124,63 @@
             "SurfaceVelocity": "0,0,0"
           }
         ],
-        "Children": []
+        "Children": [
+          {
+            "__guid": "6b611ebf-98ee-4666-a045-aa0b788cddee",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "World",
+            "Position": "-6.637,2.673,43.70268",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": false,
+            "NetworkMode": 1,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.WorldPanel",
+                "__guid": "079e1c3b-c134-4bc5-a4ac-2c067be47657",
+                "__enabled": true,
+                "Flags": 0,
+                "HorizontalAlign": "Center",
+                "InteractionRange": 1000,
+                "LookAtCamera": true,
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "PanelSize": "2048,2048",
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": true,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderScale": 1,
+                "VerticalAlign": "Center"
+              },
+              {
+                "__type": "Sandbox.Downed",
+                "__guid": "bd480859-34c4-4893-9906-e06ba09a16f0",
+                "__enabled": true,
+                "Flags": 0,
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null
+              }
+            ],
+            "Children": []
+          }
+        ]
       }
     ],
     "__properties": {
@@ -7073,7 +7198,8 @@
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

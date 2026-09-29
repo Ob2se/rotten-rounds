@@ -4,9 +4,9 @@ using Sandbox;
 public sealed class PerkMachine : Component, IInteraction, IPower
 {
 
-	[Property]
-	public PerkID PerkType { get; set; } = PerkID.None;
 
+	[Property]
+	public PerkID PerkType { get; set; }
 
 	[Property]
 	public bool Hold { get; set; }
@@ -65,7 +65,6 @@ public sealed class PerkMachine : Component, IInteraction, IPower
 
 	public void OnInteract( Player player )
 	{
-
 		if(player.Points < Cost)
 		{
 			OnInteractionFailed( player, IInteraction.InteractionFReason.NoMoney );
@@ -76,46 +75,51 @@ public sealed class PerkMachine : Component, IInteraction, IPower
 		{
 			return;
 		}
-
-		switch ( PerkType )
+		
+		var perkdata = PerkDatabase.GetData( PerkType );
+		if ( perkdata == null )
 		{
-			case PerkID.QuickRevive:
-				var perk = player.GetComponentInChildren<QuickRevivePerk>();
-				if ( perk != null )
-				{
-					OnInteractionFailed( player, IInteraction.InteractionFReason.AlreadyOwned );
-					return;
-				}
-				if ( perk == null )
-				{
-					perk = player.AddComponent<QuickRevivePerk>( false );
-					perk.targetPlayer = player;
-					perk.Enabled = true;
-
-					player.RemovePoints( Cost );
-					//player.RemovePoints( PerkDatabase.GetData( PerkID.QuickRevive ).PerkCost );
-					player.PlayChaChing();
-					player.CurrentInteraction = null;
-
-				}
-
-				break;
-			default:
-				break;
+			Log.Error( $"PerkMachine: No perk data for PerkType {PerkType}" );
+			return;
 		}
+
+		var type = perkdata.PerkComp;
+
+		var playerPerk = player.Components.Get( type );
+		if(playerPerk != null )
+		{
+			OnInteractionFailed( player, IInteraction.InteractionFReason.AlreadyOwned );
+			return;
+		}
+
+		// Route through host RPC so the perk is created authoritatively
+		GivePerkToPlayer( player );
 	}
-
-
-
-
 
 
 	[Rpc.Host]
 	private void GivePerkToPlayer( Player player )
 	{
-		
-	}
+		var perkdata = PerkDatabase.GetData( PerkType );
+		if ( perkdata == null ) return;
 
+		var type = perkdata.PerkComp;
+		var typedesc = TypeLibrary.GetType( type );
+
+		// Double-check on host to prevent duplicates
+		var existingPerk = player.Components.Get( type );
+		if ( existingPerk != null ) return;
+
+		var perk = (Perk)player.Components.Create( typedesc );
+		perk.Enabled = true;
+
+		player.RemovePoints( Cost );
+		player.PlayChaChing();
+		player.CurrentInteraction = null;
+
+		// Broadcast the perk state to all clients
+		player.ApplyPerkState( PerkType );
+	}
 
 
 	private void InteractionTriggerBoxEnter( GameObject obj )
@@ -148,8 +152,15 @@ public sealed class PerkMachine : Component, IInteraction, IPower
 
 	protected override void OnStart()
 	{
-		InteractionTriggerbox.OnObjectTriggerEnter += InteractionTriggerBoxEnter;
-		InteractionTriggerbox.OnObjectTriggerExit += InteractionTriggerBoxExit;
+
+		if ( InteractionTriggerbox != null )
+		{
+			InteractionTriggerbox.OnObjectTriggerEnter += InteractionTriggerBoxEnter;
+			InteractionTriggerbox.OnObjectTriggerExit += InteractionTriggerBoxExit;
+		}
+
+		
+		
 
 		GameMode = Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
 

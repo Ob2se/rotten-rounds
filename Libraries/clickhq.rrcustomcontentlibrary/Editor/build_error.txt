@@ -1,0 +1,24 @@
+﻿  Determining projects to restore...
+  Restored C:\Users\whoha\Documents\S&box Projects\rottenroundslibrarycontainer\Libraries\RRCustomContentLibrary\Code\rrcustomcontentlibrary.csproj (in 114 ms).
+  Restored E:\SteamLibrary\steamapps\common\sbox\addons\tools\code\Base Editor Library.csproj (in 107 ms).
+  Restored E:\SteamLibrary\steamapps\common\sbox\addons\base\code\Base Library.csproj (in 107 ms).
+  Restored E:\SteamLibrary\steamapps\common\sbox\editor\MovieMaker\Code\moviemaker.csproj (in 114 ms).
+  Restored E:\SteamLibrary\steamapps\common\sbox\editor\ActionGraph\Code\actiongraph.csproj (in 114 ms).
+  Restored E:\SteamLibrary\steamapps\common\sbox\editor\Hammer\Code\hammer.csproj (in 114 ms).
+  Restored E:\steamlibrary\steamapps\common\sbox\editor\ShaderGraph\Code\shadergraph.csproj (in 114 ms).
+  Restored C:\Users\whoha\Documents\S&box Projects\rottenroundslibrarycontainer\Libraries\RRCustomContentLibrary\Editor\rrcustomcontentlibrary.editor.csproj (in 115 ms).
+  Base Editor Library -> E:\steamlibrary\steamapps\common\sbox\.vs\output\Base Editor Library.dll
+  hammer -> E:\steamlibrary\steamapps\common\sbox\.vs\output\hammer.dll
+  moviemaker -> E:\steamlibrary\steamapps\common\sbox\.vs\output\moviemaker.dll
+  Base Library -> E:\SteamLibrary\steamapps\common\sbox\.vs\output\Base Library.dll
+  actiongraph -> E:\SteamLibrary\steamapps\common\sbox\.vs\output\actiongraph.dll
+C:\Users\whoha\Documents\S&box Projects\rottenroundslibrarycontainer\Libraries\RRCustomContentLibrary\Code\BaseWeapon.cs(70,9): error CS0246: The type or namespace name 'WeaponOffsetValue' could not be found (are you missing a using directive or an assembly reference?) [C:\Users\whoha\Documents\S&box Projects\rottenroundslibrarycontainer\Libraries\RRCustomContentLibrary\Code\rrcustomcontentlibrary.csproj]
+  shadergraph -> E:\SteamLibrary\steamapps\common\sbox\.vs\output\shadergraph.dll
+
+Build FAILED.
+
+C:\Users\whoha\Documents\S&box Projects\rottenroundslibrarycontainer\Libraries\RRCustomContentLibrary\Code\BaseWeapon.cs(70,9): error CS0246: The type or namespace name 'WeaponOffsetValue' could not be found (are you missing a using directive or an assembly reference?) [C:\Users\whoha\Documents\S&box Projects\rottenroundslibrarycontainer\Libraries\RRCustomContentLibrary\Code\rrcustomcontentlibrary.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:02.77

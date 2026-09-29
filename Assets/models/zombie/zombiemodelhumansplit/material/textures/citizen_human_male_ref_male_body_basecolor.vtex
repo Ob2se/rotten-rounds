@@ -1,0 +1,18 @@
+{
+  "Images": null,
+  "Sequences": [
+    {
+      "Source": "models/zombie/zombiemodelhumansplit/material/textures/citizen_human_male_ref_male_body_basecolor.png",
+      "IsLooping": true,
+      "FlipBook": false,
+      "Columns": 0,
+      "Rows": 0,
+      "Frames": 64
+    }
+  ],
+  "InputColorSpace": "Linear",
+  "OutputFormat": "DXT5",
+  "OutputColorSpace": "SRGB",
+  "OutputMipAlgorithm": "None",
+  "OutputTypeString": "2D"
+}

@@ -635,7 +635,7 @@ public sealed class TestingMode : Component, Component.INetworkListener, IZombie
 			RoundChange = false;
 		}
 
-		Zombie.ZombieDied += ZombieDeath;
+		//Zombie.ZombieDied += ZombieDeath;
 
 	}
 

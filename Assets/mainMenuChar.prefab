@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "f8f0875f-68b9-452b-bb9f-eee54571b29b",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "mainmenuchar",
     "Position": "0,0,0",
@@ -9,15 +9,16 @@
     "Scale": "1,1,1",
     "Tags": "",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [],
     "Children": [
       {
         "__guid": "b7aa9d3e-b705-4879-913e-b185e65830dd",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "Body",
         "Position": "0,0,0",
@@ -26,14 +27,16 @@
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "2acbaa15-c200-4ef0-8734-6841d7bf7998",
             "__enabled": true,
+            "Flags": 0,
             "AnimationGraph": "models/citizen/citizen.vanmgrph",
             "BodyGroups": 341,
             "BoneMergeTarget": null,
@@ -80,6 +83,7 @@
             "__type": "Sandbox.Citizen.CitizenAnimationHelper",
             "__guid": "d2fdff70-a398-4a71-a25c-21066cd8033b",
             "__enabled": true,
+            "Flags": 0,
             "BodyWeight": 1,
             "EyeSource": {
               "_type": "gameobject",
@@ -111,6 +115,7 @@
             "__type": "Sandbox.Dresser",
             "__guid": "abbdcb09-fb09-4bdf-8a8d-c9214f04b973",
             "__enabled": true,
+            "Flags": 0,
             "ApplyHeightScale": true,
             "BodyTarget": {
               "_type": "component",
@@ -128,13 +133,21 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Source": "Manual",
+            "RemoveUnownedItems": true,
+            "Source": "OwnerConnection",
             "WorkshopItems": []
           },
           {
             "__type": "MainMenuCharDresser",
             "__guid": "c2a0d750-c04f-4938-87fa-5d4246191f76",
             "__enabled": true,
+            "Flags": 0,
+            "charDresser": {
+              "_type": "component",
+              "component_id": "abbdcb09-fb09-4bdf-8a8d-c9214f04b973",
+              "go": "b7aa9d3e-b705-4879-913e-b185e65830dd",
+              "component_type": "Dresser"
+            },
             "CharRenderer": {
               "_type": "component",
               "component_id": "2acbaa15-c200-4ef0-8734-6841d7bf7998",
@@ -161,13 +174,14 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

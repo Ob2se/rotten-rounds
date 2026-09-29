@@ -13,6 +13,10 @@ public sealed class ZombieSpawn : Component
 	[Property]
 	public bool RequireAWindow { get; set; } = true;
 
+
+	public bool InInfluenceZone { get; set; }
+
+
 	protected override void DrawGizmos()
 	{
 		if ( !Scene.Editor.Selection.Contains( this.GameObject ) ) return;

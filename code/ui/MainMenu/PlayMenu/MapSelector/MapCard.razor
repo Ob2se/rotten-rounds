@@ -4,15 +4,18 @@
 @namespace Sandbox
 
 <button class="card-container" @onclick="@MapSelected">
+    <div class="map-title-wrapper">
+        <div class="map-title">@MapName</div>
+    </div>
     <div class="bg-image" style="background-image: url('@MapThumbnail');">
-        <div class="map-title-wrapper">
-            <div class="map-title">@MapName</div>
-        </div>
+        
     </div>
     <div class="bottom-card">
-        <div class="author">Author: @MapAuthor</div>
+        <text class="author">@MapAuthor</text>
         <div class="map-rating">
+            <text class="thumbs-up-icon">thumb_up_alt</text>
             <div class="map-up-votes">@MapRatingUp</div>
+            <text class="thumbs-down-icon">thumb_down_alt</text>
             <div class="map-down-votes">@MapRatingDown</div>
         </div>
     </div>
@@ -36,6 +39,8 @@
 
     [Parameter]
     public string MapThumbnail { get; set; }
+
+
 
 
     [Parameter]

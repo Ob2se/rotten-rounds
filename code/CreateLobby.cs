@@ -2,7 +2,9 @@ using Microsoft.VisualBasic;
 using Sandbox;
 using Sandbox.Audio;
 using Sandbox.ModelEditor;
+using Sandbox.Services;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -16,6 +18,13 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 	private SceneFile mapToLaunchScene;
 
+	[Property]
+	private List<GameObject> playerSpots = new();
+
+
+	
+	private Dictionary<long, GameObject> disabledSpots = new();
+
 	private Dictionary<long, bool> ClientMapDownloadDone { get; set; } = new();
 	private Dictionary<long, bool> ClientWeaponDownloadDone { get; set; } = new();
 
@@ -25,6 +34,24 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 	public List<Connection> Connections;
 
+	private const string CacheFile = "map_cache.json";
+
+	[Property]
+	public GameObject lobbyPrefab { get; set; }
+
+
+
+	public List<PlayerStats> playerStats = new();
+
+	public struct PlayerStats
+	{
+		public string Level;
+		public string Playcard;
+		public long SteamId;
+
+	}
+
+
 	protected override void OnStart()
 	{
 		base.OnStart();
@@ -32,10 +59,19 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		if ( !IsProxy )
 		{
 			_ = LoadMapsAndWeapons();
+
+			var stater = Sandbox.Services.Stats.GetLocalPlayerStats( "clickhq.rottenrounds" );
+
+			//_ = CheckIfFirstTimePlaying();
+
 		}
 
 		if ( Networking.IsHost )
 		{
+			if ( MapList.Count > 0 )
+			{
+				SelectedMap = MapList.FirstOrDefault();
+			}
 			// initialize download trackers for host
 			foreach ( var conn in Connection.All )
 			{
@@ -45,7 +81,130 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		}
 	}
 
+	private async Task CheckIfFirstTimePlaying()
+	{
+		var stater = Sandbox.Services.Stats.GetLocalPlayerStats( "clickhq.rottenrounds" );
 
+		await stater.Refresh();
+
+		var level = stater.Get( "level" );
+		if ( level.Value == 0 )
+		{
+			Sandbox.Services.Stats.SetValue( "level", 1 );
+		}
+
+		var xp = stater.Get( "experience" );
+		if ( xp.Value == 0 )
+		{
+			Sandbox.Services.Stats.SetValue( "experience", 1 );
+		}
+	}
+
+
+	[Rpc.Broadcast]
+	public void TellAllToGrabStats()
+	{
+		_ = GetStats();
+	}
+
+
+	
+	public async Task GetStats()
+	{
+		foreach ( var conn in Connection.All )
+		{
+			playerStats.Clear();
+
+			var stats = Sandbox.Services.Stats.GetPlayerStats( "clickhq.rottenrounds", conn.SteamId );
+
+			await stats.Refresh();
+
+			playerStats.Add( new PlayerStats
+			{
+				Level = stats.Get( "level" ).ToString(),
+				SteamId = conn.SteamId,
+				Playcard = "textures/playercards/default/_5ozi0c3w5ivq2k3wzti7_0.png"
+			} );
+		}
+	}
+
+
+
+	[Rpc.Host]
+	private void DeleteAllPlayers()
+	{
+		foreach ( var spot in playerSpots )
+		{
+			Log.Info( "destroy" );
+			spot.Destroy();
+		}
+	}
+
+
+	[Rpc.Broadcast]
+	private void GiveOwnershipToHost()
+	{
+		foreach ( var spot in playerSpots )
+		{
+			
+			spot.Network.AssignOwnership( Connection.Host );
+		}
+	}
+
+	
+
+	public void OnActive( Connection channel )
+	{
+		Log.Info( $"Player '{channel.DisplayName}' has joined the game" );
+
+		
+
+		foreach ( var spot in playerSpots ) 
+		{
+			if ( !spot.Enabled )
+			{
+				
+				var spotter = lobbyPrefab.Clone(spot.WorldTransform);
+				//spotter.Enabled = true;
+				//spotter.GetComponentInChildren<MainMenuCharDresser>().BroadcastSetClothing();
+				spotter.NetworkSpawn( channel );
+				playerSpots.Remove( spot );
+				disabledSpots.Add( channel.SteamId, spot );
+				break;
+			}
+		}
+
+
+		TellAllToGrabStats();
+
+		
+
+	}
+
+
+	public void OnDisconnected(Connection channel)
+	{
+		if ( disabledSpots.TryGetValue( channel.SteamId, out var spot ) )
+		{
+			playerSpots.Add( spot );
+			disabledSpots.Remove( channel.SteamId );
+			foreach(var x in playerSpots)
+			{
+				Log.Info( x );
+			}
+		}
+
+		if ( Networking.IsHost )
+		{
+			if ( ClientMapDownloadDone.ContainsKey( channel.SteamId ) )
+				ClientMapDownloadDone.Remove( channel.SteamId );
+
+			if ( ClientWeaponDownloadDone.ContainsKey( channel.SteamId ) )
+				ClientWeaponDownloadDone.Remove( channel.SteamId );
+
+			CheckIfAllClientsDownloaded();
+		}
+	}
 
 
 	private async Task LoadMapsAndWeapons()
@@ -57,40 +216,97 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 	private async Task GetMaps()
 	{
+		var cache = LoadCache();
+		var cacheMap = cache.ToDictionary( m => m.FullIndent );
+
 		MapList.Clear();
+		if ( cache.Count > 0 )
+		{
+			MapList.AddRange( cache.OrderByDescending( m => m.UpVotes ) );
+			SelectedMap = MapList.FirstOrDefault();
+		}
+
 		var search = await Package.FindAsync( "type:map" );
 
-		var tasks = search.Packages.Select( async item =>
+		// Determine what needs fetching:
+		// - not in cache at all
+		// - in cache but LastUpdate on server is newer than what we stored
+		var toFetch = search.Packages
+			.Where( p => !cacheMap.TryGetValue( p.FullIdent, out var cached )
+					 || p.Updated > cached.LastUpdate )
+			.ToList();
+
+		if ( toFetch.Count > 0 )
 		{
-			try
+			var semaphore = new SemaphoreSlim( 10 );
+
+			var tasks = toFetch.Select( async item =>
 			{
-				Log.Info( item.Title );
-				var pkg = await Package.FetchAsync( item.FullIdent, false );
-				
-				var supports = pkg.GetMeta<List<string>>( "ParentPackage" );
-				Log.Info( "package: " + supports );
-				if ( pkg.PackageReferences.Contains( "clickhq.rottenrounds" ) )
+				await semaphore.WaitAsync();
+				try
 				{
-					Log.Info( "oi" );
+					var pkg = await Package.FetchAsync( item.FullIdent, false );
+					var parent = pkg.GetMeta<string>( "ParentPackage" );
+					if ( parent != "clickhq.rottenrounds" ) return null;
+
 					return new MapData
 					{
 						Author = pkg.Org?.Title,
-						Description = pkg.Description,
+						Description = pkg.Summary ?? "No description :(", //pkg.Description seems to take the description with its html, should look into this for people who make fancy summaries
 						DownVotes = pkg.VotesDown,
 						UpVotes = pkg.VotesUp,
 						Name = pkg.Title,
 						Thumbnail = pkg.Thumb,
 						Indent = pkg.Ident,
-						FullIndent = pkg.FullIdent
+						FullIndent = pkg.FullIdent,
+						LastUpdate = pkg.Updated
 					};
 				}
-			}
-			catch { }
-			return null;
-		} );
+				catch { return null; }
+				finally { semaphore.Release(); }
+			} );
 
-		var results = await Task.WhenAll( tasks );
-		MapList.AddRange( results.Where( m => m != null ) );
+			var results = await Task.WhenAll( tasks );
+
+			foreach ( var map in results.Where( m => m != null ) )
+				cacheMap[map.FullIndent] = map; // insert or overwrite
+
+			SaveCache( cacheMap.Values.ToList() );
+
+			MapList.Clear();
+			MapList.AddRange( cacheMap.Values.OrderByDescending( m => m.UpVotes ) );
+			SelectedMap = MapList.FirstOrDefault();
+		}
+		else if ( cache.Count == 0 )
+		{
+			MapList.Clear();
+			MapList.AddRange( cacheMap.Values.OrderByDescending( m => m.UpVotes ) );
+			SelectedMap = MapList.FirstOrDefault();
+		}
+	}
+
+	private List<MapData> LoadCache()
+	{
+		try
+		{
+			if ( Sandbox.FileSystem.Data.FileExists( CacheFile ) )
+			{
+				var json = Sandbox.FileSystem.Data.ReadAllText( CacheFile );
+				return Json.Deserialize<List<MapData>>( json ) ?? new();
+			}
+		}
+		catch { }
+		SelectedMap = MapList.FirstOrDefault();
+		return new();
+	}
+
+	private void SaveCache( List<MapData> maps )
+	{
+		try
+		{
+			Sandbox.FileSystem.Data.WriteAllText( CacheFile, Json.Serialize( maps ) );
+		}
+		catch { }
 	}
 
 	private async Task GetWeaponList()
@@ -129,6 +345,7 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 	public void ChooseMap( MapData map )
 	{
 		if ( !Networking.IsHost ) return;
+		if ( map == null ) return;
 
 		SelectedMap = map;
 		ClientMapDownloadDone.Clear();
@@ -162,13 +379,17 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 		if ( package == null ) return;
 
 		await package.MountAsync();
+		if ( !IsValid ) return;
+
 		var scenePath = package.GetMeta( "PrimaryAsset", "" );
 		ResourceLibrary.TryGet<SceneFile>( scenePath, out mapToLaunchScene );
 
 		Log.Info( $"Client downloaded map {mapIndent}." );
 
+		if ( !IsValid ) return;
+
 		// notify host that this client finished map download
-		DownloadFinishedMap( Connection.Local.SteamId );
+		DownloadFinishedMap( Connection.Local?.SteamId ?? 0 );
 	}
 
 	/// <summary>
@@ -182,14 +403,18 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 			if ( package == null ) continue;
 
 			await package.MountAsync();
+			if ( !IsValid ) return;
+
 			var weaponPath = package.GetMeta( "PrimaryAsset", "" );
 			WeaponPrefabList.Add( weaponPath );
 		}
 
 		Log.Info( "Client finished downloading weapons." );
 
+		if ( !IsValid ) return;
+
 		// notify host that this client finished weapon download
-		DownloadFinishedWeapons( Connection.Local.SteamId );
+		DownloadFinishedWeapons( Connection.Local?.SteamId ?? 0 );
 	}
 
 	/// <summary>
@@ -248,8 +473,19 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 			return;
 		}
 
+		GiveOwnershipToHost();
+
+		if ( Networking.IsHost )
+		{
+			DeleteAllPlayers();
+		}
+
+
+
 		var options = new SceneLoadOptions();
 		options.SetScene( mapToLaunchScene );
+
+		ChangeServerName();
 
 		Game.ChangeScene( options );
 
@@ -263,6 +499,13 @@ public sealed class CreateLobby : Component, Component.INetworkListener
 
 		sceneObject.NetworkSpawn();
 	}
+
+	[Rpc.Host]
+	private void ChangeServerName()
+	{
+		Networking.ServerName = $"Rotten Rounds | In-Game | Round: 1";
+	}
+
 
 	// Launch the downloaded map on the client
 	public void LaunchMap()

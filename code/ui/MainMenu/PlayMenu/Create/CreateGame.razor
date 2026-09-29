@@ -4,26 +4,28 @@
 @namespace Sandbox
 
 <div class="fullscreen-blur"></div>
-<div class="screen-blocker"></div>"
+<div class="screen-blocker"></div>
 <div class="create-menu-container">
     <div class="brush-stroke"></div>
     <div class="menu-options-container">
         <div class="inputs-line-players">
             <text class="inputs-players">Players</text>
             <div class="slider-maxplayer">
-                <SliderControl class="player-slider" ShowValueTooltip="@(false)" ShowTextEntry="@(false)" ShowRange="@(false)" Min=@(1) Max="@(64)" Step="@(1)" Value:bind="@MaxPlayersGame"></SliderControl>
+                <SliderControl class="player-slider" ShowValueTooltip="@(false)" ShowTextEntry="@(false)" ShowRange="@(false)" Min=@(1) Max="@(8)" Step="@(1)" Value:bind="@MaxPlayersGame"></SliderControl>
                 <text class="inputs-maxplayers">@MaxPlayersGame</text>
             </div>
             
         </div>
         
-        <div class="inputs-line-invite">
+        <div class="inputs-line-invite @(FriendsOnly ? "unclickable" : "")">
             <text class="inputs-text">Invite Only</text>
-            <Checkbox @ref="InviteOnlyCheckBox" class="inputs-checkbox" Value:bind="@InviteOnly"></Checkbox>
+            <button class="checkbox @(InviteOnly ? "checked" : "")" @onclick="@(OnInviteClicked)"></button>
+
         </div>
-        <div class="inputs-line-friends">
+        <div class="inputs-line-friends @(InviteOnly ? "unclickable" : "")">
             <text class="inputs-text">Friends Only</text>
-            <Checkbox @ref="FriendsOnlyCheckBox" class="inputs-checkbox" Value:bind="@FriendsOnly" @onmouseover="@OnMouseOva"></Checkbox>
+            <button class="checkbox @(FriendsOnly ? "checked" : "")" @onclick="@(OnFriendsClicked)"></button>
+
         </div>       
         <div class="create-button-wrapper">
             <button class="create-lobby-button" @onclick="@CreateLobby">Create</button>
@@ -40,13 +42,11 @@
 
     bool IsBackVisible = true;
 
-    Checkbox InviteOnlyCheckBox;
-    Checkbox FriendsOnlyCheckBox;
 
     public int MaxPlayersGame = 1;
 
-    public bool? InviteOnly = false;
-    public bool? FriendsOnly = false;
+    public bool InviteOnly = false;
+    public bool FriendsOnly = false;
 
     public int PartyCount { get; set; }
 
@@ -59,12 +59,11 @@
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
     /// </summary>
-    protected override int BuildHash() => System.HashCode.Combine(InviteOnly, FriendsOnly, PartyCount, MaxPlayersGame, FriendsOnlyCheckBox.Value);
+    protected override int BuildHash() => System.HashCode.Combine(InviteOnly, FriendsOnly, PartyCount, MaxPlayersGame);
 
     public void OnMouseOva()
     {
-        Log.Info(FriendsOnlyCheckBox.Checked);
-        FriendsOnlyCheckBox.Value = true;
+        
     }
 
 
@@ -79,10 +78,36 @@
     }
 
 
-    public void OnInviteOnlyChanged()
+    public void OnInviteClicked()
     {
-        InviteOnlyCheckBox.Value = false;
-        InviteOnlyCheckBox.Checked = false;
+        if (!InviteOnly)
+        {
+            InviteOnly = true;
+            Log.Info("invite only");
+            return;
+        }
+        if (InviteOnly)
+        {
+            InviteOnly = false;
+            Log.Info("no invite only");
+            return;
+        }
+    }
+
+    public void OnFriendsClicked()
+    {
+        if (!FriendsOnly)
+        {
+            FriendsOnly = true;
+            Log.Info("friemd only");
+            return;
+        }
+        if (FriendsOnly)
+        {
+            FriendsOnly = false;
+            Log.Info("no friend only");
+            return;
+        }
     }
 
 
@@ -92,12 +117,14 @@
     {
         GetMainMenuComp();
 
-         _ = mainMenu.CreateLobby(new Network.LobbyConfig()
-             {
-                 MaxPlayers = MaxPlayersGame,
-                 Privacy = Network.LobbyPrivacy.FriendsOnly,
-                 Name = "Rotten Rounds | Waiting to start... "
-             });
+        _ = mainMenu.CreateLobby(new Network.LobbyConfig()
+        {
+            MaxPlayers = MaxPlayersGame,
+            Privacy = FriendsOnly ? Network.LobbyPrivacy.FriendsOnly
+            : InviteOnly ? Network.LobbyPrivacy.Private
+            : Network.LobbyPrivacy.Public,
+            Name = "Rotten Rounds | Waiting to start... "
+        });
     }
 
 

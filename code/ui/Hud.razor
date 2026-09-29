@@ -1,6 +1,7 @@
 @using Sandbox;
 @using Sandbox.UI;
 @using System;
+@using System.Globalization;
 @using System.Linq;
 @inherits PanelComponent
 @namespace Sandbox
@@ -44,22 +45,20 @@
             {
                 foreach (var playa in PlayerList)
                 {
-                    if(playa.player != null)
+                    var displayPoints = playa.player != null ? playa.player.Points : playa.Points;
+                    if(playa.PlayerSteamID == Connection.Local.SteamId.ToString())
                     {
-                        if(playa.PlayerSteamID == Connection.Local.SteamId.ToString())
-                        {
-                            <PlayerCard @ref="localPlayerCard" PlayerName="@playa.PlayerName" Points="@playa.player.Points" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
-                             if (changeAmount > 0)
-                             {
-                               AddPointPanel();
+                        <PlayerCard @ref="localPlayerCard" PlayerName="@playa.PlayerName" Points="@displayPoints" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
+                         if (changeAmount > 0)
+                         {
+                           AddPointPanel();
 
-                             }
+                         }
                     
-                        }
-                        if (playa.PlayerSteamID != Connection.Local.SteamId.ToString())
-                        {
-                            <PlayerCard PlayerName="@playa.PlayerName" Points="@playa.player.Points" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
-                        }
+                    }
+                    if (playa.PlayerSteamID != Connection.Local.SteamId.ToString())
+                    {
+                        <PlayerCard PlayerName="@playa.PlayerName" Points="@displayPoints" PlayerSteamId="@playa.PlayerSteamID" IsLocalPlayer="@(Connection.Local.SteamId.ToString() == playa.PlayerSteamID)"/>
                     }
                 }
             }
@@ -76,13 +75,13 @@
 
         <div class="weapon-contain">
             @if (player is not null
-                && player.Inventory is not null
-                && player.CurrentWeaponClass is not null
-                && player.Inventory.WeaponsAmmo is not null
-                && player.CurrentWeaponSlot >= 0
-                && player.CurrentWeaponSlot < player.Inventory.WeaponsAmmo.Count) 
-            { 
-                <EquippedWeapon AmmoClip="@player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].CurrentMag" AmmoTotal="@player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].AmmoTotal" WeaponName="@player.CurrentWeaponClass.WeaponName" />
+              && player.Inventory is not null
+              && player.CurrentWeaponClass is not null
+              && player.Inventory.WeaponsAmmo is not null
+              && player.CurrentWeaponSlot >= 0
+              && player.CurrentWeaponSlot < player.Inventory.WeaponsAmmo.Count)
+            {
+                <EquippedWeapon AmmoClip="@player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].CurrentMag" AmmoTotal="@player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].AmmoTotal" WeaponName="@(player.Inventory.Weapons[player.CurrentWeaponSlot].Packed > 0 ? player.CurrentWeaponClass.PackedName : player.CurrentWeaponClass.WeaponName)", color="@(player.Inventory.Weapons[player.CurrentWeaponSlot].Packed == 1 ? "green" : player.Inventory.Weapons[player.CurrentWeaponSlot].Packed == 2 ? "blue" : player.Inventory.Weapons[player.CurrentWeaponSlot].Packed == 3 ? "purple" : player.Inventory.Weapons[player.CurrentWeaponSlot].Packed == 4 ? "gold" : "whitesmoke")" />
             }
 
         </div>
@@ -96,24 +95,8 @@
                 }
             }
         </div>
-        <div class="chat-wrap">
-            <div class="chat-panel @(isChatOpen ? "open" : "")">
-                <div class="chat-messages">
-                    @foreach (var message in chatMessages.TakeLast(6))
-                    {
-                        <div class="chat-message">
-                            <span class="chat-name">@message.PlayerName:</span>
-                            <span class="chat-text">@message.Message</span>
-                        </div>
-                    }
-                </div>
-                @if (isChatOpen)
-                {
-                    <div class="chat-input-container">
-                        <TextEntry @ref="chatInputRef" class="chat-input" Value:bind="@chatInputText"></TextEntry>
-                    </div>
-                }
-            </div>
+        <div class="powerup-container" @ref="PowerupContaina">
+        
         </div>
     </div>
 </root>
@@ -135,6 +118,14 @@
     // [Change("hackyasfuck")]
     // public List<Connection> idek => Connection.All.ToList();
 
+    Panel PowerupContaina { get; set; }
+
+
+    PowerupIcon FiresaleIcon { get; set; }
+
+    PowerupIcon DoublepointsIcon { get; set; }
+
+    PowerupIcon InstakillIcon { get; set; }
 
     PlayerCard localPlayerCard;
 
@@ -155,6 +146,9 @@
 
     List<string> PerkIcons => player?.PerkIcons ?? new();
 
+    bool APowerUpActivated { get; set; } = false;
+
+    int AmountOfPowerUpsActivated { get; set; } = 0;
 
     bool LookingAtInteractable => player?.LookingAtInteractable ?? false;
     bool LookingAtInteractableRevive => player?.LookingAtInteractableRevive ?? false;
@@ -164,6 +158,9 @@
 
     bool IsUsingVoiceChat => player?.IsUsingVoiceChat ?? false;
 
+    [Property]
+    TextChatComp textChatComp { get; set; }
+
 
     int currentMag => player.Inventory.WeaponsAmmo[player.CurrentWeaponSlot].CurrentMag;
 
@@ -171,16 +168,7 @@
 
     GameModeManager GameModeManager;
 
-    List<Player.ChatMessageData> chatMessages = new();
 
-    TextEntry chatInputRef;
-
-    string chatInputText = string.Empty;
-
-    bool isChatOpen;
-    bool shouldFocusChatInput;
-    TimeSince timeSinceChatOpened;
-    bool chatHadFocus;
 
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
@@ -194,7 +182,7 @@
 
         hash.Add(player);
         hash.Add(isAiming);
-        hash.Add(GameModeManager?.PlayerList);
+        hash.Add(GameModeManager?.PlayersList);
         hash.Add(player?.isFiring);
         hash.Add(player?.isWalking);
         hash.Add(player?.isSprinting);
@@ -211,10 +199,13 @@
         hash.Add(player?.PerkIcons);
         hash.Add(HoldProgress);
         hash.Add(player?.IsUsingVoiceChat);
-        hash.Add(isChatOpen);
-        hash.Add(chatInputText);
-        hash.Add(chatMessages.Count);
+        hash.Add(textChatComp);
 
+        hash.Add(player.CurrentWeaponClass);
+        hash.Add(PowerupContaina);
+        hash.Add(FiresaleIcon);
+        hash.Add(InstakillIcon);
+        hash.Add(DoublepointsIcon);
 
         return hash.ToHashCode();
     }
@@ -230,7 +221,7 @@
         player.PlayerPointsChanged += HandlePlayerPointsChanged;
         Player.AnyPlayerPointsChanged += HandleAnyPlayerPointsChanged;
         player.PerkListChanged += HandlePerkListChange;
-        Player.ChatMessageReceived += HandleChatMessageReceived;
+
 
 
 
@@ -240,28 +231,86 @@
         {
             GameModeManager.PlayerListChange += PlayerListChanged;
             GameModeManager.ChangeRound += RoundChanged;
+            GameModeManager.PowerUpActivated += PowerUpActivated;
+            GameModeManager.PowerUpDeactivated += PowerUpDeactivated;
         }
 
         //Log.Info(GameModeManager.PlayerList.Count);
 
     }
 
+
+    private void PowerUpActivated(string powerup)
+    {
+
+        switch (powerup)
+        {
+            case "firesale":
+
+                FiresaleIcon = PowerupContaina.AddChild<PowerupIcon>();
+
+                FiresaleIcon.PowerUpPath = "ui/firesalecropped.png";
+
+                break;
+            case "instakill":
+
+                InstakillIcon = PowerupContaina.AddChild<PowerupIcon>();
+                InstakillIcon.PowerUpPath = "ui/instakillcropped.png";
+
+                break;
+            case "doublepoints":
+
+                DoublepointsIcon = PowerupContaina.AddChild<PowerupIcon>();
+
+                DoublepointsIcon.PowerUpPath = "ui/x2cropped.png";
+
+                break;
+        }
+
+    }
+
+    private void PowerUpDeactivated(string powerup)
+    {
+        switch (powerup)
+        {
+            case "firesale":
+
+                FiresaleIcon.Delete();
+                
+                break;
+            case "instakill":
+
+                InstakillIcon.Delete();
+
+                break;
+            case "doublepoints":
+
+                DoublepointsIcon.Delete();
+
+                break;
+        }
+    }
+
+
+
+
     protected override void OnDestroy()
     {
         if (player is not null)
         {
-            player.IsTypingChat = false;
             player.PlayerPointsChanged -= HandlePlayerPointsChanged;
             player.PerkListChanged -= HandlePerkListChange;
         }
 
         Player.AnyPlayerPointsChanged -= HandleAnyPlayerPointsChanged;
-        Player.ChatMessageReceived -= HandleChatMessageReceived;
+
 
         if (GameModeManager is not null)
         {
             GameModeManager.PlayerListChange -= PlayerListChanged;
             GameModeManager.ChangeRound -= RoundChanged;
+            GameModeManager.PowerUpActivated -= PowerUpActivated;
+            GameModeManager.PowerUpDeactivated -= PowerUpDeactivated;
         }
 
         base.OnDestroy();
@@ -281,7 +330,6 @@
             localPlayerCard.AddChild(popup);
         }
         //this.Panel.AddChild(popup);
-        Log.Info("hello");
         changeAmount = 0;
     }
 
@@ -294,33 +342,7 @@
             return;
         }
 
-        if (Input.Pressed("Chat"))
-        {
-            if (!isChatOpen)
-            {
-                OpenChat();
-            }
-            else
-            {
-                shouldFocusChatInput = true;
-            }
-        }
 
-        if (isChatOpen && shouldFocusChatInput && chatInputRef is not null)
-        {
-            chatInputRef.Focus();
-            shouldFocusChatInput = false;
-        }
-
-        if (isChatOpen && chatInputRef is not null)
-        {
-            var hasFocus = chatInputRef.HasFocus;
-            if (chatHadFocus && !hasFocus && timeSinceChatOpened > 0.05f)
-            {
-                SendChatMessage();
-            }
-            chatHadFocus = hasFocus;
-        }
 
         useKey = Input.GetGlyph("use", InputGlyphSize.Small, true);
         if (player.LookingAtInteractableRevive)
@@ -335,7 +357,20 @@
 
 
         //Log.Info(useKey);
+
+        // Update power-up timers directly from GameModeManager
+        if (GameModeManager is not null)
+        {
+            if (InstakillIcon is not null && GameModeManager.InstaKillTimeLeft >= 0)
+                InstakillIcon.TimeLeft = Math.Ceiling(GameModeManager.InstaKillTimeLeft).ToString("0");
+            if (DoublepointsIcon is not null && GameModeManager.DoublePointsTimeLeft >= 0)
+                DoublepointsIcon.TimeLeft = Math.Ceiling(GameModeManager.DoublePointsTimeLeft).ToString("0");
+            if (FiresaleIcon is not null && GameModeManager.FireSaleTimeLeft >= 0)
+                FiresaleIcon.TimeLeft = Math.Ceiling(GameModeManager.FireSaleTimeLeft).ToString("0");
+        }
     }
+
+
 
     private void PlayerListChanged()
     {
@@ -362,7 +397,6 @@
     private void HandlePerkListChange()
     {
         
-        Log.Info("how in the fuck");
         StateHasChanged();
     }
 
@@ -373,74 +407,7 @@
 
     }
 
-    private void OpenChat()
-    {
-        isChatOpen = true;
-        shouldFocusChatInput = true;
-        timeSinceChatOpened = 0;
-        if (player is not null)
-        {
-            player.IsTypingChat = true;
-        }
 
-        StateHasChanged();
-    }
-
-    private void CloseChat()
-    {
-        isChatOpen = false;
-        shouldFocusChatInput = false;
-        chatHadFocus = false;
-        if (player is not null)
-        {
-            player.IsTypingChat = false;
-        }
-        chatInputText = string.Empty;
-        StateHasChanged();
-    }
-
-    private void CancelChat()
-    {
-        isChatOpen = false;
-        shouldFocusChatInput = false;
-        chatHadFocus = false;
-        if (player is not null)
-        {
-            player.IsTypingChat = false;
-        }
-        StateHasChanged();
-    }
-
-    private void SendChatMessage()
-    {
-        var liveText = chatInputRef?.Text;
-        var cleanMessage = !string.IsNullOrWhiteSpace( liveText )
-            ? liveText.Trim()
-            : chatInputText?.Trim();
-
-        if (string.IsNullOrWhiteSpace(cleanMessage))
-        {
-            CloseChat();
-            return;
-        }
-
-        player?.SubmitChatMessage(Connection.Local.SteamId.ToString(), Connection.Local.DisplayName, cleanMessage);
-        CloseChat();
-    }
-
-
-
-    private void HandleChatMessageReceived(Player.ChatMessageData messageData)
-    {
-        chatMessages.Add(messageData);
-
-        if (chatMessages.Count > 30)
-        {
-            chatMessages.RemoveAt(0);
-        }
-
-        StateHasChanged();
-    }
 
     string useKeyPath => useKey?.ResourcePath ?? string.Empty;
 }

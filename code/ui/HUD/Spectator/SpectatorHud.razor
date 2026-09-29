@@ -1,0 +1,39 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <div class="spectator-container">
+        <div class="spectated-spot">
+            <div class="previous-container">
+                <p class="previous-text">Prev.</p>
+                <img class="previous-player" src="@Input.GetGlyph("attack1", InputGlyphSize.Medium, true).ResourcePath;" />
+            </div>
+            <nametaghover class="player-spectated" PlayerName="@CurrentPlayerSpectated" PlayerLevel="2" PlayCard="textures/playercards/default/_5ozi0c3w5ivq2k3wzti7_0.png" />
+            
+            <div class="next-container">
+                <p class="next-text">Next</p>
+                <img class="next-player" src="@Input.GetGlyph("attack2", InputGlyphSize.Medium, true).ResourcePath;" />
+            </div>
+        </div>
+
+    </div>
+</root>
+
+@code
+{
+
+
+
+    [Property]
+    public Spectator SpectatorClass { get; set; }
+
+
+    public string CurrentPlayerSpectated => SpectatorClass?.NameOfPlayer;
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( CurrentPlayerSpectated );
+}

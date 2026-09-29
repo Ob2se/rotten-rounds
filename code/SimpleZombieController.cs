@@ -14,7 +14,7 @@ public sealed class SimpleZombieController : Component
 
 	[Property] bool testing { get; set; }
 
-	[Property] NavMeshAgent zombieAgent;
+	[Property] public NavMeshAgent zombieAgent { get; set; }
 
 
 	[Sync] public bool attackingWindow { get; set; } = false;
@@ -26,7 +26,7 @@ public sealed class SimpleZombieController : Component
 	[Sync] Player targetPlayer { get; set; }
 
 
-	[Property] CitizenAnimationHelper ZombieAnimationHelper { get; set; }
+	[Property] public CitizenAnimationHelper ZombieAnimationHelper { get; set; }
 
 	Vector3 flatDirection;
 
@@ -55,7 +55,7 @@ public sealed class SimpleZombieController : Component
 	private GameObject ZombiePrefabRef;
 
 	public bool EnteringWindow;
-	private bool HasEnteredThroughWindow;
+	public bool HasEnteredThroughWindow;
 
 	
 	TimeSince TimeToEnterWindow;
@@ -141,47 +141,31 @@ public sealed class SimpleZombieController : Component
 
 		var targetMoved = !HasLastMoveTarget || Vector3.DistanceBetween( target, LastMoveTarget ) > RepathDistanceThreshold;
 		var pathStale = TimeSinceLastMoveCommand > RepathInterval;
-
-		if ( targetMoved || pathStale )
-		{
-			SetZombiePathTo( target );
-			LastMoveTarget = target;
-			HasLastMoveTarget = true;
-			TimeSinceLastMoveCommand = 0f;
-		}
+		//zombieAgent.MoveTo( target );
+		SetZombiePathTo( target );
+		//LastMoveTarget = target;
+		//HasLastMoveTarget = true;
+		//TimeSinceLastMoveCommand = 0f;
 	}
 
 	[Rpc.Host]
 	private void SetZombiePathTo( Vector3 target )
 	{
+
+		
 		var meshTarget = GetNavMeshPointNear( target );
-		zombieAgent.MoveTo( meshTarget );
+		if ( meshTarget != null )
+		{
+			zombieAgent.MoveTo( target );
+		}
+		
 	}
 
-	/// <summary>
-	/// Projects a world position onto the navmesh, preferring the point on the same floor.
-	/// Samples from target and above to avoid snapping to floors below (e.g. player on 2nd floor).
-	/// </summary>
-	private Vector3 GetNavMeshPointNear( Vector3 target )
+
+	private Vector3? GetNavMeshPointNear( Vector3 target )
 	{
-		var heights = new[] { 0f, 64f, 128f, 192f, 256f, 384f };
-		Vector3? best = null;
-		var bestHeightError = float.MaxValue;
 
-		foreach ( var h in heights )
-		{
-			var sample = target + Vector3.Up * h;
-			var onMesh = Scene.NavMesh.GetClosestPoint( sample );
-			if ( !onMesh.HasValue ) continue;
-			var heightError = MathF.Abs( onMesh.Value.z - target.z );
-			if ( heightError < bestHeightError )
-			{
-				bestHeightError = heightError;
-				best = onMesh;
-			}
-		}
-
-		return best ?? target;
+		return Scene.NavMesh.GetClosestPoint( target, 128 );
 	}
 
 
@@ -189,97 +173,86 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Host]
 	private void GetClosestPlayer()
 	{
-		
-		var players = Scene.GetAllComponents<Player>();
-		if ( players == null )
+		// 1. Safety check: Clear the target immediately if they disconnected/were destroyed.
+		if ( targetPlayer != null && !targetPlayer.IsValid )
 		{
-			
 			targetPlayer = null;
+		}
+
+		// 2. Retargeting cooldown: Abort early if we have a valid, alive target and are on cooldown.
+		if ( targetPlayer != null && !targetPlayer.Downed && TimeSinceRetarget < TargetRetargetInterval )
+		{
 			return;
 		}
 
-		if ( players.All( p => p.Downed ) )
+		var players = Scene.GetAllComponents<Player>();
+		Player closestPlayer = null;
+		float closestScore = float.MaxValue;
+
+		// Cache our position once so the engine doesn't recalculate the transform every loop iteration.
+		var myPos = GameObject.WorldPosition;
+
+		// 3. Single pass: Find the closest player in one loop.
+		foreach ( var player in players )
+		{
+			if ( !player.IsValid || player.Downed )
+				continue;
+
+			var delta = player.WorldPosition - myPos;
+			var horizontalDistance = delta.WithZ( 0f ).Length;
+			var verticalDelta = MathF.Abs( delta.z );
+
+			// Prefer same-floor targets, but still allow cross-floor via stairs.
+			var score = horizontalDistance + (verticalDelta * 1.75f);
+
+			if ( score < closestScore )
+			{
+				closestScore = score;
+				closestPlayer = player;
+			}
+		}
+
+		// 4. Handle Results: If everyone is downed, or no players exist.
+		if ( closestPlayer == null )
 		{
 			targetPlayer = null;
 			ChangeState( ZomState.Idle );
 			return;
 		}
 
-		if ( targetPlayer != null && !targetPlayer.Downed && TimeSinceRetarget < TargetRetargetInterval )
+		// 5. Hysteresis (Stickiness) check: Only evaluate if the new closest is a DIFFERENT player.
+		if ( targetPlayer != null && targetPlayer != closestPlayer && !targetPlayer.Downed )
 		{
-			
-			return;
-		}
-
-		Player closestPlayer = null;
-		float closestDistance = float.MaxValue;
-		foreach ( var player in players )
-		{
-
-			if ( player.Downed ) continue;
-			var delta = player.WorldPosition - GameObject.WorldPosition;
-			var horizontalDistance = delta.WithZ( 0f ).Length;
-			var verticalDelta = MathF.Abs( delta.z );
-
-			// Prefer same-floor targets, but still allow cross-floor via stairs.
-			var distance = horizontalDistance + (verticalDelta * 1.75f);
-
-			if ( distance < closestDistance )
-			{
-				
-				closestDistance = distance;
-				closestPlayer = player;
-			}
-		}
-
-		if ( closestPlayer == null )
-		{
-			targetPlayer = null;
-			return;
-		}
-
-		if ( targetPlayer != null && !targetPlayer.Downed )
-		{
-
-			if ( !targetPlayer.IsValid )
-			{
-				targetPlayer = null;
-				return;
-			}
-
-
-			var currentDelta = targetPlayer.WorldPosition - GameObject.WorldPosition;
-			
+			var currentDelta = targetPlayer.WorldPosition - myPos;
 			var currentScore = currentDelta.WithZ( 0f ).Length + (MathF.Abs( currentDelta.z ) * 1.75f);
-			
+
 			// Only switch when clearly better to avoid floor-flip oscillation.
-			if ( currentScore <= (closestDistance + TargetSwitchAdvantage) )
+			if ( currentScore <= (closestScore + TargetSwitchAdvantage) )
 			{
-				return;
+				return; // Keep the old target
 			}
 		}
 
-		targetPlayer = closestPlayer;
-		TimeSinceRetarget = 0f;
+		// 6. Apply target and reset timer ONLY if we actually switched targets.
+		if ( targetPlayer != closestPlayer )
+		{
+			targetPlayer = closestPlayer;
+			TimeSinceRetarget = 0f;
+		}
 	}
-
-
 
 	private bool NearPlayer()
 	{
-		if ( targetPlayer == null ) return false;
+		// Added !IsValid check to prevent crashes if the target is deleted right before this runs.
+		if ( targetPlayer == null || !targetPlayer.IsValid ) return false;
 
 		var delta = targetPlayer.WorldPosition - GameObject.WorldPosition;
 		var horizontalDistance = delta.WithZ( 0f ).Length;
 		var verticalDelta = MathF.Abs( delta.z );
-		if ( horizontalDistance <= 34f && verticalDelta <= MaxAttackVerticalDelta )
-		{
-			return true;
-		}
-		return false;
+
+		// Simplified into a direct boolean return.
+		return horizontalDistance <= 34f && verticalDelta <= MaxAttackVerticalDelta;
 	}
-
-
 	private void DoMeleeTrace()
 	{
 		var hand = ZombieClass.zombieModel.GetAttachmentObject( "hold_R" );
@@ -335,7 +308,7 @@ public sealed class SimpleZombieController : Component
 	private void DestroyWindow()
 	{
 
-		GameObject.GetComponentInChildren<SkinnedModelRenderer>().Set( "b_attack", true );
+		ZombieAttackAnim();
 		targetWindowClass.RemoveBoard();
 		
 	}
@@ -356,6 +329,8 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Host]
 	public void ChangeState( ZomState state )
 	{
+
+
 		CurrentState = state;
 	}
 
@@ -447,9 +422,9 @@ public sealed class SimpleZombieController : Component
 				}
 
 				flatDirection = (targetPlayer.WorldPosition - WorldPosition).WithZ( 0 ).Normal;
-				WorldRotation = Rotation.LookAt( flatDirection );
+				GameObject.LocalRotation = Rotation.LookAt( flatDirection );
 
-				MoveZombieTo( targetPlayer.WorldPosition );
+				MoveZombieTo( targetPlayer.LocalPosition );
 
 				if ( NearPlayer() && TimeSinceLastAttack >= 2f)
 				{
@@ -601,7 +576,13 @@ public sealed class SimpleZombieController : Component
 	[Rpc.Broadcast]
 	public void EnterWindow()
 	{
-		MoveZombieTo( targetWindowClass.WindowDestroyPointPos );
+		MoveZombieTo( targetWindowClass?.WindowDestroyPointPos );
+
+		if ( targetWindowClass == null )
+		{
+			ChangeState( ZomState.Idle );
+			return;
+		}
 
 		var distToWindow = Vector3.DistanceBetween( WorldPosition, targetWindowClass.WindowDestroyPointPos );
 		if ( distToWindow > WindowReachDistance )
@@ -631,6 +612,15 @@ public sealed class SimpleZombieController : Component
 		}
 	}
 
+	[Rpc.Broadcast]
+	private void BroadcastWalkAnim(Vector3? velocity)
+	{
+		if ( velocity.HasValue )
+		{
+			ZombieAnimationHelper?.WithVelocity( velocity.Value );
+		}
+	}
+
 
 	protected override void OnUpdate()
 	{
@@ -649,10 +639,11 @@ public sealed class SimpleZombieController : Component
 			}
 			ZombieState();
 			CheckIfStuck();
-			
+			BroadcastWalkAnim(zombieAgent.Velocity);
+
 		}
+
 		
-		ZombieAnimationHelper.WithVelocity( zombieAgent.Velocity );
 		
 	}
 }

@@ -1,0 +1,21 @@
+.icon-container {
+    display: flex;
+    flex-direction: column;
+
+
+    .power-up-icon {
+        width: 128px;
+        height: 128px;
+        
+    }
+
+    .power-up-timer {
+        font-size: 32px;
+        color: white;
+        text-align: center;
+        align-self: center;
+        text-shadow: 2px 2px 4px black;
+        //margin-top: -8px;
+        
+    }
+}

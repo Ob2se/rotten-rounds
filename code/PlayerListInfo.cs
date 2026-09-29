@@ -7,8 +7,7 @@ public struct PlayerListInfo
 
 	public string PlayerSteamID;
 
-	
+	public float Points;
 
 	public Player player;
 }
-

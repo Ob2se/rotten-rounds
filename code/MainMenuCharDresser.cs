@@ -1,19 +1,34 @@
 using Sandbox;
+using System.Threading.Tasks;
 
 public sealed class MainMenuCharDresser : Component
 {
 
-	ClothingContainer clothingContainer = ClothingContainer.CreateFromLocalUser();
+	[Property]
+	public Dresser charDresser { get; set; }
 
 	[Property]
 	SkinnedModelRenderer CharRenderer { get; set; }
 
+	
+
+
 	protected override void OnStart()
 	{
-		clothingContainer.Apply( CharRenderer );
+		_ = ApplyClothesIGuess();
 	}
 
+	[Rpc.Broadcast]
+	public void BroadcastSetClothing()
+	{
+		_ = ApplyClothesIGuess();
+	}
 
+	
+	public async Task ApplyClothesIGuess()
+	{
+		await charDresser.Apply();
+	}
 
 	protected override void OnUpdate()
 	{

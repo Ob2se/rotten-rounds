@@ -66,6 +66,14 @@
         "__enabled": true,
         "Flags": 0,
         "AssociatedSpawns": [],
+        "BoxCollida": {
+          "_type": "component",
+          "component_id": "f528a191-f567-498e-8962-ba95591c950f",
+          "go": "0871cbf3-729e-44b2-b07e-e611b3d14b9e",
+          "component_type": "BoxCollider"
+        },
+        "ConnectedDoors": [],
+        "ConnectedToOtherDoors": false,
         "DoorModel": {
           "_type": "component",
           "component_id": "f75779f9-ef46-4dbd-85d3-1942c4d9dc0a",
@@ -86,7 +94,8 @@
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "OnComponentUpdate": null,
+        "UseDoorAnimation": false
       }
     ],
     "Children": [
@@ -95,7 +104,7 @@
         "__version": 2,
         "Flags": 0,
         "Name": "InteractionBox",
-        "Position": "0,0,-27.13915",
+        "Position": "0,0,-27.1391506",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
         "Tags": "interactable",
@@ -111,7 +120,7 @@
             "__guid": "e518558e-d2ce-4d2d-b22e-487918759d5f",
             "__enabled": true,
             "Flags": 0,
-            "Center": "-0.2531548,0,0",
+            "Center": "-0.253154814,0,0",
             "ColliderFlags": "IgnoreMass",
             "Elasticity": null,
             "Friction": null,
@@ -127,7 +136,7 @@
             "OnTriggerEnter": null,
             "OnTriggerExit": null,
             "RollingResistance": null,
-            "Scale": "75.08091,50,50",
+            "Scale": "75.0809097,50,50",
             "Static": false,
             "Surface": null,
             "SurfaceVelocity": "0,0,0"
@@ -156,7 +165,7 @@
             "__guid": "f528a191-f567-498e-8962-ba95591c950f",
             "__enabled": true,
             "Flags": 0,
-            "Center": "0.04567719,0.01525259,-0.1756248",
+            "Center": "0.0456771888,0.0152525902,-0.175624803",
             "ColliderFlags": 0,
             "Elasticity": null,
             "Friction": null,
@@ -172,7 +181,7 @@
             "OnTriggerEnter": null,
             "OnTriggerExit": null,
             "RollingResistance": null,
-            "Scale": "74.83105,10.8574,106.677",
+            "Scale": "74.8310471,10.8573999,106.677002",
             "Static": true,
             "Surface": "surfaces/wood.surface",
             "SurfaceVelocity": "0,0,0"
@@ -196,7 +205,9 @@
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []

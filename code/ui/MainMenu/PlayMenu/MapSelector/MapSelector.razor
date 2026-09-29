@@ -15,17 +15,18 @@
                 </div>
             </div>
         </div>
-    
-    <div class="map-grid">
-        @foreach(var x in MapList)
-        {
+        <div class="filter-map-divider"></div>
+        <div class="map-grid">
+            @foreach(var x in MapList)
+            {
             <MapCard @onclick="@(() => OnMapClick(x))" class="map-card" @MapAuthor="@x.Author" @MapName="@x.Name" @MapRatingDown="@x.DownVotes.ToString()" @MapRatingUp="@x.UpVotes.ToString()" @MapThumbnail="@x.Thumbnail" @MapsData="@x"></MapCard>
         }
     </div>
+        <div class="filter-map-divider"></div>
     <div @key="@SelectedMap" class="chosen-map-container">
         @if(AMapSelected)
         {
-            <div class="the-map-title">@SelectedMap.Name</div>
+            <div class="the-map-title">@SelectedMap.Name.ToUpper()</div>
             <img class="the-map-thumbnail" src="@SelectedMap.Thumbnail">
             <div class="author-vote-wrapper">
                 <text class="the-map-author">@SelectedMap.Author</text>
@@ -60,7 +61,7 @@
 
     public bool MostPopular;
 
-    private bool AMapSelected = false;
+    private bool AMapSelected = true;
 
 
 
@@ -80,13 +81,26 @@
         StateHasChanged();
     }
 
+    [Rpc.Broadcast]
+    private void BroadcastMapChange()
+    {
+        //TheLobbyMenu.SelectedMap = SelectedMap;
+    }
+
     private void SelectTheMapClick()
     {
         Log.Info("hello");
-        TheLobbyMenu.SelectedMap = SelectedMap;
+        // TheLobbyMenu.SelectedMap = SelectedMap;
+        //BroadcastMapChange();
+        var x = Scene.GetAllComponents<CreateLobby>().FirstOrDefault();
+        x.SelectedMap = SelectedMap;
         Log.Info(TheLobbyMenu.SelectedMap.Name);
         this.Enabled = false;
         TheLobbyMenu.Enabled = true;
+        foreach (var y in Scene.GetComponentsInChildren<WorldPanel>(true, true))
+        {
+            y.Enabled = true;
+        }
         //this.Destroy();
     }
 

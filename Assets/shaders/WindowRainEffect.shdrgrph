@@ -27,10 +27,10 @@
       "DefaultMetalness": 0,
       "DefaultAmbientOcclusion": 1,
       "Identifier": "0",
-      "Position": "2424,144",
+      "Position": "2940,228",
       "HandleOffsets": {},
       "Albedo": {
-        "Identifier": "29",
+        "Identifier": "61",
         "Output": "Result"
       },
       "Opacity": {
@@ -826,6 +826,165 @@
       "HandleOffsets": {},
       "B": {
         "Identifier": "48",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureSampler",
+      "Image": "shaders/publicdomainpictures-rain-316580_1920.jpg",
+      "Sampler": {
+        "Filter": "Aniso",
+        "AddressU": "Wrap",
+        "AddressV": "Wrap"
+      },
+      "UI": {
+        "Name": null,
+        "IsAttribute": false,
+        "Default": "1,1,1,1",
+        "Extension": "Color",
+        "CustomExtension": null,
+        "ShowExtension": true,
+        "Processor": "None",
+        "ColorSpace": "Srgb",
+        "ImageFormat": "DXT5",
+        "SrgbRead": true,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "53",
+      "Position": "2028,-288",
+      "HandleOffsets": {},
+      "Coords": {
+        "Identifier": "60",
+        "Output": "XY"
+      }
+    },
+    {
+      "_class": "TextureCoord",
+      "UseSecondaryCoord": false,
+      "Tiling": "1,1",
+      "Identifier": "54",
+      "Position": "756,-252",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "55",
+      "Position": "1020,-252",
+      "HandleOffsets": {},
+      "Input": {
+        "Identifier": "54",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Time",
+      "Identifier": "56",
+      "Position": "1032,-60",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": 1,
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Default",
+        "Step": 0,
+        "Priority": 0,
+        "PrimaryGroup": {
+          "Name": null,
+          "Priority": 0
+        },
+        "SecondaryGroup": {
+          "Name": null,
+          "Priority": 0
+        }
+      },
+      "Identifier": "57",
+      "Position": "1032,24",
+      "HandleOffsets": {}
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "58",
+      "Position": "1272,-36",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "56",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "57",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "59",
+      "Position": "1428,-228",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "55",
+        "Output": "Y"
+      },
+      "B": {
+        "Identifier": "58",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "CombineVector",
+      "DefaultX": 0,
+      "DefaultY": 0,
+      "DefaultZ": 0,
+      "DefaultW": 0,
+      "Identifier": "60",
+      "Position": "1656,-252",
+      "HandleOffsets": {},
+      "X": {
+        "Identifier": "55",
+        "Output": "X"
+      },
+      "Y": {
+        "Identifier": "59",
+        "Output": "Result"
+      },
+      "Z": {
+        "Identifier": "55",
+        "Output": "Z"
+      },
+      "W": {
+        "Identifier": "55",
+        "Output": "W"
+      }
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "61",
+      "Position": "2496,96",
+      "HandleOffsets": {},
+      "A": {
+        "Identifier": "53",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "29",
         "Output": "Result"
       }
     }

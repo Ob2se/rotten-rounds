@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "431405ee-3014-4bed-b2d3-f6a52857e3d9",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "baserifle",
     "Position": "0,0,0",
@@ -10,18 +10,29 @@
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "BaseWeapon",
         "__guid": "804b3344-1bd9-432e-9e3d-173e5b44d6ac",
         "__enabled": true,
+        "Flags": 0,
         "AmmoMax": 0,
         "Automatic": false,
+        "BoltAction": false,
+        "BoltTime": 0.75,
+        "DontExpandMagSize": false,
         "FireRate": 0,
         "FleshImpactEffectPrefab": null,
+        "fpsArms": {
+          "_type": "component",
+          "component_id": "f6c81103-36fa-4511-ba52-6ed0723a32f0",
+          "go": "6d522143-7a79-4709-8c23-f87f4c348615",
+          "component_type": "SkinnedModelRenderer"
+        },
         "ImpactEffectPrefab": null,
         "MagMax": 0,
         "MuzzleFlashPrefab": null,
@@ -31,7 +42,12 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "PackedName": null,
+        "PumpAction": false,
+        "PumpTime": 0.75,
+        "ReloadSound": null,
         "ReloadTime": 0,
+        "ShotSound": null,
         "WeaponDamage": 0,
         "WeaponModel": {
           "_type": "component",
@@ -40,14 +56,16 @@
           "component_type": "SkinnedModelRenderer"
         },
         "WeaponName": null,
-        "WeaponRange": 0,
+        "WeaponOffsetPos": "0,0,0",
+        "WeaponOffsetRot": "0,0,0",
+        "WeaponPower": 1,
         "WeaponType": "Rifle"
       }
     ],
     "Children": [
       {
         "__guid": "bcec702a-4812-4f9d-94bc-c9a54a866fa9",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "WeaponContainer",
         "Position": "0,0,0",
@@ -56,14 +74,80 @@
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "3e8c7e33-05fa-42eb-b8f1-7475fc832913",
             "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": null,
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "6d522143-7a79-4709-8c23-f87f4c348615",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "fpsArms",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "f6c81103-36fa-4511-ba52-6ed0723a32f0",
+            "__enabled": true,
+            "Flags": 0,
             "AnimationGraph": null,
             "BodyGroups": 18446744073709551615,
             "BoneMergeTarget": null,
@@ -117,13 +201,14 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

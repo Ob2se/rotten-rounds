@@ -1,0 +1,39 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using System;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <img class="revive-icon" src="ui/revive.png" style="transform: rotate(90deg) scale(@(Scale));" />
+</root>
+
+@code
+{
+	public float Scale { get; set; } = 1f;
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		var cam = Scene.Camera;
+		if ( cam != null )
+		{
+			var dist = cam.WorldPosition.Distance( GameObject.WorldPosition );
+			
+			// Slightly increase scale based on distance
+			float targetScale = 1f + (dist * 0.002f);
+			targetScale = Math.Clamp( targetScale, 1f, 6f );
+			
+			// Round slightly to prevent micro-stutters and limit UI hash rebuilds
+			targetScale = MathF.Round( targetScale, 2 );
+
+			Scale = targetScale;
+		}
+	}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( Scale );
+}

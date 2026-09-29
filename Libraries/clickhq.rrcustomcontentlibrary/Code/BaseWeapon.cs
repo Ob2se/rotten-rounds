@@ -66,6 +66,16 @@ public partial class BaseWeapon : Component
 	public bool DontExpandMagSize { get; set; }
 
 
+	[Property, Group( "Weapon Setup" )]
+	public Vector3 WeaponOffsetPos { get; set; }
+
+	[Property, Group( "Weapon Setup" )]
+	public Vector3 WeaponOffsetRot { get; set; }
+
+	[Property]
+	public SkinnedModelRenderer fpsArms { get; set; }
+
+
 	public bool HideBolt => WeaponType != weaponType.Sniper;
 
 	public bool HidePump => WeaponType != weaponType.Shotgun;

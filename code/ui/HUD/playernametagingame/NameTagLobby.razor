@@ -1,0 +1,115 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using System.Threading.Tasks;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <button class="name-container ">
+        <div class="name-content @(Hovering ? "hidden" : "")">
+            <Label style="font-size: @(DisplayFontSize)px;" style="color:@(ColorTing);" class="name">@PlayerName</Label>
+        </div>
+    </button>
+</root>
+
+@code
+{
+
+    public string PlayerName => Network?.Owner?.DisplayName ?? string.Empty;
+
+    public string ColorTing = "floralwhite";
+
+    public float DisplayFontSize => GetStableFontSize( PlayerName );
+
+    public string Level { get; set; }
+
+    public string PlayCard { get; set; }
+
+    public bool Hovering { get; set; }
+
+    [Property]
+    public WorldPanel thePanel { get; set; }
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine(PlayerName, DisplayFontSize, ColorTing);
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        //AdjustText();
+        _ = GetStats();
+
+    }
+
+    public async Task GetStats()
+    {
+        var stats = Sandbox.Services.Stats.GetPlayerStats("clickhq.rottenrounds", Network.Owner.SteamId);
+
+        await stats.Refresh();
+
+        var ranko = stats.Get("rank");
+        Level = ranko.Max.ToString();
+
+        PlayCard = "textures/playercards/default/_5ozi0c3w5ivq2k3wzti7_0.png";
+
+    }
+
+
+    protected override void OnMouseOver(MousePanelEvent e)
+    {
+        base.OnMouseOver(e);
+
+        //ColorTing = "gold";
+
+
+        var AddedPanel = new nametaghover();
+        AddedPanel.Parent = this.Panel;
+        AddedPanel.PlayerName = PlayerName;
+        AddedPanel.PlayerLevel = Level;
+        AddedPanel.PlayCard = PlayCard;
+        
+        Hovering = true;
+
+        //Log.Info("wtf" + Hovering);
+    }
+
+    protected override void OnMouseOut(MousePanelEvent e)
+    {
+        base.OnMouseOut(e);
+
+        Panel.DeleteChildren();
+        //Log.Info("maybe");
+        ColorTing = "floralwhite";
+        Hovering = false;
+    }
+
+    protected override void OnTreeBuilt()
+    {
+        base.OnTreeBuilt();
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+    }
+
+
+    private static float GetStableFontSize( string playerName )
+    {
+        const float maxFontSize = 30f;
+        const float minFontSize = 24f;
+        const int startShrinkAt = 10;
+        const float shrinkPerChar = 1.6f;
+
+        var length = string.IsNullOrEmpty( playerName ) ? 0 : playerName.Length;
+        if ( length <= startShrinkAt )
+            return maxFontSize;
+
+        var size = maxFontSize - (length - startShrinkAt) * shrinkPerChar;
+        return MathF.Max( minFontSize, size );
+    }
+
+}

@@ -173,7 +173,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -372.752441, -88.030098 ]
+					m_vecPosition = [ -416.0, -160.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1191005559
@@ -222,7 +222,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -432.0, 0.0 ]
+					m_vecPosition = [ -464.0, 0.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1657922239

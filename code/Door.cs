@@ -11,7 +11,7 @@ public sealed class Door : Component, IInteraction, IPower
 	public bool Opened { get; set; } = false;
 
 	[Property]
-	private ModelRenderer DoorModel {  get; set; }
+	private SkinnedModelRenderer DoorModel { get; set; }
 
 	public bool Interactable { get; set; } = true;
 
@@ -29,6 +29,9 @@ public sealed class Door : Component, IInteraction, IPower
 	[Property]
 	private List<GameObject> AssociatedSpawns;
 
+	[Property]
+	public BoxCollider BoxCollida { get; set; }
+
 	public float HoldTime => 0f;
 
 	[Property]
@@ -38,15 +41,18 @@ public sealed class Door : Component, IInteraction, IPower
 
 	public GameObject GO => this.GameObject;
 
+	[Property]
+	public bool UseDoorAnimation { get; set; } = false;
+
 
 	[Property]
 	public bool ConnectedToOtherDoors { get; set; } = false;
 
-	[Property, HideIf("ConnectedToOtherDoors", false), Validate("CheckConnectedDoorsNoPower", "ERROR: One of the connected doors requires power while this one does not!", LogLevel.Error), Validate( "CheckConnectedDoorsPowered", "ERROR: One of the connected doors does not require power while this one does!", LogLevel.Error )]
+	[Property, HideIf( "ConnectedToOtherDoors", false ), Validate( "CheckConnectedDoorsNoPower", "ERROR: One of the connected doors requires power while this one does not!", LogLevel.Error ), Validate( "CheckConnectedDoorsPowered", "ERROR: One of the connected doors does not require power while this one does!", LogLevel.Error )]
 	public List<Door> ConnectedDoors { get; set; }
 
 
-	private bool CheckConnectedDoorsPowered(List<Door> connectedDoors)
+	private bool CheckConnectedDoorsPowered( List<Door> connectedDoors )
 	{
 		if ( NeedsPower )
 		{
@@ -99,8 +105,20 @@ public sealed class Door : Component, IInteraction, IPower
 	private void OnDoorOpened()
 	{
 		//change to animation eventually
+		if ( UseDoorAnimation )
+		{
+			DoorModel.Set( "b_open", true );
+
+			return;
+		}
 		DeleteDoor();
-		
+
+	}
+
+	[Rpc.Host]
+	private void DeleteDoorCollider()
+	{
+		BoxCollida.Destroy();
 	}
 
 	[Rpc.Broadcast]
@@ -116,6 +134,7 @@ public sealed class Door : Component, IInteraction, IPower
 		player.RemovePoints( DoorPrice );
 		player.PlayChaChing();
 		player.CurrentInteraction = null;
+		DeleteDoorCollider();
 		if ( ConnectedToOtherDoors )
 		{
 			foreach ( var door in ConnectedDoors )

@@ -1,0 +1,154 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <div class="end-screen">
+        <div class="end-screen-container">
+            <div class="end-title-container">
+	            <div class="end-title">@EndReasonString</div>
+                <div class="end-title-rounds">You survived @RoundsSurvived rounds</div>
+            </div>
+            <div class="stats-header">
+                <p class="player-name">Player</p>
+                <div class="statos">
+                    <p class="header-score">Points</p>
+                    <p class="header-kills">Kills</p>
+                    <p class="header-revives">Revives</p>
+                    <p class="header-downs">Downs</p>
+                </div>
+            </div>
+            <div class="filter-map-divider"></div>
+            <div class="player-end-game-slots">
+                
+                @foreach(var slot in PlayerEndList)
+                {
+                    <EndGamePlayerSlot class="slotino" localPlayer="@(Connection.Local.SteamId == slot.SteamID ? true : false)" SteamID="@slot.SteamID" PlayerName="@slot.PlayerName" Score="@slot.Points" Kills="@slot.Kills" Revives="@slot.Revives" Downs="@slot.Downs" />
+                }
+            </div>
+        </div>
+    </div>
+
+</root>
+
+@code
+{
+
+    public GameModeManager GameModeManager => Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
+
+    public int RoundsSurvived => GameModeManager?.Round ?? 0;
+
+    public Dictionary<long, float> PlayerPoints => GameModeManager?.PointsGainedList.ToDictionary();
+
+    public Dictionary<long, int> PlayerKills => GameModeManager?.KillList.ToDictionary();
+
+    public Dictionary<long, int> PlayerRevives => GameModeManager?.ReviveList.ToDictionary();
+
+    public Dictionary<long, int> PlayerDowns => GameModeManager?.DownedList.ToDictionary();
+
+    public List<PlayerEndInfo> PlayerEndList = new();
+
+    [Sync] public GEndReason EndReason { get; set; }
+
+    public string EndReasonString     {
+        get
+        {
+            return EndReason switch
+            {
+                GEndReason.None => "GAME OVER",
+                GEndReason.AllPlayersDead => "All Players Dead",
+                GEndReason.OnSlaughtSurvived => "Onslaught Survived",
+                GEndReason.OnSlaughtFailed => "Onslaught Failed",
+                _ => "GAME OVER"
+            };
+        }
+    }
+
+    public struct PlayerEndInfo
+    {
+        public long SteamID { get; set; }
+        public float Points { get; set; }
+        public int Kills { get; set; }
+        public int Revives { get; set; }
+        public int Downs { get; set; }
+        public string PlayerName { get; set; }
+    }
+
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( RoundsSurvived, PlayerPoints, PlayerKills, PlayerRevives, PlayerDowns, PlayerEndList, EndReasonString, EndReason );
+
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        Log.Info("OnStart called");
+
+        var gameModeManager = Scene.GetAllComponents<GameModeManager>().FirstOrDefault();
+        if (gameModeManager == null) { Log.Error("GameModeManager is null!"); return; }
+        Log.Info("GameModeManager found");
+
+        Log.Info($"PlayerPoints null: {PlayerPoints == null} | Count: {PlayerPoints?.Count}");
+        Log.Info($"PlayerKills null: {PlayerKills == null} | Count: {PlayerKills?.Count}");
+        Log.Info($"PlayerRevives null: {PlayerRevives == null} | Count: {PlayerRevives?.Count}");
+        Log.Info($"PlayerDowns null: {PlayerDowns == null} | Count: {PlayerDowns?.Count}");
+        Log.Info($"PlayersList null: {gameModeManager.PlayersList == null} | Count: {gameModeManager.PlayersList?.Count}");
+
+        // Build a steamId -> displayName lookup from PlayersList
+        var nameMap = new Dictionary<long, string>();
+        var allSteamIds = new HashSet<long>();
+
+        if (gameModeManager.PlayersList != null)
+        {
+            foreach (var entry in gameModeManager.PlayersList)
+            {
+                if (long.TryParse(entry.PlayerSteamID, out var steamId))
+                {
+                    nameMap[steamId] = entry.PlayerName;
+                    allSteamIds.Add(steamId);
+                }
+            }
+        }
+
+        foreach (var kvp in PlayerPoints) allSteamIds.Add(kvp.Key);
+        foreach (var kvp in PlayerKills) allSteamIds.Add(kvp.Key);
+        foreach (var kvp in PlayerRevives) allSteamIds.Add(kvp.Key);
+        foreach (var kvp in PlayerDowns) allSteamIds.Add(kvp.Key);
+
+        Log.Info("Unique players found across stat lists: " + allSteamIds.Count);
+
+        foreach (var steamId in allSteamIds)
+        {
+            Log.Info($"Processing steamId: {steamId}");
+
+            PlayerPoints.TryGetValue(steamId, out var points);
+            PlayerKills.TryGetValue(steamId, out var kills);
+            PlayerRevives.TryGetValue(steamId, out var revives);
+            PlayerDowns.TryGetValue(steamId, out var downs);
+            Log.Info($"  Stats - Points: {points} | Kills: {kills} | Revives: {revives} | Downs: {downs}");
+
+            nameMap.TryGetValue(steamId, out var playerName);
+            Log.Info($"  playerName resolved: {playerName ?? steamId.ToString()}");
+
+            PlayerEndList.Add(new PlayerEndInfo
+            {
+                SteamID = steamId,
+                Points = points,
+                Kills = kills,
+                Revives = revives,
+                Downs = downs,
+                PlayerName = playerName ?? steamId.ToString()
+            });
+            Log.Info($"  Added to PlayerEndList. Total count: {PlayerEndList.Count}");
+        }
+
+        // Sort the list so highest points are at the top
+        PlayerEndList = PlayerEndList.OrderByDescending(x => x.Points).ToList();
+
+        Log.Info("OnStart complete. Final PlayerEndList count: " + PlayerEndList.Count);
+    }
+
+}

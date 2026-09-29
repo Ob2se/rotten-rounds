@@ -577,7 +577,7 @@
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
-                "BodyGroups": 18446744073709551615,
+                "BodyGroups": 18446744073709551613,
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
@@ -874,7 +874,8 @@
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

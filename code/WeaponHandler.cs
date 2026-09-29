@@ -1,5 +1,7 @@
 using Sandbox;
+using Sandbox.Modals;
 using System;
+using System.Numerics;
 using System.Threading.Tasks;
 using static Sandbox.Citizen.CitizenAnimationHelper;
 
@@ -10,6 +12,7 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	Player WeaponOwner { get; set; }
 
 	BaseWeapon currentWeaponData;
+	TimeSince TimeSinceAttack1Pressed = 10f;
 
 
 	public GameObject ImpactEffectObject;
@@ -41,6 +44,24 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	bool Reloading;
 	bool ReloadingSingleBullet;
 
+	/// <summary>
+	/// Whether the weapon is currently in any reload state (full mag or single bullet).
+	/// </summary>
+	public bool IsReloading => Reloading || ReloadingSingleBullet;
+
+	/// <summary>
+	/// Restart the appropriate reload for the current weapon type.
+	/// Called by Player after the knife finishes if a reload was interrupted.
+	/// </summary>
+	public void RestartReload()
+	{
+		if ( !Network.IsOwner ) return;
+		if ( WeaponType == BaseWeapon.weaponType.Shotgun )
+			StartSingleBulletReload();
+		else
+			StartReload();
+	}
+
 	float FireRate;
 
 	int WeaponRange;
@@ -69,6 +90,8 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 	float RecoilStrength = 2f;
 
+	public bool packed = false;
+
 
 	private float recoilPitch;
 	private float RecoilSpeed = 250f;
@@ -89,6 +112,15 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 	private Random Rand = new Random();
 
+	private PackedInfo packinfo;
+
+	public struct PackedInfo 
+	{
+		public int Packed;
+		public string Jackpot;
+	}
+
+
 	private void UnADS()
 	{
 		if ( !this.Network.IsOwner ) return;
@@ -102,7 +134,7 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 			WeaponModel.RenderOptions.Game = true;
 		}
 
-
+		
 		currentWeaponData.WeaponModel.Set( "ironsights", 0 );
 		WeaponOwner.isAiming = false;
 	}
@@ -168,16 +200,31 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		}
 
 
-		if ( !BoltAction && !PumpAction )
+		if ( !WeaponOwner.HasJitterJuice )
 		{
-			float secondsPerShot = 60f / FireRate;
-			if ( TimeSinceLastShot < secondsPerShot ) return;
-		}
-		else if ( BoltAction || PumpAction )
-		{
-			if ( TimeSinceLastShot < PumpTime || TimeSinceLastShot < .75f ) return;
+			if ( !BoltAction && !PumpAction )
+			{
+				float secondsPerShot = 60f / FireRate;
+				if ( TimeSinceLastShot < secondsPerShot ) return;
+			}
+			else if ( BoltAction || PumpAction )
+			{
+				if ( TimeSinceLastShot < PumpTime || TimeSinceLastShot < .75f ) return;
+			}
 		}
 
+		if ( WeaponOwner.HasJitterJuice )
+		{
+			if ( !BoltAction && !PumpAction )
+			{
+				float secondsPerShot = 60f / (FireRate * 1.15f);
+				if ( TimeSinceLastShot < secondsPerShot ) return;
+			}
+			else if ( BoltAction || PumpAction )
+			{
+				if ( TimeSinceLastShot < PumpTime || TimeSinceLastShot < .50f ) return;
+			}
+		}
 
 		if ( WeaponType == BaseWeapon.weaponType.Shotgun )
 		{
@@ -392,14 +439,20 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		var traceResult = Scene.Trace
 			.Ray( cameraPos, endPosition )
 			.IgnoreGameObject( GameObject )
+			.IgnoreGameObject(GameObject.Root)
 			.WithoutTags( "winder" )
 			.WithoutTags( "capsule" )
 			.WithoutTags( "capplay" )
+			.WithoutTags("interactable")
+			.WithoutTags("noimpact")
 			.UseHitPosition()
 			.UseHitboxes( true )
 			.RunAll();
 
 		//Log.Info( traceResult.FirstOrDefault().GameObject );
+
+
+		
 
 		handleTrace( RemoveDupeHits( traceResult ), ShouldDoEffects, ShouldGivePoints );
 	}
@@ -432,12 +485,19 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 		foreach ( var y in hitResult )
 		{
-			Log.Info( y.GameObject.Name );
+			var shootableEE = y.GameObject.GetComponent<ShootableEE>();
+			if ( shootableEE != null )
+			{
+				if ( y.GameObject.GetComponent<ShootableEE>().IsValid )
+				{
+					shootableEE.OnPiece();
+				}
+			}
 			if ( ShouldDoEffects )
 			{
 				BulletImpact( y );
 			}
-			CreateBulletHole( y.EndPosition, y.Normal );
+			CreateBulletHole( y.EndPosition, y.Normal, y.GameObject );
 			if ( y.Tags.Contains( "nopen" ) )
 			{
 				return;
@@ -475,9 +535,20 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	[Rpc.Broadcast]
 	private void CreateBulletImpactEffects( Vector3 location, bool flesh, PrefabFile effect, Vector3 rotat )
 	{
+		if ( effect == null || string.IsNullOrWhiteSpace( effect.ResourcePath ) )
+		{
+			return;
+		}
+
+		var prefab = GameObject.GetPrefab( effect.ResourcePath );
+		if ( prefab == null )
+		{
+			return;
+		}
+
 		if ( !flesh )
 		{
-			var gHit = GameObject.GetPrefab( effect.ResourcePath ).Clone( location );
+			var gHit = prefab.Clone( location );
 			gHit.WorldRotation = Rotation.LookAt( rotat, Vector3.Up );
 
 			ServerDestroyMS( gHit, 2500 );
@@ -486,7 +557,7 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		}
 		else
 		{
-			var gHit = GameObject.GetPrefab( effect.ResourcePath ).Clone( location );
+			var gHit = prefab.Clone( location );
 			gHit.WorldRotation = Rotation.LookAt( rotat, Vector3.Up );
 			ServerDestroyMS( gHit, 2500 );
 		}
@@ -494,28 +565,52 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	}
 
 	[Rpc.Owner]
-	private void CreateBulletHole( Vector3 location, Vector3 rotat )
+	private void CreateBulletHole( Vector3 location, Vector3 rotat, GameObject hitObject )
 	{
-		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/impact/concrete/decal_impact_concrete_01.decal" );
-		var gHit = new GameObject();
-		gHit.WorldPosition = location;
-		gHit.WorldRotation = Rotation.LookAt( rotat, Vector3.Up );
-		gHit.AddComponent<Decal>().Decals.Add( decal );
-		ServerDestroyMS( gHit, 10000 );
+		if ( hitObject.Tags.Has( "flesh" ) )
+		{
+			var decal = ResourceLibrary.Get<DecalDefinition>( "decals/impact/flesh/decal_impact_flesh_07.decal" );
+			var gHit = new GameObject();
+			gHit.WorldPosition = location;
+			gHit.WorldRotation = Rotation.LookAt( rotat, Vector3.Up );
+			gHit.AddComponent<Decal>().Decals.Add( decal );
+			gHit.Parent = hitObject;
+			ServerDestroyMS( gHit, 10000 );
+			return;
+		}
+		else if ( !hitObject.Tags.Has( "flesh" ) || hitObject.Tags.Count() == 0)
+		{
+			var decal = ResourceLibrary.Get<DecalDefinition>( "decals/impact/concrete/decal_impact_concrete_01.decal" );
+			var gHit = new GameObject();
+			gHit.WorldPosition = location;
+			gHit.WorldRotation = Rotation.LookAt( rotat, Vector3.Up );
+			gHit.AddComponent<Decal>().Decals.Add( decal );
+			gHit.Parent = hitObject;
+			ServerDestroyMS( gHit, 10000 );
+			return;
+		}
+			
 	}
 
 
 	private void BulletImpact( SceneTraceResult Hr )
 	{
-		PlaySoundAtLoc( Hr.Surface.Sounds.Bullet, Hr.EndPosition );
+		
 
 		if ( Hr.Tags.Contains( "flesh" ) )
 		{
+			PlaySoundAtLoc( "sounds/impacts/bullets/impact-bullet-flesh.sound_c", Hr.EndPosition );
 			CreateBulletImpactEffects( Hr.EndPosition, true, currentWeaponData.FleshImpactEffectPrefab, Hr.Normal );
-
+			
 		}
 		else
 		{
+			var bulletSound = Hr.Surface?.SoundCollection.Bullet;
+			if ( bulletSound != null && !string.IsNullOrWhiteSpace( bulletSound.ResourcePath ) )
+			{
+				PlaySoundAtLoc( bulletSound.ResourcePath, Hr.EndPosition );
+			}
+
 			CreateBulletImpactEffects( Hr.EndPosition, false, currentWeaponData.ImpactEffectPrefab, Hr.Normal );
 
 		}
@@ -526,8 +621,8 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 	private void ApplyDamage( Zombie zombie, DamageInfo damageInfo, Vector3 hitPos, int hitBone, Vector3 Direction, Vector3 LocalDirection, Vector3 StartPos, Vector3 HitNormal, GameObject hitObject )
 	{
-		Log.Info( "apply damage" );
-		zombie.TakeDamage( damageInfo, hitPos, hitBone, Direction, StartPos, HitNormal, hitObject, WeaponPower );
+		
+		zombie.TakeDamage( damageInfo, hitPos, hitBone, Direction, StartPos, HitNormal, hitObject, WeaponPower, Network.Owner.SteamId );
 	}
 
 
@@ -554,13 +649,18 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		WeaponModel.Set( "b_reloading", false );
 	}
 
-	private void StartReload()
+	public void StartReload()
 	{
 		if ( !this.Network.IsOwner ) return;
 		if ( WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag == WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].MagMax || WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].AmmoTotal == 0 ) return;
 		Reloading = true;
+		//WeaponModel.Set( "speed_reload", 1 );
 		WeaponModel.Set( "b_reload", true );
-
+		if(WeaponOwner.HasQuickSip )
+		{
+			ReloadTime = ReloadTime / 2f;
+			WeaponModel.Set( "speed_reload", 2f );
+		}
 		ReloadTP();
 		TimeSinceReloadStarted = 0;
 	}
@@ -684,12 +784,29 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 	public void WeaponEquipped( GameObject weapon )
 	{
 		if ( !Network.IsOwner ) return;
-		Log.Info( "hellllloo" );
+		
+
+		TimeSinceAttack1Pressed = 10f;
 
 		WeaponOwner = GameObject.GetComponent<Player>();
 
+		if ( WeaponOwner.Inventory.Weapons[WeaponOwner.CurrentWeaponSlot].Packed > 0 )
+		{
+			packed = true;
+			packinfo = new PackedInfo
+			{
+				Packed = WeaponOwner.Inventory.Weapons[WeaponOwner.CurrentWeaponSlot].Packed,
+				Jackpot = ""
+			};
+		}
 
 		var wClass = weapon.GetComponentInChildren<BaseWeapon>();
+		if ( wClass == null )
+		{
+			Log.Warning( $"WeaponHandler could not find BaseWeapon on {weapon}" );
+			return;
+		}
+
 		currentWeaponData = wClass;
 
 		WeaponModel = wClass.WeaponModel;
@@ -698,7 +815,7 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		WeaponType = wClass.WeaponType;
 
 		ReloadTime = wClass.ReloadTime;
-
+	
 		isAutomatic = wClass.Automatic;
 
 		BoltAction = wClass.BoltAction;
@@ -713,39 +830,91 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 		FireRate = wClass.FireRate;
 
+
 		//WeaponRange = wClass.WeaponRange;
 
 		WeaponPower = wClass.WeaponPower;
 
-		WeaponDamage = wClass.WeaponDamage;
+		if ( packed )
+		{
+			switch ( packinfo.Packed )
+			{
+				case 1:
+					WeaponDamage = wClass.WeaponDamage * 2;
+					break;
+				case 2:
+					WeaponDamage = (int)Math.Ceiling(wClass.WeaponDamage * 2.5f);
+					break;
+				case 3:
+					WeaponDamage = wClass.WeaponDamage * 3;
+					break;
+				case 4:
+					WeaponDamage = wClass.WeaponDamage * 4;
+					break;
+			}
+		}
 
-		Log.Info( "path: " + wClass.ImpactEffectPrefab.ResourcePath );
-		ImpactEffectObject = GameObject.GetPrefab( wClass.ImpactEffectPrefab.ResourcePath );
-		Log.Info( "object: " + ImpactEffectObject );
+		if ( !packed )
+		{
+			WeaponDamage = wClass.WeaponDamage;
+		}
 
-		Log.Info( "path: " + wClass.FleshImpactEffectPrefab.ResourcePath );
 
-		ImpactEffectFlesh = GameObject.GetPrefab( wClass.FleshImpactEffectPrefab.ResourcePath );
-		Log.Info( "object: " + ImpactEffectFlesh );
+		if ( wClass.ImpactEffectPrefab != null && !string.IsNullOrWhiteSpace( wClass.ImpactEffectPrefab.ResourcePath ) )
+		{
+			ImpactEffectObject = GameObject.GetPrefab( wClass.ImpactEffectPrefab.ResourcePath );
+		}
+		else
+		{
+			ImpactEffectObject = null;
+		}
 
-		Log.Info( "path: " + wClass.MuzzleFlashPrefab.ResourcePath );
-		MuzzleFlash = GameObject.GetPrefab( wClass.MuzzleFlashPrefab.ResourcePath );
-		Log.Info( "object: " + MuzzleFlash );
 
-		Log.Info( "firerate" + FireRate );
+		if ( wClass.FleshImpactEffectPrefab != null && !string.IsNullOrWhiteSpace( wClass.FleshImpactEffectPrefab.ResourcePath ) )
+		{
+			ImpactEffectFlesh = GameObject.GetPrefab( wClass.FleshImpactEffectPrefab.ResourcePath );
+		}
+		else
+		{
+			ImpactEffectFlesh = null;
+		}
+
+		if ( wClass.MuzzleFlashPrefab != null && !string.IsNullOrWhiteSpace( wClass.MuzzleFlashPrefab.ResourcePath ) )
+		{
+			MuzzleFlash = GameObject.GetPrefab( wClass.MuzzleFlashPrefab.ResourcePath );
+		}
+		else
+		{
+			MuzzleFlash = null;
+		}
+
 	}
 
 
 
 
 
+	public void CancelReload()
+	{
+
+		ReloadingSingleBullet = false;
+		Reloading = false;
+		if ( WeaponModel != null )
+		{
+
+			WeaponModel.Set( "b_reloading_shell", false );
+			WeaponModel.Set( "b_reloading", false );
+			WeaponModel.Set( "b_reload", false );
+			//WeaponModel.Set( "speed_reload", 5 );
+		}
+	}
+
 	private void HandleInput()
 	{
 
 		if ( WeaponOwner.isDeploying || WeaponOwner.isKnifing )
 		{
-			ReloadingSingleBullet = false;
-			Reloading = false;
+			CancelReload();
 			UnADS();
 			return;
 		}
@@ -753,8 +922,18 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 
 
 		// ADS
-		if ( Input.Down( "Attack2" ) ) ADS();
-		if ( Input.Released( "Attack2" ) ) UnADS();
+		if ( Input.Down( "Attack2" ) )
+		{
+			if ( !WeaponOwner.isSprinting && WeaponOwner.TimeSinceSprintingStopped >= .08f )
+			{
+				ADS();
+			}
+			
+		}
+		if ( Input.Released( "Attack2" ) ) 
+		{
+			UnADS();
+		}
 
 		// Reload
 		if ( Input.Pressed( "Reload" ) && !Reloading && !ReloadingSingleBullet )
@@ -766,16 +945,23 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 		}
 
 		// Fire
-		if ( Input.Down( "Attack1" ) && WeaponOwner.CanShootWeapon )
+		if ( Input.Pressed( "Attack1" ) )
 		{
-			if ( WeaponOwner.isKnifing ) return;
+			TimeSinceAttack1Pressed = 0f;
+		}
+
+		if ( (Input.Down( "Attack1" ) || TimeSinceAttack1Pressed < 0.25f) && WeaponOwner.CanShootWeapon )
+		{
+			if ( WeaponOwner.isKnifing || WeaponOwner.isDeploying || WeaponOwner.Upgrading ) 
+			{
+				TimeSinceAttack1Pressed = 10f;
+				return;
+			}
+			
 			// Cancel reload if firing
 			if ( (ReloadingSingleBullet || Reloading) && WeaponOwner.Inventory.WeaponsAmmo[WeaponOwner.CurrentWeaponSlot].CurrentMag > 0 )
 			{
-				ReloadingSingleBullet = false;
-				Reloading = false;
-				WeaponModel.Set( "b_reloading_shell", false );
-				WeaponModel.Set( "b_reloading", false );
+				CancelReload();
 			}
 
 			// Do not shoot if no ammo
@@ -785,7 +971,6 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 				if ( !ReloadingSingleBullet && WeaponType == BaseWeapon.weaponType.Shotgun )
 				{
 					StartSingleBulletReload();
-
 				}
 				if ( !Reloading && WeaponType != BaseWeapon.weaponType.Shotgun )
 				{
@@ -798,20 +983,25 @@ public sealed class WeaponHandler : Component, IWeaponHandler
 			if ( isAutomatic )
 			{
 				WeaponOwner.isFiring = true;
+				if ( WeaponOwner.isSprinting || WeaponOwner.TimeSinceSprintingStopped <= .15f ) return;
+				TimeSinceAttack1Pressed = 10f;
 				Shoot();
 			}
 			else // semi-auto
 			{
-				if ( Input.Pressed( "Attack1" ) )
+				if ( TimeSinceAttack1Pressed < 0.25f )
 				{
 					WeaponOwner.isFiring = true;
+					if ( WeaponOwner.isSprinting || WeaponOwner.TimeSinceSprintingStopped <= .15f ) return;
 					Shoot();
+					TimeSinceAttack1Pressed = 10f;
 				}
 			}
 		}
 		else
 		{
 			WeaponOwner.isFiring = false;
+			TimeSinceAttack1Pressed = 10f;
 		}
 	}
 

@@ -1,0 +1,59 @@
+.spectator-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    //pointer-events: all;
+    .spectated-spot {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: auto;
+
+        .previous-container {
+            display: flex;
+            flex-direction: column;
+
+
+            .previous-text {
+                font-family: 'Montserrat';
+                font-weight: bolder;
+                font-size: 2rem;
+                justify-content: center;
+                color: floralwhite;
+                text-shadow: 0 0 4px black, 0 0 8px black, 0 0 12px black;
+            }
+
+            .previous-player {
+                //border: 2px solid white;
+            }
+        }
+
+        .player-spectated {
+            position: relative;
+            height: 200px;
+            width: 512px;
+            filter: drop-shadow(0 0 6px rgba(0, 0, 0, 1));
+            //border: 2px solid blue;
+            //overflow: hidden;
+        }
+
+        .next-container {
+            display: flex;
+            flex-direction: column;
+
+            .next-text {
+                font-family: 'Montserrat';
+                font-weight: bolder;
+                font-size: 2rem;
+                color: floralwhite;
+                text-shadow: 0 0 4px black, 0 0 8px black, 0 0 12px black;
+                justify-content: center;
+            }
+
+            .next-player {
+                //border: 2px solid white;
+            }
+        }
+    }
+}

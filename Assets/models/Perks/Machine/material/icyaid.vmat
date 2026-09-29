@@ -2,40 +2,26 @@
 
 Layer0
 {
-	shader "shaders/complex.shader"
-
-	//---- PBR ----
-	F_METALNESS_TEXTURE 1
-	F_SPECULAR 1
+	shader "shaders/adobesubstance.shader"
 
 	//---- Ambient Occlusion ----
-	g_flAmbientOcclusionDirectDiffuse "0.000"
-	g_flAmbientOcclusionDirectSpecular "0.000"
-	TextureAmbientOcclusion "materials/default/default_ao.tga"
+	AmbientOcclusion "materials/default/default_ao.tga"
 
-	//---- Color ----
-	g_flModelTintAmount "1.000"
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "models/perks/machine/material/perkmachine_explode_low_uv_basecolor.png"
-
-	//---- Fade ----
-	g_flFadeExponent "1.000"
+	//---- Base Color ----
+	BaseColor "models/perks/machine/material/material/perkmachine_explode_low_uv_basecolor.png"
 
 	//---- Fog ----
 	g_bFogEnabled "0"
 
-	//---- Metalness ----
-	TextureMetalness "models/perks/machine/material/perkmachine_explode_low_uv_metallic.png"
+	//---- Metallic ----
+	Metallic "models/perks/machine/material/material/perkmachine_explode_low_uv_metallic.png"
 
 	//---- Normal ----
-	TextureNormal "models/perks/machine/material/perkmachine_explode_low_uv_normal.png"
+	Normal "models/perks/machine/material/material/perkmachine_explode_low_uv_normal.png"
 
 	//---- Roughness ----
-	g_flRoughnessScaleFactor "1.000"
-	TextureRoughness "models/perks/machine/material/perkmachine_explode_low_uv_roughness.png"
+	Roughness "models/perks/machine/material/material/perkmachine_explode_low_uv_roughness.png"
 
-	//---- Texture Coordinates ----
-	g_vTexCoordOffset "[0.000 0.000]"
-	g_vTexCoordScale "[1.000 1.000]"
-	g_vTexCoordScrollSpeed "[0.000 0.000]"
+	//---- UV ----
+	g_vTextureTiling "[1.000 1.000 0.000 0.000]"
 }

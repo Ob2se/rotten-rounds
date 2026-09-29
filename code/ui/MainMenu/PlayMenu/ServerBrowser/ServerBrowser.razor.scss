@@ -1,0 +1,203 @@
+.fullscreen-blur {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px);
+    z-index: 0;
+}
+
+.screen-blocker {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0);
+    z-index: 0;
+    pointer-events: all;
+}
+
+.server-browser-container {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    top: 15%;
+    left: 15%;
+    padding: 16px;
+    background-image: url("ui/imagebackground4.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+
+    // Header: title + search bar
+    .sb-header {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        left: 13%;
+        top: 5%;
+        width: 75%;
+        gap: 8px;
+        margin-bottom: 8px;
+
+        .sb-title {
+            font-family: 'Montserrat';
+            font-weight: bold;
+            font-size: 48px;
+            color: white;
+        }
+
+        .sb-search-row {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+
+            .sb-search {
+                flex-grow: 1;
+                font-family: 'Montserrat';
+                font-size: 22px;
+                color: white;
+                background-color: rgba(0,0,0,0.45);
+                border-radius: 6px;
+                padding: 4px 10px;
+                border-color: rgba(255,255,255,0.15);
+                border-width: 1px;
+            }
+
+            .sb-refresh-button {
+                font-family: 'Montserrat';
+                font-size: 22px;
+                color: gray;
+                background-color: rgba(0,0,0,0.35);
+                border-radius: 6px;
+                padding: 4px 18px;
+                transition: color 0.06s linear;
+                white-space: nowrap;
+
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+    }
+
+    // Column header row
+    .sb-columns {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        left: 13%;
+        width: 75%;
+        top: 5%;
+        border-bottom-width: 1px;
+        border-bottom-color: rgba(255,255,255,0.25);
+        padding-bottom: 4px;
+        margin-bottom: 4px;
+
+        .sb-col {
+            font-family: 'Montserrat';
+            font-weight: bold;
+            font-size: 20px;
+            color: rgba(200,200,200,0.85);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sb-col-name    { flex: 4; }
+        .sb-col-map     { flex: 2; }
+        .sb-col-players { flex: 2; text-align: center; justify-content: center; }
+        .sb-col-ping    { flex: 1; text-align: right;  justify-content: flex-end; }
+    }
+
+    // Scrollable server list
+    .sb-list {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        left: 13%;
+        top: 5%;
+        width: 75%;
+        height: 65%;
+        overflow-y: scroll;
+        gap: 2px;
+
+        .sb-loading,
+        .sb-empty {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-family: 'Montserrat';
+            font-size: 28px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .sb-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 6px 8px;
+            border-radius: 4px;
+            transition: background-color 0.06s linear;
+            pointer-events: all;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(255,255,255,0.08);
+            }
+
+            &.selected {
+                background-color: rgba(255,255,255,0.18);
+            }
+
+            .sb-cell {
+                font-family: 'Montserrat';
+                font-size: 22px;
+                color: white;
+                overflow: hidden;
+            }
+
+            .sb-cell-name    { flex: 4; }
+            .sb-cell-map     { flex: 2; color: rgba(200,200,200,0.80); }
+            .sb-cell-players { flex: 2; text-align: center; justify-content: center; color: rgba(200,200,200,0.80); }
+            .sb-cell-ping    { flex: 1; text-align: right;  justify-content: flex-end; color: rgba(200,200,200,0.80); }
+        }
+    }
+
+    // Footer: join button
+    .sb-footer {
+        position: relative;
+        display: flex;
+        left: 50%;
+        top: 0%;
+        width: 100%;
+        //justify-content: flex-end;
+
+        .sb-join-button {
+            font-family: 'Mostly Ghostly';
+            font-size: 48px;
+            color: darkgray;
+            border-radius: 1rem;
+            transition: transform 0.08s ease-out, color 0.05s linear;
+            pointer-events: all;
+
+            &:hover {
+                color: white;
+            }
+
+            &.disabled {
+                pointer-events: none;
+                color: #303234;
+            }
+        }
+    }
+}

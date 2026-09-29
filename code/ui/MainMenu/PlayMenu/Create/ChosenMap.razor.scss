@@ -20,9 +20,8 @@
             font-size: 50%;
             font-weight: bold;
             align-self: center;
-            
-            text-decoration: underline;
-            text-decoration-thickness: 3px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .chosen-map-thumbnail {
@@ -50,11 +49,14 @@
                 flex-direction: row;
                 gap: .5rem;
                 align-items: center;
-
+                
                 .thumbs-up-icon {
                     font-family: 'Material Icons';
                     color: limegreen;
                     font-size: 24%;
+                    width: auto;
+                    height: auto;
+                    margin-right: 5px;
                 }
 
                 .chosen-up-votes {
@@ -66,6 +68,9 @@
                     font-family: 'Material Icons';
                     color: red;
                     font-size: 24%;
+                    width: auto;
+                    height: auto;
+                    margin-right: 5px;
                 }
 
                 .chosen-down-votes {
@@ -76,7 +81,7 @@
         }
 
         .chosen-text-description {
-            font-size: 1.5%;
+            font-size: 14px;
             font-family: 'Montserrat';
         }
     }

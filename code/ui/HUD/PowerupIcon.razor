@@ -1,0 +1,27 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+@namespace Sandbox
+
+<div class="icon-container">
+	<img class="power-up-icon" src="@PowerUpPath" />
+	@if (!string.IsNullOrEmpty(TimeLeft))
+	{
+		<p class="power-up-timer">@TimeLeft</p>
+	}
+</div>
+
+
+@code
+{
+	[Parameter]
+	public string PowerUpPath {get; set;}
+
+	[Parameter]
+	public string TimeLeft {get; set;}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( PowerUpPath, TimeLeft );
+}

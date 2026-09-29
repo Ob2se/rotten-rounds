@@ -1,0 +1,36 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Sandbox.UI.Panel;
+@namespace Sandbox
+
+<root>
+    <div class="player-slot-container @(localPlayer ? "localPlaya" : "")">
+        <div class="player-identity">
+            <img class="player-prof-pic" src="avatar:@SteamID" />
+            <p class="player-name">@PlayerName</p>
+        </div>
+        <div class="player-stats">
+            <p class="player-score">@Score</p>
+            <p class="player-kills">@Kills</p>
+            <p class="player-revives">@Revives</p>
+            <p class="player-downs">@Downs</p>
+        </div>
+    </div>
+</root>
+
+@code
+{
+
+    public long SteamID { get; set; }
+    public string PlayerName { get; set; }
+    public float Score { get; set; }
+    public int Kills { get; set; }
+    public int Revives { get; set; }
+    public int Downs { get; set; }
+
+    public bool localPlayer { get; set; }
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( SteamID, PlayerName, Score, Kills, Revives, Downs );
+}

@@ -2,12 +2,26 @@
 
 Layer0
 {
-	shader "models/carpet/materials/rugbase.shader"
+	shader "shaders/adobesubstance.shader"
 
-	Texture_ps_0 "models/bulletinboard/textures/wood3/bulletinboard_wood_basecolor.png"
-	Texture_ps_1 "models/bulletinboard/textures/wood3/bulletinboard_wood_normal.png"
-	Texture_ps_2 "models/bulletinboard/textures/wood3/bulletinboard_wood_occlusionroughnessmetallic.png"
+	//---- Ambient Occlusion ----
+	AmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Base Color ----
+	BaseColor "models/bulletinboard/textures/wood3/bulletinboard_wood_basecolor.png"
 
 	//---- Fog ----
 	g_bFogEnabled "1"
+
+	//---- Metallic ----
+	Metallic "materials/default/default_metal.tga"
+
+	//---- Normal ----
+	Normal "models/bulletinboard/textures/wood3/bulletinboard_wood_normal.png"
+
+	//---- Roughness ----
+	Roughness "materials/default/default_rough.tga"
+
+	//---- UV ----
+	g_vTextureTiling "[1.000 1.000 0.000 0.000]"
 }

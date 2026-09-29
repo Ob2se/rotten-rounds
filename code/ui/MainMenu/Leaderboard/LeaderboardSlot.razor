@@ -4,19 +4,20 @@
 @namespace Sandbox
 
 <root>
-	<div class="player-slot">
-        <text class="player-pos">@playerpos.</text>
-        <text class="player-name">@playername</text>
-        <text class="player-score">@playerscore</text>
+	<div class="player-slot ">
+        <text class="player-pos @(localPlayer ? "localPlaya1" : "")">@playerpos.</text>
+        <text class="player-name @(localPlayer ? "localPlaya2" : "")">@playername</text>
+        <text class="player-score @(localPlayer ? "localPlaya3" : "")">@playerscore</text>
     </div>
 </root>
 
 @code
 {
 
-    public int playerpos {get; set;}
+    public bool localPlayer { get; set; }
+    public long playerpos {get; set;}
     public string playername { get; set; }
-    public float playerscore { get; set; }
+    public double playerscore { get; set; }
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt

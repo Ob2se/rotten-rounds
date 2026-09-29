@@ -165,6 +165,15 @@
 
 
     .weapon-contain {
+        /*border-color: blue;
+        border-width: 5px;*/
+        position: absolute;
+        width: 20%;
+        height: 15%;
+        right: 1%;
+        bottom: 1%;
+        padding: 1.5rem;
+        //overflow: visible;
     }
 
     .rounds-container {
@@ -184,10 +193,21 @@
 
     .perk-icon-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         position: absolute;
         bottom: 10%;
         right: 50%;
+        transform: translateX(50%);
+    }
+
+
+    .powerup-container {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 1%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .chat-wrap {
@@ -228,45 +248,38 @@
             pointer-events: none;
             overflow: visible;
 
-            &.open {
-                pointer-events: auto;
-                background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.62) 100%);
-            }
-
             .chat-messages {
                 display: flex;
                 flex-direction: column;
-                gap: 2px;
+                gap: 6px;
                 max-height: 160px;
+                min-height: 0;
                 overflow-y: scroll;
                 overflow-x: hidden;
-                padding: 6px 4px 6px 4px;
+                padding: 6px 4px;
 
                 .chat-message {
                     display: flex;
-                    flex-direction: row;
-                    gap: 6px;
-                    align-items: center;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 100%;
                     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);
                     font-family: Arial;
                     font-size: 13px;
                     line-height: 20px;
                     color: #e4e4e4;
-                    padding-top: 0;
-                    min-height: 0;
+                    transition: opacity 0.1s linear;
 
                     .chat-name {
                         color: #ff8585;
                         font-weight: 700;
                         line-height: 20px;
-                        padding-top: 0;
-                        white-space: nowrap;
                     }
 
                     .chat-text {
                         color: #f2f2f2;
                         line-height: 20px;
-                        padding-top: 0;
+                        width: 100%;
                     }
                 }
             }
@@ -292,13 +305,31 @@
                 pointer-events: auto;
             }
 
-
             &.open {
+                pointer-events: auto;
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.62) 100%);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                max-height: 48vh;
+
                 .chat-messages {
-                    padding-bottom: 50px;
+                    flex: 1 1 auto;
+                    min-height: 0;
+                    max-height: 40vh;
+                    margin-bottom: 0;
+                    padding-bottom: 8px;
+                }
+
+                .chat-input-container {
+                    position: relative;
+                    left: auto;
+                    right: auto;
+                    bottom: auto;
+                    flex-shrink: 0;
+                    margin-top: 4px;
                 }
             }
-
         }
     }
 }

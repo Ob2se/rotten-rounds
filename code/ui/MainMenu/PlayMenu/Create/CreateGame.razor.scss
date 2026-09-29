@@ -61,6 +61,8 @@
                 font-size: 46px;
                 color: white;
                 font-family: 'Montserrat';
+                font-weight: bold;
+                padding-bottom: 5%;
             }
 
 
@@ -95,26 +97,40 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            width: 40%;
+            width: 45%;
             justify-content: space-between;
             font-size: 32px;
             color: white;
             gap: 5rem;
+            pointer-events: all;
+            white-space: nowrap;
+            //border-width: 5px;
 
             .inputs-text {
                 font-size: 46px;
                 font-family: 'Montserrat';
+                font-weight: bold;
             }
 
-            .inputs-checkbox {
-                border-radius: .5rem;
-                border-color: white;
-                border-width: .15rem;
+            .checkbox {
+                width: 35px;
+                height: 35px;
+                background-color: #303234;
+                border-radius: 5px;
+
+                &.checked {
+                    background-color: white;
+                }
+
 
                 &:hover {
-                    color: red;
-                    border-color: red;
+                    background-color: rgba(245, 245, 245, 0.5);
                 }
+            }
+
+            &.unclickable {
+                pointer-events: none;
+                color: #303234;
             }
         }
 
@@ -122,27 +138,38 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            width: 40%;
+            width: 45%;
+            justify-content: space-between;
+            font-size: 32px;
             color: white;
             gap: 5rem;
-            font-size: 32px;
-            justify-content: space-between;
-
+            pointer-events: all;
+            white-space: nowrap;
 
             .inputs-text {
                 font-size: 46px;
                 font-family: 'Montserrat';
+                font-weight: bold;
             }
 
-            .inputs-checkbox {
-                border-radius: .5rem;
-                border-color: white;
-                border-width: .15rem;
+            .checkbox {
+                width: 35px;
+                height: 35px;
+                background-color: #303234;
+                border-radius: 5px;
+
+                &.checked {
+                    background-color: white;
+                }
 
                 &:hover {
-                    color: red;
-                    border-color: red;
+                    background-color: rgba(245, 245, 245, 0.5);
                 }
+            }
+
+            &.unclickable {
+                pointer-events: none;
+                color: #303234;
             }
         }
 

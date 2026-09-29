@@ -41,8 +41,6 @@ public sealed class Window : Component, IInteraction
 	[Property]
 	Collider windowTrigger;
 
-	SimpleZombieController SimpleZombieController;
-
 	[Property]
 	public GameObject WindowDestroyPoint { get; set; }
 
@@ -79,14 +77,14 @@ public sealed class Window : Component, IInteraction
 	{
 		if ( newValue > oldValue )
 		{
-			Log.Info( this.ToString() + " add board" );
+
 			//do something when a board is added
 		}
 		if ( oldValue > newValue )
 		{
-			Log.Info(this.ToString() + " minus board");
+
 			//do something when a board is removed
-			PlayDestroyEffects(this.WorldPosition);
+			
 		}
 		if ( newValue == 0 )
 		{
@@ -123,14 +121,24 @@ public sealed class Window : Component, IInteraction
 
 	public void ManageZombieLine()
 	{
+		// Remove any zombies that were destroyed or killed while waiting in line
+		ZombiesInLine.RemoveAll( z => z == null || !z.IsValid || !z.ZombieClass.isAlive );
+
 		if ( ZombiesInLine.Count == 0 ) return;
-		var x = ZombiesInLine.First();
-		x.ChangeState(SimpleZombieController.ZomState.AttackWindow);
-		ZombiesInLine.Remove(x);
-		isBeingAttacked = true;
+
+		var x = ZombiesInLine[0];
+		ZombiesInLine.RemoveAt( 0 );
+
+		if ( x != null && x.IsValid )
+		{
+			x.ChangeState( SimpleZombieController.ZomState.AttackWindow );
+			isBeingAttacked = true;
+			AttackingZombie = x;
+		}
 	}
 
 
+	[Rpc.Broadcast]
 	private void PlayBoardAnimationFall()
 	{
 		var boarder = GetRandomUnfallenBoard( WindowBoards );
@@ -138,6 +146,7 @@ public sealed class Window : Component, IInteraction
 		{ 
 			var board = boarder.GetComponent<SkinnedModelRenderer>();
 			board.Set( "b_fall", true );
+			
 		}
 	}
 
@@ -149,15 +158,18 @@ public sealed class Window : Component, IInteraction
 			var board = boarder.GetComponent<SkinnedModelRenderer>();
 			board.Set( "b_repair", true );
 			//board.PlaybackRate = 1;
+			
 		}
 	}
 
+
+	[Rpc.Broadcast]
 	private static void PlaySoundAtLocation( Vector3 Location )
 	{
 		Sound.Play( "sounds/impacts/melee/impact-melee-wood.sound", Location );
 	}
 
-	[Rpc.Broadcast]
+	
 	private void PlayDestroyEffects(Vector3 Location)
 	{
 		PlaySoundAtLocation(Location);
@@ -175,7 +187,6 @@ public sealed class Window : Component, IInteraction
 	private void OnWindowOpen()
 	{
 		isBeingAttacked = false;
-		Log.Info( "window open" );
 		if ( isOpen )
 		{
 			foreach ( var x in windowTrigger.Touching )
@@ -186,7 +197,6 @@ public sealed class Window : Component, IInteraction
 				var zombie = x.GameObject.Components.Get<SimpleZombieController>();
 				if ( zombie == null )
 				{
-					Log.Info( "zombie null" );
 				}
 
 
@@ -220,6 +230,25 @@ public sealed class Window : Component, IInteraction
 				Log.Info( "wtf" );
 			}
 			WindowBoards.TryAdd( x, false );
+		}
+
+		// Sync visual board state for late joiners.
+		// The 'boards' count is already synced via [Sync], but the fall animations
+		// were sent via Rpc.Broadcast which late joiners never received.
+		int boardsDown = maxBoards - boards;
+		if ( boardsDown > 0 )
+		{
+			var allBoards = WindowBoards.Keys.ToList();
+			for ( int i = 0; i < boardsDown && i < allBoards.Count; i++ )
+			{
+				var boardObj = allBoards[i];
+				WindowBoards[boardObj] = true;
+				var renderer = boardObj.GetComponent<SkinnedModelRenderer>();
+				if ( renderer != null )
+				{
+					renderer.Set( "b_fall", true );
+				}
+			}
 		}
 
 		if ( Networking.IsHost )
@@ -365,7 +394,7 @@ public sealed class Window : Component, IInteraction
 		if ( boards > 0 )
 		{
 			boards--;
-			
+			PlayDestroyEffects( this.WorldPosition );
 		}
 
 	}
@@ -419,7 +448,7 @@ public sealed class Window : Component, IInteraction
 			Interactable = false;
 		}
 
-		if ( AttackingZombie == null && NeedLineChange && !isOpen )
+		if ( (AttackingZombie == null || !AttackingZombie.IsValid) && NeedLineChange && !isOpen )
 		{
 			if ( ZombiesInLine.Count == 0 )
 			{
@@ -430,7 +459,7 @@ public sealed class Window : Component, IInteraction
 			NeedLineChange = false;
 		}
 
-		if ( AttackingZombie == null || !AttackingZombie.ZombieClass.isAlive )
+		if ( AttackingZombie == null || !AttackingZombie.IsValid || !AttackingZombie.ZombieClass.isAlive )
 		{
 			isBeingAttacked = false;
 		}
@@ -439,5 +468,7 @@ public sealed class Window : Component, IInteraction
 		{
 			isBeingAttacked = false;
 		}
+
+		
 	}
 }

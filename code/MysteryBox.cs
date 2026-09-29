@@ -42,6 +42,9 @@ public sealed class MysteryBox : Component, IInteraction
 	[Sync] public bool Replacing { get; set; } = false;
 	[Sync] public bool Firesalebox { get; set; } = false;
 
+	public List<string> playerWeaponList { get; set; } = new();
+
+
 	[Property] private SoundPointComponent LatchOpenSoundPoint { get; set; }
 	[Property] private SoundPointComponent BoxSpinSound { get; set; }
 
@@ -90,8 +93,9 @@ public sealed class MysteryBox : Component, IInteraction
 			Interactable = true;
 		}
 
-		if ( ChooseWeapon )
+		if ( ChooseWeapon && TimeSinceOpened >= .8f)
 		{
+			WeaponContainer.Enabled = true;
 			GoThroughWeapons();
 			if ( WeaponContainer != null )
 			{
@@ -109,7 +113,7 @@ public sealed class MysteryBox : Component, IInteraction
 			GivenWeapon = null;
 			AWeapon = null;
 			CurrentWeapon = null;
-			Log.Info( "Closing box after time" );
+
 		}
 	}
 
@@ -228,6 +232,15 @@ public sealed class MysteryBox : Component, IInteraction
 			if ( CurrentWeapon == AWeapon )
 				return;
 
+			foreach ( var x in playerWeaponList )
+			{
+				if ( x == AWeapon )
+				{
+
+					return;
+				}
+			}
+
 			CurrentWeapon = AWeapon;
 
 			var weap = GameObject.GetPrefab( AWeapon );
@@ -327,6 +340,7 @@ public sealed class MysteryBox : Component, IInteraction
 		go.NetworkSpawn();
 		WeaponContainer = go;
 		WeaponContainer.WorldTransform = WeaponStartPoint.WorldTransform;
+		WeaponContainer.Enabled = false;
 
 		TimeSinceOpened = 0f;
 		TimeSinceChange = 0f;
@@ -336,7 +350,7 @@ public sealed class MysteryBox : Component, IInteraction
 
 		if ( !Scene.GetAllComponents<GameModeManager>().FirstOrDefault().FireSaleStarted )
 		{
-			ReplaceChance = Math.Clamp( TimesUsed * 5, 0, 50 );
+			ReplaceChance = Math.Clamp( TimesUsed * 3, 0, 50 );
 			Replacing = RollChance( ReplaceChance );
 			TimesUsed += 1;
 		}
@@ -410,6 +424,14 @@ public sealed class MysteryBox : Component, IInteraction
 	{
 	}
 
+
+	[Rpc.Host]
+	private void SetWeaponList(List<string> weapons)
+	{
+		playerWeaponList = weapons;
+	}
+
+
 	public void OnInteract( Player player )
 	{
 		if ( !Interactable )
@@ -430,6 +452,8 @@ public sealed class MysteryBox : Component, IInteraction
 		}
 
 		OpenBox( player );
+		playerWeaponList.Clear();
+		SetWeaponList( player.Inventory.Weapons.Select( x => x.Weapon ).ToList() );
 		player.RemovePoints( Cost );
 	}
 }

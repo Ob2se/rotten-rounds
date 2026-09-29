@@ -34,7 +34,7 @@ public sealed class WallBuy : Component, IInteraction
 	Random rand = new Random();
 
 	[Sync]
-	private string WeaponPath { get; set; }
+	public string WeaponPath { get; set; }
 
 	[Property]
 	public Collider InteractionTriggerBox { get; set; }
@@ -45,12 +45,11 @@ public sealed class WallBuy : Component, IInteraction
 		{
 			if ( WeaponPath == null && WeaponIdent == null )
 			{
-				if ( WeaponManager != null )
+				if ( WeaponManager != null && WeaponManager.WeaponPaths != null && WeaponManager.WeaponPaths.Count > 0 )
 				{
 					var randomweap = rand.Next( WeaponManager.WeaponPaths.Count );
 					if ( WeaponManager.WeaponPaths[randomweap] != null )
 					{
-						Log.Info( "how manuy times" );
 						WeaponPath = WeaponManager.WeaponPaths[randomweap];
 						var temp = GameObject.Clone( WeaponPath ).GetComponentInChildren<BaseWeapon>();
 						if ( temp == null )
@@ -116,7 +115,10 @@ public sealed class WallBuy : Component, IInteraction
 
 		if ( package == null )
 		{
-			WeaponPath = WeaponManager.WeaponPaths[rand.Next( WeaponManager.WeaponPaths.Count )];
+			if ( WeaponManager != null && WeaponManager.WeaponPaths != null && WeaponManager.WeaponPaths.Count > 0 )
+			{
+				WeaponPath = WeaponManager.WeaponPaths[rand.Next( WeaponManager.WeaponPaths.Count )];
+			}
 			return;
 		}
 

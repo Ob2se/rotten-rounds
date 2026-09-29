@@ -16,33 +16,6 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
-        "__guid": "a7fed07e-251b-4e0a-acf4-52df3674787a",
-        "__enabled": false,
-        "Flags": 0,
-        "BodyGroups": 18446744073709551615,
-        "CreateAttachments": false,
-        "LodOverride": null,
-        "MaterialGroup": null,
-        "MaterialOverride": null,
-        "Materials": null,
-        "Model": null,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": true,
-          "AfterUILayer": false
-        },
-        "RenderType": "Off",
-        "Tint": "1,1,1,1"
-      },
-      {
         "__type": "PowerUp",
         "__guid": "412011bf-8653-4ded-9143-83e2f5ff5b55",
         "__enabled": true,
@@ -55,8 +28,8 @@
         "OnComponentUpdate": null,
         "PowerUpModel": {
           "_type": "component",
-          "component_id": "a7fed07e-251b-4e0a-acf4-52df3674787a",
-          "go": "206877bf-ee2c-4e3a-9e5c-7bcf9c73e86f",
+          "component_id": "f62fc2bf-ab97-43c1-83fc-90f10588bbb1",
+          "go": "f7fb1c74-a4d7-465e-aa11-250cc51985c0",
           "component_type": "ModelRenderer"
         },
         "PowerUpTriggerBox": {
@@ -70,7 +43,7 @@
       {
         "__type": "Sandbox.BoxCollider",
         "__guid": "6b783f9c-9c64-46d6-849c-d8434f9d1ba2",
-        "__enabled": false,
+        "__enabled": true,
         "Flags": 0,
         "Center": "0,0,0",
         "ColliderFlags": 0,
@@ -114,9 +87,9 @@
           {
             "__type": "Sandbox.PointLight",
             "__guid": "bf81d5e3-f5ac-494b-8cd6-eb9b9a91aeb0",
-            "__enabled": false,
+            "__enabled": true,
             "Flags": 0,
-            "Attenuation": 0,
+            "Attenuation": 10,
             "FogMode": "Enabled",
             "FogStrength": 1,
             "LightColor": "0.26667,1,0,1",
@@ -126,7 +99,9 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Radius": 100,
+            "Radius": 40,
+            "ShadowBias": 0.0005,
+            "ShadowHardness": 1,
             "Shadows": true
           }
         ],
@@ -151,7 +126,7 @@
           {
             "__type": "Sandbox.ParticleEffect",
             "__guid": "40ab0d5c-380e-411c-b066-d0534b54a706",
-            "__enabled": true,
+            "__enabled": false,
             "Flags": 0,
             "__version": 3,
             "Alpha": 1,
@@ -184,32 +159,7 @@
             "ForceScale": 0,
             "ForceSpace": "World",
             "Friction": 1,
-            "Gradient": {
-              "Type": "Constant",
-              "Evaluation": "Life",
-              "GradientA": {
-                "blend": "Linear",
-                "color": [
-                  {
-                    "t": 0.5,
-                    "c": "1,1,1,1"
-                  }
-                ],
-                "alpha": []
-              },
-              "GradientB": {
-                "blend": "Linear",
-                "color": [
-                  {
-                    "t": 0.5,
-                    "c": "1,1,1,1"
-                  }
-                ],
-                "alpha": []
-              },
-              "ConstantA": "1,1,1,1",
-              "ConstantB": "1,1,1,1"
-            },
+            "Gradient": "1,1,1,1",
             "InitialVelocity": {
               "X": 0,
               "Y": 0,
@@ -338,32 +288,7 @@
             "Attenuation": 1,
             "Brightness": 1,
             "CastShadows": true,
-            "LightColor": {
-              "Type": "Constant",
-              "Evaluation": "Life",
-              "GradientA": {
-                "blend": "Linear",
-                "color": [
-                  {
-                    "t": 0.5,
-                    "c": "1,1,1,1"
-                  }
-                ],
-                "alpha": []
-              },
-              "GradientB": {
-                "blend": "Linear",
-                "color": [
-                  {
-                    "t": 0.5,
-                    "c": "1,1,1,1"
-                  }
-                ],
-                "alpha": []
-              },
-              "ConstantA": "0.26667,1,0,1",
-              "ConstantB": "1,1,1,1"
-            },
+            "LightColor": "0.26667,1,0,1",
             "MaximumLights": 8,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -437,6 +362,131 @@
           }
         ],
         "Children": []
+      },
+      {
+        "__guid": "c3aca1b7-da85-45bd-9995-46df2453f1f8",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Spot Light",
+        "Position": "0,0,-30",
+        "Rotation": "0.05547896,-0.704927,0.05547896,0.704927",
+        "Scale": "1,1,1",
+        "Tags": "light_spot,light",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SpotLight",
+            "__guid": "777ef835-337d-4a4d-a138-0c5ad167fea5",
+            "__enabled": true,
+            "Flags": 0,
+            "Attenuation": 1,
+            "ConeInner": 15,
+            "ConeOuter": 45,
+            "Cookie": null,
+            "FogMode": "Enabled",
+            "FogStrength": 1,
+            "LightColor": "0.26667,1,0,1",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Radius": 500,
+            "ShadowBias": 0.0005,
+            "ShadowHardness": 1,
+            "Shadows": true
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "b8e9d5fb-c1ca-4640-8731-a79def1ffbb1",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Volumetric Fog",
+        "Position": "0,0,-20",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.VolumetricFogVolume",
+            "__guid": "afc9d878-523f-4bf2-b155-244773b3f71a",
+            "__enabled": true,
+            "Flags": 0,
+            "Bounds": {
+              "Mins": "-23,-23,-0.151844",
+              "Maxs": "19,19,45.89742"
+            },
+            "FalloffExponent": 1,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Strength": 1
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "f7fb1c74-a4d7-465e-aa11-250cc51985c0",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Model",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "f62fc2bf-ab97-43c1-83fc-90f10588bbb1",
+            "__enabled": false,
+            "Flags": 0,
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": true,
+              "AfterUILayer": false
+            },
+            "RenderType": "Off",
+            "Tint": "1,1,1,1"
+          }
+        ],
+        "Children": []
       }
     ],
     "__properties": {
@@ -454,7 +504,8 @@
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

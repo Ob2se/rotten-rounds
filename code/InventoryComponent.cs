@@ -267,7 +267,6 @@ public sealed class InventoryComponent : Component, IInventoryInterface
 	[Rpc.Host]
 	public void ServerGiveMaxAmmo()
 	{
-		Log.Info( "but why" );
 		for ( int ammoslot = 0; ammoslot < WeaponsAmmo.Count; ammoslot++ )
 		{
 			//Log.Info( "setting ammo to " + WeaponsAmmo[ammoslot].MaxAmmoTotal + " in slot " + ammoslot );

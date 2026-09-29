@@ -1,0 +1,326 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using System;
+@using System.Globalization;
+@using System.Linq;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+    <div class="chat-wrap @GetAnchorClass()">
+        <div class="chat-panel @(isChatOpen ? "open" : "")">
+            <div class="chat-messages">
+                @foreach (var entry in GetChatEntriesForDisplay())
+                {
+                    <div class="chat-message" style="opacity: @GetChatOpacity(entry).ToString("0.###", CultureInfo.InvariantCulture);">
+                        <span class="chat-name">@entry.Data.PlayerName:</span>
+                        <span class="chat-text">@entry.Data.Message</span>
+                    </div>
+                }
+            </div>
+            @if (isChatOpen)
+            {
+                <div class="chat-input-container">
+                    <TextEntry @ref="chatInputRef" class="chat-input" Value:bind="@chatInputText"></TextEntry>
+                </div>
+            }
+        </div>
+    </div>
+</root>
+
+@code
+{
+    public enum ChatAnchor
+    {
+        Left,
+        Middle,
+        Right
+    }
+
+    [Property]
+    public ChatAnchor AnchorPosition { get; set; } = ChatAnchor.Left;
+
+    private string GetAnchorClass()
+    {
+        return AnchorPosition switch
+        {
+            ChatAnchor.Left => "anchor-left",
+            ChatAnchor.Middle => "anchor-middle",
+            ChatAnchor.Right => "anchor-right",
+            _ => "anchor-left"
+        };
+    }
+
+    [Property]
+    public Player player { get; set; }
+
+    [Property]
+    public TextChatComp textChatComp { get; set; }
+
+    const float ChatVisibleSeconds = 10f;
+    const float ChatFadeSeconds = 1.25f;
+
+    sealed class ChatHudEntry
+    {
+        public ChatMessageStruct Data;
+        public double ReceivedRealtime;
+
+        /// <summary> Set while chat is open; age stops advancing until unfrozen on close. </summary>
+        public float? FrozenAgeSeconds;
+    }
+
+    List<ChatHudEntry> chatMessages = new();
+
+    TextEntry chatInputRef;
+
+    string chatInputText = string.Empty;
+
+    bool isChatOpen;
+    bool shouldFocusChatInput;
+    TimeSince timeSinceChatOpened;
+    bool chatHadFocus;
+
+    protected override int BuildHash()
+    {
+        var hash = new HashCode();
+        hash.Add(AnchorPosition);
+        hash.Add(isChatOpen);
+        hash.Add(chatInputText);
+
+        var chatNeedsPerFrameHash = false;
+        foreach (var entry in chatMessages)
+        {
+            hash.Add(entry.Data.PlayerName);
+            hash.Add(entry.Data.Message);
+            if (!isChatOpen)
+            {
+                var age = GetMessageAgeSeconds(entry);
+                if (age >= ChatVisibleSeconds && age < ChatVisibleSeconds + ChatFadeSeconds)
+                {
+                    chatNeedsPerFrameHash = true;
+                }
+            }
+
+            hash.Add((int)(GetChatOpacity(entry) * 100f));
+        }
+
+        foreach (var entry in GetChatEntriesForDisplay())
+        {
+            hash.Add(entry.Data.PlayerName);
+            hash.Add(entry.Data.Message);
+        }
+
+        if (chatNeedsPerFrameHash)
+        {
+            // BuildHash gates Razor rebuilds; opacity must change every frame while fading.
+            hash.Add((int)(RealTime.Now * 64.0));
+        }
+
+        return hash.ToHashCode();
+    }
+
+    protected override void OnStart()
+    {
+        if ( IsProxy )
+        {
+            Enabled = false;
+            return;
+        }
+
+        TextChatComp.ChatMessageReceived += HandleChatMessageReceived;
+    }
+
+    protected override void OnDestroy()
+    {
+        if (player is not null)
+        {
+            player.IsTypingChat = false;
+        }
+
+        TextChatComp.ChatMessageReceived -= HandleChatMessageReceived;
+        base.OnDestroy();
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (Input.Pressed("Chat"))
+        {
+            if (!isChatOpen)
+            {
+                OpenChat();
+            }
+            else
+            {
+                shouldFocusChatInput = true;
+            }
+        }
+
+        if (isChatOpen && shouldFocusChatInput && chatInputRef is not null)
+        {
+            chatInputRef.Focus();
+            shouldFocusChatInput = false;
+        }
+
+        if (isChatOpen && chatInputRef is not null)
+        {
+            var hasFocus = chatInputRef.HasFocus;
+            if (chatHadFocus && !hasFocus && timeSinceChatOpened > 0.05f)
+            {
+                SendChatMessage();
+            }
+            chatHadFocus = hasFocus;
+        }
+    }
+
+    static float GetMessageAgeSeconds(ChatHudEntry entry)
+    {
+        if (entry.FrozenAgeSeconds.HasValue)
+        {
+            return entry.FrozenAgeSeconds.Value;
+        }
+
+        return (float)(RealTime.Now - entry.ReceivedRealtime);
+    }
+
+    static float GetClosedHudFadeOpacity(ChatHudEntry entry)
+    {
+        var age = GetMessageAgeSeconds(entry);
+        if (age < ChatVisibleSeconds)
+        {
+            return 1f;
+        }
+
+        if (age >= ChatVisibleSeconds + ChatFadeSeconds)
+        {
+            return 0f;
+        }
+
+        return 1f - (age - ChatVisibleSeconds) / ChatFadeSeconds;
+    }
+
+    float GetChatOpacity(ChatHudEntry entry)
+    {
+        if (isChatOpen)
+        {
+            return 1f;
+        }
+
+        return GetClosedHudFadeOpacity(entry);
+    }
+
+    IEnumerable<ChatHudEntry> GetChatEntriesForDisplay()
+    {
+        if (isChatOpen)
+        {
+            return chatMessages.TakeLast(30);
+        }
+
+        return chatMessages
+            .Where(e => GetClosedHudFadeOpacity(e) > 0.001f)
+            .TakeLast(6);
+    }
+
+    void FreezeChatMessageAges()
+    {
+        foreach (var entry in chatMessages)
+        {
+            entry.FrozenAgeSeconds = (float)(RealTime.Now - entry.ReceivedRealtime);
+        }
+    }
+
+    void UnfreezeChatMessageAges()
+    {
+        var now = RealTime.Now;
+        foreach (var entry in chatMessages)
+        {
+            if (!entry.FrozenAgeSeconds.HasValue)
+            {
+                continue;
+            }
+
+            entry.ReceivedRealtime = now - entry.FrozenAgeSeconds.Value;
+            entry.FrozenAgeSeconds = null;
+        }
+    }
+
+    private void OpenChat()
+    {
+        isChatOpen = true;
+        shouldFocusChatInput = true;
+        timeSinceChatOpened = 0;
+        FreezeChatMessageAges();
+        
+        if (player is null) player = Scene.GetAllComponents<Player>().FirstOrDefault(p => !p.IsProxy);
+        if (player is not null)
+        {
+            player.IsTypingChat = true;
+        }
+
+        StateHasChanged();
+    }
+
+    private void CloseChat()
+    {
+        isChatOpen = false;
+        shouldFocusChatInput = false;
+        chatHadFocus = false;
+        UnfreezeChatMessageAges();
+        if (player is not null)
+        {
+            player.IsTypingChat = false;
+        }
+        chatInputText = string.Empty;
+        StateHasChanged();
+    }
+
+    private void CancelChat()
+    {
+        isChatOpen = false;
+        shouldFocusChatInput = false;
+        chatHadFocus = false;
+        UnfreezeChatMessageAges();
+        if (player is not null)
+        {
+            player.IsTypingChat = false;
+        }
+        StateHasChanged();
+    }
+
+    private void SendChatMessage()
+    {
+        var liveText = chatInputRef?.Text;
+        var cleanMessage = !string.IsNullOrWhiteSpace( liveText )
+            ? liveText.Trim()
+            : chatInputText?.Trim();
+
+        if (string.IsNullOrWhiteSpace(cleanMessage))
+        {
+            CloseChat();
+            return;
+        }
+
+        if (textChatComp is null) textChatComp = Scene.GetAllComponents<TextChatComp>().FirstOrDefault();
+        textChatComp?.SubmitChatMessage(Connection.Local.SteamId.ToString(), Connection.Local.DisplayName, cleanMessage);
+        CloseChat();
+    }
+
+    private void HandleChatMessageReceived(ChatMessageStruct messageData)
+    {
+        var entry = new ChatHudEntry { Data = messageData, ReceivedRealtime = RealTime.Now };
+        if (isChatOpen)
+        {
+            entry.FrozenAgeSeconds = 0f;
+        }
+
+        chatMessages.Add(entry);
+
+        if (chatMessages.Count > 30)
+        {
+            chatMessages.RemoveAt(0);
+        }
+
+        StateHasChanged();
+    }
+}

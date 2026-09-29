@@ -389,11 +389,11 @@ public sealed class Teleporter : Component, IPower, IInteraction
 		var list = PlayersInTrigger;
 		if ( player != null )
 		{
-			Log.Info( "trying to remove player" );
+
 			if ( list.Contains( player ) )
 			{
 				list.Remove( player );
-				Log.Info( "player removed from list" );
+
 			}
 		}
 
@@ -445,11 +445,17 @@ public sealed class Teleporter : Component, IPower, IInteraction
 		if ( !Networking.IsHost ) return;
 		if ( TempTeleportStarted )
 		{
-			Log.Info( "temp teleport started" );
+			//Log.Info( "temp teleport started" );
 			if ( TimeSinceTempTeleport >= TempTeleportDuration )
 			{
-				Log.Info("end temp teleport");
-
+				//Log.Info("end temp teleport");
+				foreach ( var player in PlayersTempTeleport )
+				{
+					if ( player.Upgrading )
+					{
+						return;
+					}
+				}
 				EndTempTeleport();
 			}
 		}

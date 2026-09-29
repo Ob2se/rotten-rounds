@@ -1,0 +1,157 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using System.Threading;
+@using System.Threading.Tasks;
+@inherits MainMenuPanel
+@namespace Sandbox
+
+<div class="fullscreen-blur"></div>
+<div class="screen-blocker"></div>
+<div class="server-browser-container">
+    <div class="sb-header">
+        <text class="sb-title">Server Browser</text>
+        <div class="sb-search-row">
+            <TextEntry class="sb-search" Placeholder="Search servers..." Value:bind="@SearchText" />
+            <button class="sb-refresh-button" @onclick="@RefreshServers">Refresh</button>
+        </div>
+    </div>
+
+    <div class="sb-columns">
+        <text class="sb-col sb-col-name">Server Name</text>
+        <text class="sb-col sb-col-map">Map</text>
+        <text class="sb-col sb-col-players">Players</text>
+        <text class="sb-col sb-col-ping">Ping</text>
+    </div>
+
+    <div class="sb-list">
+        @if ( IsLoading )
+        {
+            <div class="sb-loading">
+                <text>Loading servers...</text>
+            </div>
+        }
+        else if ( FilteredServers.Count == 0 )
+        {
+            <div class="sb-empty">
+                <text>No servers found.</text>
+            </div>
+        }
+        else
+        {
+            @foreach ( var server in FilteredServers )
+            {
+                var s = server;
+                <div class="sb-row @(SelectedServer?.LobbyId == s.LobbyId ? "selected" : "")" @onclick="@(() => OnServerClicked(s))">
+                    <text class="sb-cell sb-cell-name">@s.Name</text>
+                    <text class="sb-cell sb-cell-map">@s.Map</text>
+                    <text class="sb-cell sb-cell-players">@s.PlayerCount / @s.MaxPlayers</text>
+                    <text class="sb-cell sb-cell-ping">@s.Ping ms</text>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="sb-footer">
+        <button class="sb-join-button @(SelectedServer == null ? "disabled" : "")" @onclick="@JoinSelected">Join</button>
+    </div>
+</div>
+<div class="back-button-container @(IsBackVisible ? "" : "hidden")">
+    <button class="back-button" @onclick="@OnBackClicked">Back</button>
+</div>
+
+@code
+{
+
+    bool IsBackVisible = true;
+    bool IsLoading = false;
+
+    string SearchText = "";
+
+    ServerEntry SelectedServer = null;
+
+    List<ServerEntry> AllServers = new();
+
+    List<ServerEntry> FilteredServers => string.IsNullOrWhiteSpace( SearchText )
+        ? AllServers
+        : AllServers.Where( s => s.Name.Contains( SearchText, System.StringComparison.OrdinalIgnoreCase )
+                               || s.Map.Contains( SearchText, System.StringComparison.OrdinalIgnoreCase ) ).ToList();
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( IsLoading, SelectedServer, SearchText, AllServers.Count );
+
+    protected override void OnAfterTreeRender( bool firstTime )
+    {
+        if ( firstTime )
+        {
+            _ = RefreshServers();
+        }
+    }
+
+    void OnBackClicked()
+    {
+        this.Delete();
+    }
+
+    void OnServerClicked( ServerEntry server )
+    {
+        SelectedServer = server == SelectedServer ? null : server;
+        StateHasChanged();
+    }
+
+    async Task RefreshServers()
+    {
+        IsLoading = true;
+        SelectedServer = null;
+        AllServers.Clear();
+        StateHasChanged();
+
+        try
+        {
+
+            var result = await Networking.QueryLobbies();
+
+            AllServers = result.Select( l => new ServerEntry
+            {
+                LobbyId = l.LobbyId,
+                Name = l.Name,
+                Map = string.IsNullOrEmpty( l.Map ) ? "Unknown" : l.Map,
+                PlayerCount = l.Members,
+                MaxPlayers = l.MaxMembers,
+                Ping = l.Data.TryGetValue( "ping", out var pingStr ) && int.TryParse( pingStr, out var ping ) ? ping : 0
+            } ).ToList();
+        }
+        catch ( System.Exception e )
+        {
+            Log.Warning( $"[ServerBrowser] Failed to fetch lobbies: {e.Message}" );
+        }
+
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    public void JoinSelected()
+    {
+        if ( SelectedServer == null ) return;
+
+        try
+        {
+            Networking.Connect( SelectedServer.LobbyId );
+        }
+        catch ( System.Exception e )
+        {
+            Log.Warning( $"[ServerBrowser] Failed to join lobby: {e.Message}" );
+        }
+    }
+
+    public class ServerEntry
+    {
+        public ulong LobbyId { get; set; }
+        public string Name { get; set; }
+        public string Map { get; set; }
+        public int PlayerCount { get; set; }
+        public int MaxPlayers { get; set; }
+        public int Ping { get; set; }
+    }
+}

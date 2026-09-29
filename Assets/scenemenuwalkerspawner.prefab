@@ -1,0 +1,85 @@
+{
+  "RootObject": {
+    "__guid": "6b8d0558-9068-4683-8ef4-a8c0c8913a53",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "scenemenuwalkerspawner",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "WalkerSpawnerMenu",
+        "__guid": "5249693a-7bdd-44b4-8959-7bbdbb14d661",
+        "__enabled": true,
+        "Flags": 0,
+        "EndLoc": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "StartLoc": null,
+        "zombiethang": {
+          "_type": "gameobject",
+          "prefab": "zombielobbywalkingbg.prefab"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "9a2ff53a-c02b-4574-b0d5-a9867fdcd85b",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "scenemenuwalkerspawner",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

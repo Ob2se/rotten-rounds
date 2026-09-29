@@ -78,12 +78,14 @@ PS
 	BoolAttribute( bWantsFBCopyTexture, true );
 	Texture2D g_tFrameBufferCopyTexture < Attribute( "FrameBufferCopyTexture"); SrgbRead( false ); >;
 	SamplerState g_sSampler0 < Filter( ANISO ); AddressU( WRAP ); AddressV( WRAP ); >;
+	CreateInputTexture2D( Texture_ps_0, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "shaders/publicdomainpictures-rain-316580_1920.jpg" ) );
 	CreateInputTexture2D( raindripscomb, Linear, 8, "None", "_color", ",0/,0/0", DefaultFile( "shaders/rain_drips.jpg" ) );
 	CreateInputTexture2D( raindripmask, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "shaders/rain_drip_mask.jpg" ) );
-	CreateInputTexture2D( Texture_ps_2, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "shaders/rain_drops.jpg" ) );
+	CreateInputTexture2D( Texture_ps_3, Srgb, 8, "None", "_color", ",0/,0/0", DefaultFile( "shaders/rain_drops.jpg" ) );
+	Texture2D g_tTexture_ps_0 < Channel( RGBA, Box( Texture_ps_0 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
 	Texture2D g_traindripscomb < Channel( RGBA, Box( raindripscomb ), Linear ); OutputFormat( RGBA8888 ); SrgbRead( False ); >;
 	Texture2D g_traindripmask < Channel( RGBA, Box( raindripmask ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
-	Texture2D g_tTexture_ps_2 < Channel( RGBA, Box( Texture_ps_2 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
+	Texture2D g_tTexture_ps_3 < Channel( RGBA, Box( Texture_ps_3 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
 		
 	float2 MapSceneColorCoords( float2 vInput, float2 modes )
 	{
@@ -168,53 +170,61 @@ PS
 	{
 
 		
-		float2 l_0 = i.vTextureCoords.xy * float2( 3, 3 );
-		float4 l_1 = Tex2DS( g_traindripscomb, g_sSampler0, l_0 );
-		float l_2 = l_1.x;
-		float l_3 = l_1.y;
-		float2 l_4 = float2( l_2, l_3);
-		float2 l_5 = l_4 * float2( 6, 6 );
-		float2 l_6 = l_5 - float2( 3, 3 );
-		float l_7 = round( l_1.b );
-		float l_8 = l_0.x;
-		float l_9 = l_8 * 1;
-		float l_10 = l_0.y;
-		float l_11 = l_10 * -0.5;
-		float l_12 = 0.0f;
-		float l_13 = 0.0f;
-		float4 l_14 = float4( l_9, l_11, l_12, l_13 );
-		float l_15 = lerp( 0.15, -0.05, l_1.a );
-		float l_16 = l_1.a + g_flTime;
-		float l_17 = l_15 * l_16;
-		float4 l_18 = l_14 + float4( l_17, l_17, l_17, l_17 );
-		float4 l_19 = Tex2DS( g_traindripmask, g_sSampler0, l_18.xy );
-		float l_20 = l_7 * l_19.r;
-		float2 l_21 = l_6 * float2( l_20, l_20 );
-		float3 l_22 = g_tFrameBufferCopyTexture.Sample( g_sAniso, MapSceneColorCoords( l_21, float2(0,0) )).rgb;
-		float2 l_23 = i.vTextureCoords.xy * float2( 4, 4 );
-		float l_24 = l_23.x;
-		float l_25 = l_23.y;
-		float2 l_26 = float2( l_24, l_25);
-		float4 l_27 = Tex2DS( g_tTexture_ps_2, g_sSampler0, l_26 );
-		float3 l_28 = float3( l_27.r, l_27.g, l_27.a );
-		float3 l_29 = l_28 * float3( 2, 2, 2 );
-		float3 l_30 = l_29 - float3( 1, 1, 1 );
+		float2 l_0 = i.vTextureCoords.xy * float2( 1, 1 );
+		float l_1 = l_0.x;
+		float l_2 = l_0.y;
+		float l_3 = g_flTime * 1;
+		float l_4 = l_2 + l_3;
+		float2 l_5 = float2( l_1, l_4);
+		float4 l_6 = Tex2DS( g_tTexture_ps_0, g_sSampler0, l_5 );
+		float2 l_7 = i.vTextureCoords.xy * float2( 3, 3 );
+		float4 l_8 = Tex2DS( g_traindripscomb, g_sSampler0, l_7 );
+		float l_9 = l_8.x;
+		float l_10 = l_8.y;
+		float2 l_11 = float2( l_9, l_10);
+		float2 l_12 = l_11 * float2( 6, 6 );
+		float2 l_13 = l_12 - float2( 3, 3 );
+		float l_14 = round( l_8.b );
+		float l_15 = l_7.x;
+		float l_16 = l_15 * 1;
+		float l_17 = l_7.y;
+		float l_18 = l_17 * -0.5;
+		float l_19 = 0.0f;
+		float l_20 = 0.0f;
+		float4 l_21 = float4( l_16, l_18, l_19, l_20 );
+		float l_22 = lerp( 0.15, -0.05, l_8.a );
+		float l_23 = l_8.a + g_flTime;
+		float l_24 = l_22 * l_23;
+		float4 l_25 = l_21 + float4( l_24, l_24, l_24, l_24 );
+		float4 l_26 = Tex2DS( g_traindripmask, g_sSampler0, l_25.xy );
+		float l_27 = l_14 * l_26.r;
+		float2 l_28 = l_13 * float2( l_27, l_27 );
+		float3 l_29 = g_tFrameBufferCopyTexture.Sample( g_sAniso, MapSceneColorCoords( l_28, float2(0,0) )).rgb;
+		float2 l_30 = i.vTextureCoords.xy * float2( 4, 4 );
 		float l_31 = l_30.x;
 		float l_32 = l_30.y;
 		float2 l_33 = float2( l_31, l_32);
-		float l_34 = l_30.z;
-		float l_35 = saturate( l_34 );
-		float l_36 = g_flTime * 2;
-		float l_37 = l_27.b - l_36;
-		float l_38 = l_37 % 1;
-		float l_39 = frac( l_38 );
-		float l_40 = l_35 * l_39;
-		float2 l_41 = l_33 * float2( l_40, l_40 );
-		float3 l_42 = g_tFrameBufferCopyTexture.Sample( g_sAniso, MapSceneColorCoords( l_41, float2(0,0) )).rgb;
-		float3 l_43 = l_22 + l_42;
-		float l_44 = l_20 + l_40;
+		float4 l_34 = Tex2DS( g_tTexture_ps_3, g_sSampler0, l_33 );
+		float3 l_35 = float3( l_34.r, l_34.g, l_34.a );
+		float3 l_36 = l_35 * float3( 2, 2, 2 );
+		float3 l_37 = l_36 - float3( 1, 1, 1 );
+		float l_38 = l_37.x;
+		float l_39 = l_37.y;
+		float2 l_40 = float2( l_38, l_39);
+		float l_41 = l_37.z;
+		float l_42 = saturate( l_41 );
+		float l_43 = g_flTime * 2;
+		float l_44 = l_34.b - l_43;
+		float l_45 = l_44 % 1;
+		float l_46 = frac( l_45 );
+		float l_47 = l_42 * l_46;
+		float2 l_48 = l_40 * float2( l_47, l_47 );
+		float3 l_49 = g_tFrameBufferCopyTexture.Sample( g_sAniso, MapSceneColorCoords( l_48, float2(0,0) )).rgb;
+		float3 l_50 = l_29 + l_49;
+		float4 l_51 = l_6 + float4( l_50, 0 );
+		float l_52 = l_27 + l_47;
 		
 
-		return float4( l_43, l_44 );
+		return float4( l_51.xyz, l_52 );
 	}
 }

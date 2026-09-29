@@ -1,0 +1,27 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/adobesubstance.shader"
+
+	//---- Animation ----
+	F_MORPH_SUPPORTED 1
+
+	//---- Ambient Occlusion ----
+	AmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Base Color ----
+	BaseColor "models/zombie/zombiemodelhumansplit/material/citizen_human_male_ref_male_body_basecolor.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Metallic ----
+	Metallic "models/zombie/zombiemodelhumansplit/material/citizen_human_male_ref_male_body_metallic.png"
+
+	//---- Normal ----
+	Normal "models/zombie/zombiemodelhumansplit/material/citizen_human_male_ref_male_body_normal.png"
+
+	//---- Roughness ----
+	Roughness "models/zombie/zombiemodelhumansplit/material/citizen_human_male_ref_male_body_roughness.png"
+}

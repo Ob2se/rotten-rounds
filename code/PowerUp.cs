@@ -57,6 +57,8 @@ public sealed class PowerUp : Component
 
 		PowerUpModel.Enabled = true;
 
+
+
 		PowerUpTriggerBox.Center = PowerUpModel.Model.Bounds.Center;
 		PowerUpTriggerBox.Scale = PowerUpModel.Model.Bounds.Size;
 
@@ -89,22 +91,35 @@ public sealed class PowerUp : Component
 			switch ( powerupname )
 			{
 				case "Max Ammo":
+					PlayPowerupSound( "sound/powerups/maxammo.sound" );
 					gamemodemanager.MaxAmmo();
 					break;
 				case "Insta Kill":
+					PlayPowerupSound( "sound/powerups/instantkill.sound" );
 					gamemodemanager.InstaKillStart();
 					break;
 				case "Double Points":
+					PlayPowerupSound( "sound/powerups/doublepoints.sound" );
 					gamemodemanager.DoublePointsStart();
 					break;
 				case "Nuke":
+					PlayPowerupSound( "sound/powerups/kaboom.sound" );
 					gamemodemanager.KillAllZombies();
 					break;
 				case "Fire Sale":
+					PlayPowerupSound( "sound/powerups/firesale.sound" );
 					gamemodemanager.StartFireSale();
 					break;
 			}
 		}
+	}
+
+	[Rpc.Broadcast]
+	private void PlayPowerupSound(string soundfile)
+	{
+
+		//Sound.
+		Sound.Play( soundfile );
 	}
 
 
@@ -138,7 +153,7 @@ public sealed class PowerUp : Component
 	protected override void OnUpdate()
 	{
 
-		WorldRotation *= Rotation.FromYaw( 90f * Time.Delta );
+		PowerUpModel.WorldRotation *= Rotation.FromYaw( 90f * Time.Delta );
 
 		if ( !blinking )
 		{

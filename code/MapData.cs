@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 public class MapData
 {
@@ -21,4 +22,7 @@ public class MapData
 	public string Indent { get; set; }
 
 	public string FullIndent { get; set; }
+
+
+	public DateTimeOffset LastUpdate { get; set; }
 }

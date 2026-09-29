@@ -12,33 +12,41 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    border-width: .2rem;
-    border-radius: .5rem;
+    /* border-width: .1rem;
+    border-radius: .5rem;*/
     padding: .2rem;
 
+    .map-title-wrapper {
+        width: 100%;
+        position: relative;
+        justify-content: center;
+        align-items: flex-start;
+        color: white;
+
+        .map-title {
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: bold;
+            transform: translateX(0);
+            /*text-decoration: underline;
+            text-decoration-color: white;*/
+        }
+    }
+
+
     &:hover {
-        border-color: gold;
+        border-width: .1rem;
+        border-radius: .5rem;
+        border-color: white;
     }
 
     .bg-image {
-        display: flex;
         width: 100%;
-        position: relative;
         flex: 1 1 auto;
-
-        .map-title-wrapper {
-            width: 100%;
-            position: relative;
-            justify-content: center;
-            align-items: flex-start;
-
-            .map-title {
-                white-space: nowrap;
-                font-size: 16px;
-                font-weight: bold;
-                transform: translateX(0);
-            }
-        }
+        border-radius: 1rem;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
 
@@ -57,7 +65,42 @@
         justify-content: space-between;
         color: white;
 
+        .author {
+            white-space: nowrap;
+            overflow: hidden;
+            font-weight: bold;
+            text-overflow: ellipsis;
+        }
+
         .map-rating {
+
+            .thumbs-up-icon {
+                font-family: 'Material Icons';
+                color: limegreen;
+                //font-size: 24%;
+            }
+
+            .map-up-votes {
+                color: limegreen;
+                white-space: nowrap;
+                overflow: hidden;
+                font-weight: bold;
+                text-overflow: ellipsis;
+            }
+
+            .thumbs-down-icon {
+                font-family: 'Material Icons';
+                color: red;
+                //font-size: 24%;
+            }
+
+            .map-down-votes {
+                color: red;
+                white-space: nowrap;
+                overflow: hidden;
+                font-weight: bold;
+                text-overflow: ellipsis;
+            }
         }
     }
 }

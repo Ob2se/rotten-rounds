@@ -8,18 +8,18 @@
 <div class="create-lobby-container @(IsMenuVisible ? "" : "hidden")">
     <div class="left-side-container">
         
-        <ChosenMap @key="@SelectedMap" @ref="@TheChosenMaper" class="chosen-container" @MapAuthor="@SelectedMap.Author" @MapDescription="@SelectedMap.Description" @MapTitle="@SelectedMap.Name" @MapDownVotes="@SelectedMap.DownVotes.ToString()" @MapUpVotes="@SelectedMap.UpVotes.ToString()" @MapThumbnail="@SelectedMap.Thumbnail"></ChosenMap>
+        <ChosenMap @key="@SelectedMap" @ref="@TheChosenMaper" class="chosen-container" @MapAuthor="@SelectedMap.Author" @MapDescription="@SelectedMap.Description" @MapTitle="@SelectedMap.Name.ToUpper()" @MapDownVotes="@SelectedMap.DownVotes.ToString()" @MapUpVotes="@SelectedMap.UpVotes.ToString()" @MapThumbnail="@SelectedMap.Thumbnail"></ChosenMap>
         <div class="buttons-wrapper">
-            <button class="button-start @(isHost ? "" : "disabled")" @onclick="@OnStartClick">Start Game</button>
+            <button class="button-start @(isHost && SelectedMap != null ? "" : "disabled")" @onclick="@OnStartClick">Start Game</button>
             <button class="button-browse @(isHost ? "" : "disabled")" @onclick="@MapBrowseClick">Map Browse</button>
-            <button class="button-game-options @(isHost ? "" : "disabled")" @onclick="@GameOptionsClick">Game Options</button>
+            <button class="button-game-options @(isHost ? "" : "disabled")" @onclick="@GameOptionsClick">Customize Game</button>
             <button class="button" @onclick="@OptionsClick">Options</button>
             <button class="button" @onclick="@LeaveClick">Leave</button>
         </div>
     </div>
-    <div class="right-side-container">
+    @* <div class="right-side-container">
         <PlayerList Connections="@Connections"></PlayerList>
-    </div>
+    </div> *@
 </div>
 
 
@@ -32,7 +32,8 @@
     public bool isHost => LobbyCreator.isHost;
     public List<Connection> Connections => LobbyCreator.Connections;
 
-    public MapData SelectedMap;
+
+    public MapData SelectedMap => LobbyCreator.SelectedMap;
 
     public ChosenMap TheChosenMaper;
 
@@ -55,29 +56,29 @@
 
         IsMenuVisible = true;
 
-        _ = UntilTheseFucksFixThisShit();
-    }
 
-    private async Task UntilTheseFucksFixThisShit()
-    {
-        var pkg = await Package.FetchAsync("clickhq.nightoftheterry", false);
-
-        var mapData = new MapData
+        if (LobbyCreator.MapList.Count > 0)
         {
-            Author = pkg.Org?.Title,
-            Description = pkg.Description,
-            DownVotes = pkg.VotesDown,
-            UpVotes = pkg.VotesUp,
-            Name = pkg.Title,
-            Thumbnail = pkg.Thumb,
-            Indent = pkg.Ident,
-            FullIndent = pkg.FullIdent
-        };
-        SelectedMap = mapData;
+            //SelectedMap = LobbyCreator.MapList.FirstOrDefault();    
+        }
     }
 
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        if (SelectedMap == null)
+        {
+            Log.Info("hellur");
+            if (LobbyCreator.MapList.Count > 0)
+            {
+                //SelectedMap = LobbyCreator.MapList.FirstOrDefault();
+            }
+        }
+    }
 
-    private void OnStartClick(){
+    private void OnStartClick()
+    {
+        if (!Networking.IsHost) return;
         LobbyCreator.ChooseMap(SelectedMap);
         Log.Info(isHost);
     }
@@ -91,7 +92,7 @@
 
     private void GameOptionsClick()
     {
-
+        if (!Networking.IsHost) return;
     }
 
 
@@ -109,9 +110,14 @@
 
     private void MapBrowseClick()
     {
+        if (!Networking.IsHost) return;
         TheMapSelector.Enabled = true;
         TheMapSelector.MapList = LobbyCreator.MapList;
         this.Enabled = false;
+        foreach (var x in Scene.GetAllComponents<WorldPanel>())
+        {
+            x.Enabled = false;    
+        }
     }
 
     private void OptionsClick()
@@ -123,8 +129,9 @@
     {
 
         // Scene.LoadFromFile("scenes/mainmenu.scene");
-        // Game.Disconnect();
-        Game.Load("clickhq.rottenrounds", false);
+        //Networking.Disconnect();
+        Scene.LoadFromFile("scenes/mainmenu.scene");
+        Networking.Disconnect();
     }
 
 

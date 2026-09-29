@@ -1,0 +1,32 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/adobesubstance.shader"
+
+	//---- Rendering ----
+	F_SSS 1
+
+	//---- Ambient Occlusion ----
+	AmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Base Color ----
+	BaseColor "models/chandelier/chandelier_for_texturing_chandelier_baseco.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Metallic ----
+	Metallic "materials/default/default.tga"
+
+	//---- Normal ----
+	Normal "materials/default/default_normal.tga"
+
+	//---- Roughness ----
+	Roughness "materials/default/default.tga"
+
+	//---- SSS ----
+	g_flSSSScale "2.000"
+	g_vSSSColor "[1.000000 0.400000 0.301961 0.000000]"
+	SSSMask "models/chandelier/sss_mask.png"
+}

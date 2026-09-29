@@ -1,5 +1,7 @@
 @using Sandbox;
 @using Sandbox.UI;
+@using System.Threading.Tasks;
+@using System;
 @inherits MainMenuPanelComponent
 @namespace Sandbox
 
@@ -9,7 +11,7 @@
 		    <text class="leaderboard-text">Leaderboards</text>
 	    </div>
         <div class="leaderboard-header">
-            <text class="leaderboard-header-text">Pos.</text>
+            <text class="leaderboard-header-text">Pos</text>
             <text class="leaderboard-header-text">Name</text>
             <text class="leaderboard-header-text">Score</text>
         </div>
@@ -18,11 +20,15 @@
             
 		    @foreach(var x in LeaderboardDataVar)
 		    {
-                
-                <LeaderboardSlot @playerpos="@x.PlayerPOS" @playername ="@x.PlayerName" @playerscore="@x.PlayerScore"></LeaderboardSlot>
-                count += 1;
+
+                <LeaderboardSlot class="leaderslot" @localPlayer="@(Connection.Local.SteamId == x.SteamID ? true : false)" @playerpos="@x.PlayerPOS" @playername="@x.PlayerName" @playerscore="@x.PlayerScore"></LeaderboardSlot>
                 <div class="leaderboard-spacer">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </div>
 		    }
+            @if(personalData != null && !CheckIfPersonalIsTop3())
+            {
+                <LeaderboardSlot class="leaderslot-personal" @localPlayer="@true" @playerpos="@personalData.PlayerPOS" @playername="@personalData.PlayerName" @playerscore="@personalData.PlayerScore"></LeaderboardSlot>
+            }
+             <div class="leaderboard-spacer"></div>
 	    </div>
 	</div>
 </root>
@@ -30,16 +36,20 @@
 @code
 {
 
-    [Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
-
     List<LeaderboardData> LeaderboardDataVar { get; set; } = new();
 
     int count { get; set; } = 0;
 
+    [Property]
+    LeaderboardComp leaderboardcomp { get; set; }
+
+
+    LeaderboardData personalData { get; set; }
+
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
     /// </summary>
-    protected override int BuildHash() => System.HashCode.Combine( LeaderboardDataVar );
+    protected override int BuildHash() => System.HashCode.Combine( LeaderboardDataVar, personalData );
 
     protected override void OnUpdate()
     {
@@ -47,43 +57,58 @@
         //Log.Info(LeaderboardDataVar[0].PlayerName);
     }
 
+    private async Task GetScoreTop3()
+    {
+        var top3 = await leaderboardcomp.GetLeaderboardScoreTop3();
+        foreach (var x in top3)
+        {
+            LeaderboardDataVar.Add(new LeaderboardData
+            {
+                PlayerName = x.DisplayName,
+                PlayerPOS = x.Rank,
+                PlayerScore = Math.Round(x.Value, 0),
+                SteamID = x.SteamId
+            });
+        }
+    }
+
+    private async Task GetScorePersonal()
+    {
+        var top3 = await leaderboardcomp.GetLeaderboardScorePersonal();
+
+        personalData = new LeaderboardData
+        {
+            PlayerName = top3.DisplayName,
+            PlayerPOS = top3.Rank,
+            PlayerScore = Math.Round(top3.Value, 0)
+        };
+
+    }
+
+
+    private bool CheckIfPersonalIsTop3()
+    {
+        foreach (var x in LeaderboardDataVar)
+        {
+            if (x.PlayerName == personalData.PlayerName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private async Task GetStatTop3(string stat)
+    {
+        var top5 = await leaderboardcomp.GetLeaderboardDataTop3(stat);
+
+    }
 
     protected override void OnStart()
     {
-        LeaderboardDataVar.Add(new LeaderboardData()
-        {
-            PlayerPOS=1,
-            PlayerName = "stinky bosth / stinky ryan",
-            PlayerScore=42069
-        });
+        _ = GetScoreTop3();
 
-        LeaderboardDataVar.Add(new LeaderboardData()
-        {
-            PlayerPOS = 2,
-            PlayerName = "Stinky tyler",
-            PlayerScore = 32142
-        });
-
-        LeaderboardDataVar.Add(new LeaderboardData()
-        {
-            PlayerPOS = 3,
-            PlayerName = "Stinky rick",
-            PlayerScore = 23424
-        });
-
-        LeaderboardDataVar.Add(new LeaderboardData()
-        {
-            PlayerPOS = 4,
-            PlayerName = "Stinky joe / Stinky vetter",
-            PlayerScore = 14253
-        });
-
-        LeaderboardDataVar.Add(new LeaderboardData()
-        {
-            PlayerPOS = 5,
-            PlayerName = "Stinky tom / Stinky eman",
-            PlayerScore = 4253
-        });
+        _ = GetScorePersonal();
     }
 
 }

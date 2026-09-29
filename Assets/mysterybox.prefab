@@ -26,7 +26,7 @@
           "go": "498744c0-5a69-4bf3-9733-44320b532b25",
           "component_type": "SoundPointComponent"
         },
-        "Cost": 5,
+        "Cost": 950,
         "Hold": false,
         "InteractionTriggerbox": {
           "_type": "component",
@@ -386,7 +386,8 @@
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

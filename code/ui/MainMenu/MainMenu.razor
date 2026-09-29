@@ -9,8 +9,8 @@
 
     <div class="buttons-container">
         <button class="button-play" @onclick="@OnPlayClicked" @onmouseover="@OnPlayHovered" @onmouseout="@OnPlayUnHovered"></button>
-        <button class="button-leaderboards" @onclick="OnLeaderboardClicked" @onmouseover="@OnLeaderboardHovered" @onmouseout="@OnLeaderboardUnHovered"></button>
-        <button class="button-customize" @onclick="OnCustomizeClicked" @onmouseover="@OnCustomizeHovered" @onmouseout="@OnCustomizeUnHovered"></button>
+        @* <button class="button-leaderboards" @onclick="@OnLeaderboardClicked" @onmouseover="@OnLeaderboardHovered" @onmouseout="@OnLeaderboardUnHovered"></button>
+        <button class="button-customize" @onclick="@OnCustomizeClicked" @onmouseover="@OnCustomizeHovered" @onmouseout="@OnCustomizeUnHovered"></button> *@
         <div class="esc-hint@(IsEscVisible ? "" : "hidden")">[ESC] Menu</div>
     </div>
 
@@ -93,7 +93,7 @@
 
 
         IsMenuVisible = true;
-        
+
         PlayPanel = Panel.AddChild<PlayMenu>();
         PlayPanel.CreaterDecal = CreateDecal;
         PlayPanel.JoinerDecal = JoinDecal;
@@ -138,7 +138,7 @@
         DoorSwiver.isHovered = false;
         foreach (var x in ObjectsForPlay)
         {
-            x.GetComponent<HighlightOutline>().Destroy();
+            x.GetComponent<HighlightOutline>()?.Destroy();
         }
 
     }
@@ -147,7 +147,7 @@
     {
         foreach (var x in ObjectsForLeaderboards)
         {
-            x.GetComponent<HighlightOutline>().Destroy();
+            x.GetComponent<HighlightOutline>()?.Destroy();
         }
     }
 
@@ -155,7 +155,7 @@
     {
         foreach (var x in ObjectsForCustomize)
         {
-            x.GetComponent<HighlightOutline>().Destroy();
+            x.GetComponent<HighlightOutline>()?.Destroy();
         }
     }
 
@@ -165,23 +165,55 @@
         IsBackVisible = false;
         IsEscVisible = true;
         IsMenuVisible = true;
-        CurrentPanel.IsMenuVisible = false;
-        CurrentPanel = null;
+        if (CurrentPanel != null)
+        {
+            CurrentPanel.IsMenuVisible = false;
+            CurrentPanel = null;
+        }
+        
         CameraPan.ResetCamera();
         
     }
 
     public void OnPlayClicked()
     {
-        Log.Info("play button clicked");
+        foreach (var x in ObjectsForPlay)
+        {
+            x.GetComponent<HighlightOutline>()?.Destroy();
+        }
         GotoMenu(PlayPanel);
-
+        
         CameraPan.PanCamera(CameraPan.CameraPlay);
         IsBackVisible = true;
         IsEscVisible = false;
         IsMenuVisible = false;
         DoorSwiver.isHovered = false;
 
+    }
+
+    public void OnLeaderboardClicked()
+    {
+        foreach (var x in ObjectsForLeaderboards)
+        {
+            x.GetComponent<HighlightOutline>()?.Destroy();
+        }
+        //CameraPan.PanCamera(CameraPan.CameraLeaderboards);
+
+        IsBackVisible = true;
+        IsEscVisible = false;
+        IsMenuVisible = false;
+    }
+
+    public void OnCustomizeClicked()
+    {
+        foreach (var x in ObjectsForCustomize)
+        {
+            x.GetComponent<HighlightOutline>()?.Destroy();
+        }
+        //CameraPan.PanCamera(CameraPan.CameraCustomize);
+        IsBackVisible = true;
+        IsEscVisible = false;
+        IsMenuVisible = false;
     }
 
 

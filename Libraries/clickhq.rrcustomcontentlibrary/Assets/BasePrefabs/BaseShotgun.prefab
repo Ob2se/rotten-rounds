@@ -27,6 +27,12 @@
         "DontExpandMagSize": false,
         "FireRate": 0,
         "FleshImpactEffectPrefab": null,
+        "fpsArms": {
+          "_type": "component",
+          "component_id": "a29af83d-2701-42fb-b732-442121900663",
+          "go": "9d522e80-1ebe-49a3-89b7-7e3624a3ecdb",
+          "component_type": "SkinnedModelRenderer"
+        },
         "ImpactEffectPrefab": null,
         "MagMax": 0,
         "MuzzleFlashPrefab": null,
@@ -39,7 +45,9 @@
         "PackedName": null,
         "PumpAction": false,
         "PumpTime": 0.75,
+        "ReloadSound": null,
         "ReloadTime": 0,
+        "ShotSound": null,
         "WeaponDamage": 0,
         "WeaponModel": {
           "_type": "component",
@@ -48,6 +56,8 @@
           "component_type": "SkinnedModelRenderer"
         },
         "WeaponName": null,
+        "WeaponOffsetPos": "0,0,0",
+        "WeaponOffsetRot": "0,0,0",
         "WeaponPower": 0,
         "WeaponType": "Shotgun"
       }
@@ -116,6 +126,70 @@
           }
         ],
         "Children": []
+      },
+      {
+        "__guid": "9d522e80-1ebe-49a3-89b7-7e3624a3ecdb",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "fpsArms",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "a29af83d-2701-42fb-b732-442121900663",
+            "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": null,
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
       }
     ],
     "__properties": {
@@ -133,7 +207,8 @@
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "CustomBounds": false
       }
     },
     "__variables": []

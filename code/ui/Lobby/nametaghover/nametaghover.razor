@@ -1,0 +1,36 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits UI.Panel
+@namespace Sandbox
+
+<root>
+	<div class="card-container">
+        <div class="player-name-level">
+            <div class="player-name">@PlayerName</div>
+            <div class="filter-map-divider"></div>
+            <div class="player-level">@PlayerLevel</div>
+        </div>
+        <div class="filter-map-divider"></div>
+        <img class="player-playcard" src="@PlayCard" />
+
+    </div>
+</root>
+
+@code
+{
+    [Parameter]
+    public string PlayerName { get; set; }
+
+    [Parameter]
+    public string PlayerLevel { get; set; }
+    
+    [Parameter]
+    public string PlayCard { get; set; }
+
+
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( PlayerName, PlayerLevel, PlayCard );
+}

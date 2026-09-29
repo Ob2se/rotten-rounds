@@ -23,6 +23,7 @@
 				[
 					{
 						_class = "RenderMeshFile"
+						name = "board"
 						filename = "models/window/windowboard/animation/fall/boardfallanimation6.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
@@ -38,6 +39,23 @@
 							[
 								"Board_low",
 							]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "noboard"
+						filename = "models/window/emptyfbx.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = [  ]
 						}
 					},
 				]
@@ -64,6 +82,29 @@
 					{
 						_class = "AnimFile"
 						name = "boardfallanimation6"
+						children = 
+						[
+							{
+								_class = "AnimEvent"
+								event_class = "AE_CL_BODYGROUP_SET_VALUE"
+								event_frame = 12
+								event_keys = 
+								{
+									bodygroup = "Board"
+									value = 1
+								}
+							},
+							{
+								_class = "AnimEvent"
+								event_class = "AE_CL_BODYGROUP_SET_VALUE"
+								event_frame = 0
+								event_keys = 
+								{
+									bodygroup = "Board"
+									value = 0
+								}
+							},
+						]
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -87,6 +128,19 @@
 					{
 						_class = "AnimFileReverse"
 						name = "boardanimrepair"
+						children = 
+						[
+							{
+								_class = "AnimEvent"
+								event_class = "AE_CL_BODYGROUP_SET_VALUE"
+								event_frame = 16
+								event_keys = 
+								{
+									bodygroup = "Board"
+									value = 0
+								}
+							},
+						]
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -109,6 +163,36 @@
 					},
 				]
 				default_root_bone_name = ""
+			},
+			{
+				_class = "BodyGroupList"
+				children = 
+				[
+					{
+						_class = "BodyGroup"
+						name = "Board"
+						children = 
+						[
+							{
+								_class = "BodyGroupChoice"
+								name = "aboard"
+								meshes = 
+								[
+									"board",
+								]
+							},
+							{
+								_class = "BodyGroupChoice"
+								name = "noaboard"
+								meshes = 
+								[
+									"noboard",
+								]
+							},
+						]
+						hidden_in_tools = false
+					},
+				]
 			},
 		]
 		model_archetype = ""

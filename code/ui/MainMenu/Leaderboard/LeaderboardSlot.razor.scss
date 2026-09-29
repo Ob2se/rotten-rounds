@@ -2,11 +2,25 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
+    /*border-color: blue;
+    border-width: 2px;*/
+
 
     .player-pos {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-family: AngryChalk;
+        color: lightgrey;
+        width: 13%;
+
+        &.localPlaya1 {
+            color: gold;
+        }
+    }
+
+    .player-pos-spacer {
+        font-size: 2.5rem;
+        width: 5%;
         color: lightgrey;
     }
 
@@ -14,11 +28,26 @@
         font-size: 3rem;
         font-family: AngryChalk;
         color: lightgrey;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        white-space: nowrap;
+        width: 55%;
+
+        &.localPlaya2 {
+            color: gold;
+        }
     }
 
     .player-score {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-family: AngryChalk;
         color: lightgrey;
+        width: 30%;
+        text-align: right;
+
+        &.localPlaya3 {
+            color: gold;
+        }
     }
 }

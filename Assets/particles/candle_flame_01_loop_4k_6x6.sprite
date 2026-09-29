@@ -1,0 +1,18 @@
+{
+  "Animations": [
+    {
+      "Name": "Default",
+      "FrameRate": 15,
+      "Origin": "0.5,0.5",
+      "LoopMode": "Loop",
+      "Frames": [
+        {
+          "Texture": "particles/candle_flame_01_loop_4k_6x6.png",
+          "BroadcastMessages": []
+        }
+      ]
+    }
+  ],
+  "__references": [],
+  "__version": 0
+}

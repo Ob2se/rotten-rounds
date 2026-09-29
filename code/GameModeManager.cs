@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Runtime.Intrinsics.Arm;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using static Sandbox.Citizen.CitizenAnimationHelper;
 using static Sandbox.VideoWriter;
 using static System.Net.WebRequestMethods;
 
@@ -24,9 +25,21 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	[Sync] int maxZombies { get; set; }
 	[Sync] int zombiesRemainingInRound { get; set; }
 
+
+	[Sync]
+	private bool RoundFreeze { get; set; } = false;
+
 	int zombiesLeft;
 
 	bool StartingBoxSpawned;
+
+	[Sync] public NetDictionary<long, int> KillList { get; set; } = new();
+
+	[Sync] public NetDictionary<long, int> DownedList { get ; set; } = new();
+
+	[Sync] public NetDictionary<long, int> ReviveList { get; set; } = new();
+
+	[Sync] public NetDictionary<long, float> PointsGainedList { get; set; } = new();
 
 	private bool PlayersConnecting { get; set; }
 
@@ -39,9 +52,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 	bool RoundChanging = false;
 
-	//IEnumerable<GameObject> zombieSpawnPoints;
-	//List<GameObject> zombieSpawnPointsList;
-	//List<(GameObject, bool)> zombieSpawns;
+
 
 	[Property]
 	private bool editortesting { get; set; } = false;
@@ -50,8 +61,17 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 	public static event Action ChangeRound;
 
-	/*[Sync(SyncFlags.FromHost)]
-	private List<Connection> connectingConnections { get; set; } = new();*/
+	public static event Action<string> PowerUpActivated;
+
+	public static event Action<string> PowerUpDeactivated;
+
+
+	public float InstaKillTimeLeft => InstaKillStarted ? Math.Max(0, InstaKillTime - TimeSinceInstaKillStarted) : -1;
+
+	public float FireSaleTimeLeft => FireSaleStarted ? Math.Max(0, FireSaleTime - TimeSinceFireSaleStarted) : -1;
+
+	public float DoublePointsTimeLeft => DoublePointsStarted ? Math.Max(0, DoublePointsTime - TimeSinceDoublePointsStarted) : -1;
+
 
 
 	public bool Restarting { get; set; } = false;
@@ -63,18 +83,22 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	[Sync]
 	private TimeSince TimeSinceGameStarted { get; } = 0;
 
+	[Sync( SyncFlags.FromHost )]
+	private TimeSince TimeSinceInstaKillStarted { get; set; } = 0;
 
-	private TimeSince TimeSinceInstaKillStarted = 0;
-	private TimeSince TimeSinceFireSaleStarted = 0;
-	private TimeSince TimeSinceDoublePointsStarted = 0;
+	[Sync( SyncFlags.FromHost )]
+	private TimeSince TimeSinceFireSaleStarted { get; set; } = 0;
+
+	[Sync( SyncFlags.FromHost )]
+	private TimeSince TimeSinceDoublePointsStarted { get; set; } = 0;
 
 	private float InstaKillTime = 30f;
 	private float FireSaleTime = 30f;
 	private float DoublePointsTime = 30f;
 
-	public bool InstaKillStarted = false;
-	public bool FireSaleStarted = false;
-	public bool DoublePointsStarted = false;
+	[Sync( SyncFlags.FromHost )] public bool InstaKillStarted { get; set; }
+	[Sync( SyncFlags.FromHost )] public bool FireSaleStarted { get; set; }
+	[Sync( SyncFlags.FromHost )] public bool DoublePointsStarted { get; set; }
 
 	WeaponManager WeaponManager { get; set; }
 
@@ -92,6 +116,9 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	/// The prefab to spawn for the player to control.
 	/// </summary>
 	[Property] public GameObject PlayerPrefab { get; set; }
+
+	[Property]
+	public GameObject SpectatorPrefab { get; set; }
 
 	/// <summary>
 	/// A list of points to choose from randomly to spawn the player in. If not set, we'll spawn at the
@@ -120,11 +147,8 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	public bool PowerOn { get; set; } = false;
 
 
-	[Change( "PlayerListChanged" )] public Dictionary<Connection, Player> PlayerList { get; set; } = new();
-
-
-
-
+	public List<Connection> Spectators { get; set; } = new();
+	public bool GameEnding { get; private set; }
 
 	CloneConfig ZombieConfig = new CloneConfig();
 
@@ -134,11 +158,14 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 	TimeSince TimeSinceRoundEnd;
 
+	TimeSince TimeSinceGameEnded { get; set; }
+
 
 	protected override void OnStart()
 	{
 		PlayerPrefab = GameObject.GetPrefab( "playercharacter.prefab" );
 		zombiePrefab = GameObject.GetPrefab( "zombie.prefab" );
+		SpectatorPrefab = GameObject.GetPrefab( "prefabs/spectator/spectator.prefab" );
 
 		base.OnStart();
 
@@ -154,12 +181,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 				Networking.CreateLobby( testlob );
 
-				//await Task.DelayRealtimeSeconds( 1 );
 
-				/*SceneFile lobbyScene;
-
-				ResourceLibrary.TryGet<SceneFile>( "scenes/lobby.scene", out lobbyScene );
-				Scene.Load( lobbyScene );*/
 			}
 		}
 
@@ -181,7 +203,6 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 				mysteryboxplacments.Add( mplace );
 				if ( mplace.StartWithThisPlacement )
 				{
-					Log.Info( "hellur" );
 					if ( !StartingBoxSpawned )
 					{
 						SpawnMysterbox( mplace );
@@ -218,11 +239,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		}
 
 		GetWeaponManager();
-		if ( Networking.IsHost )
-		{
-			Zombie.ZombieDied += ZombieDeath;
-		}
-		//GameStarted = true;
+
 	}
 
 
@@ -272,10 +289,24 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 	}
 
+	[Rpc.Broadcast]
+	public void InvokeFiresalestart()
+	{
+		PowerUpActivated?.Invoke( "firesale" );
+	}
+
+	[Rpc.Broadcast]
+	public void InvokeFiresaleend()
+	{
+		PowerUpDeactivated?.Invoke( "firesale" );
+	}
+
+
 
 	[Rpc.Host]
 	public void StartFireSale()
 	{
+		InvokeFiresalestart();
 		FireSaleBoxes.Clear();
 		TimeSinceFireSaleStarted = 0;
 		FireSaleStarted = true;
@@ -302,6 +333,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	[Rpc.Host]
 	private void EndFireSale()
 	{
+		InvokeFiresaleend();
 		foreach ( var x in FireSaleBoxes )
 		{
 			if ( x.CanTakeWeapon || x.BoxOpen )
@@ -336,31 +368,73 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	[Rpc.Broadcast]
 	public void ClearPlayerList()
 	{
-		PlayerList.Clear();
+		PlayersList.Clear();
+	}
+
+
+	[Sync] public bool IsOnslaught { get; set; } = false;
+
+	[Rpc.Host]
+	public void StartOnslaught(int zombieamount)
+	{
+		if ( IsOnslaught ) return;
+		IsOnslaught = true;
+		KillAllZombies();
+		// Set up an onslaught scenario
+		maxZombies = zombieamount;
+		zombiesRemainingInRound = maxZombies;
+		ZombiesSpawned = 0;
+		AllZombiesSpawned = false;
+
+		// Crank up the difficulty
+		CurrentZombiesHealth *= 1.5f;
+		CurrentZombiesSpeed = 190f;
+		
+		TimeSinceLastZombie = 0f;
+
+		TeleportPlayers();
+
+
 	}
 
 
 
 	[Rpc.Broadcast]
-	public void AddToPlayerList( string steamid, Player player )
+	public void AddToPlayerList( string steamid, Player playerr, float points = -1f )
 	{
-		var x = PlayersList;
-		foreach ( var connection in Connection.All )
-		{
-			if ( connection.SteamId.ToString() == steamid )
-			{
-				var y = new PlayerListInfo() { PlayerName = connection.DisplayName, PlayerSteamID = connection.SteamId.ToString(), player = player };
-				x.Add( y );
-				PlayersList = x;
-			}
-		}
-		//foreach ( var y in PlayerList )
-		//{
-		//	Log.Info( y.Key.DisplayName );
-		//}
+		var list = PlayersList;
 
-		//PlayerListChanged(PlayerList.Values.ToList());
-		//Log.Info(connection + " | " +  player);
+		// Check if the player is already in the list
+		var index = list.FindIndex( p => p.PlayerSteamID == steamid );
+
+		if ( index != -1 )
+		{
+			// Update the existing player instance
+			var existing = list[index];
+			existing.player = playerr;
+			if ( points >= 0f )
+				existing.Points = points;
+			else if ( playerr != null )
+				existing.Points = playerr.Points;
+			list[index] = existing;
+			PlayersList = list;
+			return;
+		}
+
+		// Otherwise, find their connection to get their display name
+		var conn = Connection.All.FirstOrDefault( c => c.SteamId.ToString() == steamid );
+		if ( conn != null )
+		{
+			var info = new PlayerListInfo()
+			{
+				PlayerName = conn.DisplayName,
+				PlayerSteamID = steamid,
+				Points = points >= 0f ? points : (playerr?.Points ?? 0f),
+				player = playerr
+			};
+			list.Add( info );
+			PlayersList = list;
+		}
 	}
 
 	[Rpc.Broadcast]
@@ -392,10 +466,10 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	private void UnFreezePlayers()
 	{
 
-		foreach ( var x in PlayerList )
+		foreach ( var x in PlayersList )
 		{
 
-			x.Value.PlayerController.WalkSpeed = 110;
+			x.player.PlayerController.WalkSpeed = 110;
 
 		}
 	}
@@ -405,7 +479,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	{
 		PowerOn = true;
 		Scene.RunEvent<IPower>( x => x.OnPowerTurnedOn() );
-		Log.Info( "Power on" );
+		
 	}
 
 	protected override async Task OnLoad()
@@ -428,18 +502,39 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	public void OnDisconnected( Connection connection )
 	{
 		Log.Info( $"Disconnected: {connection}" );
-
+		var playa = PlayersList.FirstOrDefault( p => p.PlayerSteamID == connection.SteamId.ToString() );
 		RemoveFromPlayerList( connection.SteamId.ToString() );
+		if( Spectators.Contains( connection ) )
+		{
+			Spectators.Remove( connection );
+		}
+
+
+		var specs = playa.player?.GameObject.GetComponentsInChildren<Spectator>();
+
+		//if disconnected player has a spectator, readd that spectator to the spectators, really should just have the spectators change players but
+		if ( specs.Count() > 0 )
+		{
+			foreach ( var spec in specs )
+			{
+				var conn = spec.Network.Owner;
+				spec.GameObject.Destroy();
+				if ( Spectators.Contains( conn ) )
+				{
+					Spectators.Remove( conn );
+				}
+				SetJoinedSpectator( conn );
+			}
+		}
+
+
+
 	}
 
 	public void OnConnected( Connection connection )
 	{
 		Log.Info( connection.Name + " is connecting" );
 
-		/*if ( connection.SteamId.ToString() == "76561198214368983" || connection.SteamId.ToString() == "76561198125023690" || connection.SteamId.ToString() == "76561198081081329" )
-		{
-			connection.Kick("fucking dumb idiot stinky pants");
-		}*/
 	}
 
 
@@ -450,6 +545,17 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	public void OnActive( Connection channel )
 	{
 		Log.Info( $"Player '{channel.DisplayName}' has joined the game" );
+
+		//if game is started add to spectators
+		if ( GameStarted )
+		{
+			SetJoinedSpectator( channel );
+			return;
+		}
+
+
+
+
 
 		if ( !PlayerPrefab.IsValid() )
 			return;
@@ -480,29 +586,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		GivePlayerStartingWeapon( playerclass );
 
 
-
-
-		//if(!GameStarted && !editortesting)
-		//{
-		//	FreezePlayer(playerclass);
-		//}
-
 	}
-
-
-	/*private void UpdatePlayersHud()
-	{
-		Log.Info( "private void updatephud" );
-		foreach ( var i in PlayerList )
-		{
-			//Log.Info( i );
-			i.Value.UpdatePlayerHud();
-		}
-	}
-*/
-
-
-
 
 
 	/// <summary>
@@ -541,54 +625,69 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	}
 
 
+	[Rpc.Broadcast]
+	public void InvokeDoublepointsstart()
+	{
+		PowerUpActivated?.Invoke( "doublepoints" );
+	}
+
+	[Rpc.Broadcast]
+	public void InvokeDoublepointsend()
+	{
+		PowerUpDeactivated?.Invoke( "doublepoints" );
+	}
+
+
 	[Rpc.Host]
 	public void DoublePointsStart()
 	{
-		Log.Info( "double points started" );
+		InvokeDoublepointsstart();
 		TimeSinceDoublePointsStarted = 0f;
 		DoublePointsStarted = true;
-		var x = GetAllZombies();
-		foreach ( var zombie in x )
-		{
-			zombie.DoublePointsActivated = true;
-		}
+
 	}
 
 	[Rpc.Host]
 	public void DoublePointsEnd()
 	{
-		Log.Info( "double points ended" );
+		InvokeDoublepointsend();
 		DoublePointsStarted = false;
-		var x = GetAllZombies();
-		foreach ( var zombie in x )
-		{
-			zombie.DoublePointsActivated = false;
-		}
+
 	}
 
 
 	[Rpc.Host]
 	public void InstaKillStart()
 	{
-		Log.Info( "insta kill started" );
+		InvokeInstakillstart();
 		TimeSinceInstaKillStarted = 0f;
 		InstaKillStarted = true;
 		var x = GetAllZombies();
 		foreach ( var zombie in x )
 		{
-			zombie.Health = 0f;
+			zombie.Health = 1f;
 			zombie.InstaKillActivated = true;
 		}
 	}
 
 
 
+	[Rpc.Broadcast]
+	public void InvokeInstakillstart()
+	{
+		PowerUpActivated?.Invoke( "instakill" );
+	}
 
+	[Rpc.Broadcast]
+	public void InvokeInstakillend()
+	{
+		PowerUpDeactivated?.Invoke( "instakill" );
+	}
 
 	[Rpc.Host]
 	public void InstaKillEnd()
 	{
-		Log.Info( "insta kill ended" );
+		InvokeInstakillend();
 		InstaKillStarted = false;
 		var x = GetAllZombies();
 		foreach ( var zombie in x )
@@ -603,8 +702,97 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	{
 		foreach ( var x in Scene.GetAllComponents<Player>() )
 		{
-			Log.Info( "giving a player max ammo" );
 			x.Inventory.ServerGiveMaxAmmo();
+		}
+	}
+
+
+	[Rpc.Host]
+	public void SetPlayerSpectator( Player player )
+	{
+		if ( !Networking.IsHost ) return;
+		Log.Info(player.Network.Owner.DisplayName + " is now a spectator");
+		
+		var conn = player.Network.Owner;
+		var steamid = conn.SteamId.ToString();
+		
+		// Save points before destroying the player
+		var savedPoints = player.Points;
+		
+		var spec = SpectatorPrefab.Clone();
+		spec.NetworkSpawn( conn );
+		Spectators.Add( conn );
+		
+		player.GameObject.Destroy();
+		
+		// Update their playerlist info to signify they are spectating (null player), keep their points
+		AddToPlayerList( steamid, null, savedPoints );
+	}
+
+	[Rpc.Host]
+	public void SetJoinedSpectator( Connection connection )
+	{
+		if ( !Networking.IsHost ) return;
+		var spec = SpectatorPrefab.Clone();
+		spec.NetworkSpawn( connection );
+		Spectators.Add( connection );
+		
+		// Register them in the playerlist with a null player object so they show up on scoreboards
+		AddToPlayerList( connection.SteamId.ToString(), null, 0f );
+	}
+
+
+	[Rpc.Host]
+	public void RespawnPlayer( Connection connection )
+	{
+		if ( !Networking.IsHost ) return;
+		if (Spectators.Contains( connection ) )
+		{
+			// Find saved points from PlayerListInfo before respawning
+			var steamid = connection.SteamId.ToString();
+			var existingInfo = PlayersList.FirstOrDefault( p => p.PlayerSteamID == steamid );
+			var savedPoints = existingInfo.Points;
+		
+			var startLocation = FindSpawnLocation().WithScale( 1 );
+
+			// Spawn this object and make the client the owner
+			var player = PlayerPrefab.Clone( startLocation, name: $"Player - {connection.DisplayName}" );
+
+			player.NetworkSpawn( connection );
+
+			var playerComp = player.GetComponent<Player>();
+
+			if ( savedPoints <= 0f )
+			{
+				// Late joiner who never played — give full starting loadout
+				GivePlayerStartingWeapon( playerComp );
+			}
+			else
+			{
+				// Returning player — restore their saved points
+				GivePlayerRespawnWeapon( playerComp );
+				playerComp.SetHealthToMax();
+				playerComp.AddPoints( (int)savedPoints );
+			}
+
+			AddToPlayerList( steamid, playerComp );
+
+		}
+	}
+
+
+	[Rpc.Host]
+	public void RespawnAllPlayers()
+	{
+		if ( !Networking.IsHost ) return;
+		foreach ( var connection in Spectators )
+		{
+			RespawnPlayer( connection );
+		}
+		Spectators.Clear();
+		foreach ( var x in Scene.GetAllComponents<Spectator>() )
+		{
+			x.GameObject.Destroy();
 		}
 	}
 
@@ -613,19 +801,28 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	[Rpc.Host]
 	private void StartRound()
 	{
+		
+		//incr round
 		Round++;
+
+
+		//change server name to current round
+		Networking.ServerName = $"Rotten Rounds | In-Game | Round: {Round}";
+
+
+		//round progression
 		int baseZombies = 5;
 		int linearGrowth = Round * 3;
 		int midRoundBonus = Math.Max( 0, Round - 10 ) * 6;
 		int endGameBonus = (int)(Math.Pow( Math.Max( 0, Round - 15 ), 2 ) * 4.5f);
 		this.maxZombies = baseZombies + linearGrowth + midRoundBonus + endGameBonus;
-		float baseHealth = 60f;
-		float linearHealthGrowth = Round * 10f;
+		float baseHealth = 40f;
+		float linearHealthGrowth = Round * 5f;
 		float midRoundHealthBonus = Math.Max( 0, Round - 10 ) * 25f;
 		float endGameHealthBonus = (float)(Math.Pow( Math.Max( 0, Round - 15 ), 2 ) * 18f);
 		CurrentZombiesHealth = baseHealth + linearHealthGrowth + midRoundHealthBonus + endGameHealthBonus;
 		float baseSpeed = 70f;
-		float linearSpeedGrowth = Round * 1.8f;
+		float linearSpeedGrowth = Round * 3.8f;
 		float midRoundSpeedBonus = Math.Max( 0, Round - 10 ) * 2.5f;
 		float endGameSpeedBonus = (float)(Math.Pow( Math.Max( 0, Round - 15 ), 2 ) * 1.2f);
 		float maxSpeedCap = 190f;
@@ -635,13 +832,12 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		zombiesRemainingInRound = this.maxZombies;
 		TimeSinceLastZombie = 0f;
 
+		//spawn zombie
 		SpawnZombie();
 
 		AllZombiesSpawned = false;
 		RoundChanging = false;
 
-		Log.Info( Round );
-		Log.Info( this.maxZombies );
 
 
 	}
@@ -649,69 +845,168 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	[Rpc.Host]
 	public void KillAllZombies()
 	{
+
+		//get all zombies in the scene
+
 		var x = Scene.GetAllComponents<Zombie>();
 		foreach ( var y in x )
 		{
-			y.ZombieDead();
+			//play nuke death
+
+			y.NukeZombie();
 		}
 	}
 
 	private void WaitToStartGame()
 	{
-		if ( TimeSinceGameStarted > 7 )
+
+		//loop through connections
+
+		foreach ( var x in Connection.All )
 		{
-			UnFreezePlayers();
-			GameStarted = true;
-			StartRound();
+
+			//if any connection is connecting return;
+			if ( x.IsConnecting )
+			{
+				return;
+			}
 		}
+
+		//unfreeze players
+		UnFreezePlayers();
+
+		//start game
+		GameStarted = true;
+		StartRound();
+		
 	}
 
 
 	private GameObject RandomZombieSpawn()
 	{
-		List<GameObject> ValidList = new List<GameObject>();
+		List<ZombieSpawn> ValidList = new();
+		List<ZombieSpawn> zedSpawnInfluenced = new();
+
+		//go through each zombiespawn
 		foreach ( var x in ZombieSpawnPoints )
 		{
+
+			//if its activated add it to the valid list
 			if ( x.activated )
 			{
-				Log.Info( x );
-				ValidList.Add( x.GameObject );
+				ValidList.Add( x );
 
 			}
+			//if its activated and in a influence zone add it to the influence zone list
+			if ( x.activated && x.InInfluenceZone )
+			{
+				zedSpawnInfluenced.Add( x );
+			}
 		}
+
+		//if this list is null there will be no valid spawn anyway so return null
 
 		if ( ValidList.Count == 0 )
 		{
 			return null;
 		}
 
+		//prioritize spawning a zombie in a influence zone
+		if ( zedSpawnInfluenced.Count > 0 )
+		{
+			//Log.Info( "influe count: " + zedSpawnInfluenced.Count );
+			int rndIndex = rndm.Next( zedSpawnInfluenced.Count );
+			if ( zedSpawnInfluenced[rndIndex] == null ) return null;
+
+			return zedSpawnInfluenced[rndIndex].GameObject;
+		}
+
+		//if theres influencezone spawn just get a random valid spawn
 		int randomIndex = rndm.Next( ValidList.Count );
 		if ( ValidList[randomIndex] == null )
 			return null;
 
-		return ValidList[randomIndex];
+		return ValidList[randomIndex].GameObject;
 
 
 	}
 
-	[Rpc.Host]
-	public void ZombieDeath()
-	{
-		zombieCount = Math.Max( 0, zombieCount - 1 );
-		zombiesRemainingInRound = Math.Max( 0, zombiesRemainingInRound - 1 );
-	}
+    [Rpc.Host]
+    public void ZombieDeath()
+    {
+        zombieCount = Math.Max(0, zombieCount - 1);
+        zombiesRemainingInRound = Math.Max(0, zombiesRemainingInRound - 1);
+		
+    }
+
+
 
 	private void RoundChanged()
 	{
-		Log.Info( "round changed" );
+
 		ChangeRound?.Invoke();
 	}
 
 
 	private void PlayerListChanged()
 	{
-		Log.Info( "player list changed" );
+
 		PlayerListChange?.Invoke();
+	}
+
+
+	[Rpc.Host]
+	private void EndGame(GEndReason reason)
+	{
+		TimeSinceGameEnded = 0f;
+		GameEnding = true;
+		TellAllToSetHR();
+		var end = GameObject.GetPrefab( "prefabs/endgamecamera/endgamecam.prefab" );
+
+		foreach ( var x in Scene.GetAllComponents<Player>() )
+		{
+			x.DisplayEndGameStats();
+		}
+
+
+		foreach (var conn in Connection.All)
+		{
+			var cam = end.Clone();
+			var ui = cam.GetComponentInChildren<EndGameScreen>();
+			
+			
+			var idek = cam.NetworkSpawn( conn );
+			ui.EndReason = reason;
+			Log.Info( ui + " and  " + reason );
+		}
+		
+	}
+
+	[Rpc.Broadcast]
+	private void TellAllToSetHR()
+	{
+		_ = SetHighestRound();
+	}
+
+
+	private async Task SetHighestRound()
+	{
+		//get highest round stat
+		var stats = Sandbox.Services.Stats.GetLocalPlayerStats( "clickhq.rottenrounds" );
+		await stats.Refresh();
+		var HighestRound = stats.Get( "highest_round" );
+
+
+		//if the current round is greater than highestrounds max then set new value.
+		if ( Round > HighestRound.Max )
+		{
+			Sandbox.Services.Stats.SetValue( "highest_round", Round );
+			Log.Info( "new highest round: " + Round );
+		}
+		else
+		{
+			Log.Info( "highest round not beaten. Current: " + Round + ", Personal Best: " + HighestRound.Value );
+		}
 	}
 
 
@@ -719,11 +1014,19 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	private void RoundEnd()
 	{
 		//play round end sound
-		//zombieCount = 0;
-		//wait 3 seconds
+
+
+		//respawn any spectators
+		if ( Spectators.Count > 0 )
+		{
+			RespawnAllPlayers();
+
+		}
+
+
+
 		RoundChanging = true;
 		TimeSinceRoundEnd = 0;
-		//StartRound();
 
 	}
 
@@ -759,9 +1062,30 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 		// Speed scaling follows round pacing set in StartRound.
 		agent.MaxSpeed = CurrentZombiesSpeed;
-
-		// Health scaling follows round pacing set in StartRound.
 		zombie.Health = CurrentZombiesHealth;
+
+		if ( Round >= 5 )
+		{ 
+			if ( OneIn( 10 ) )
+			{
+				if ( OneIn( 2 ) ) 
+				{ 
+					agent.MaxSpeed = 190f;
+					zombie.Health = CurrentZombiesHealth / 2;
+				}
+				else
+				{
+					agent.MaxSpeed = CurrentZombiesSpeed / 2;
+					zombie.Health = CurrentZombiesHealth * 2;
+				}
+			}
+		}
+		// Health scaling follows round pacing set in StartRound.
+
+		if ( InstaKillStarted )
+		{
+			zombie.Health = 1;
+		}
 
 		zombo.NetworkSpawn();
 
@@ -783,17 +1107,32 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	}
 
 
+	//helper method to get one in x value
+	public static bool OneIn( int x )
+	{
+		var Rando = new Random();
+		if ( x <= 1 )
+			return true; // If someone passes 0 or 1, it's guaranteed true
+
+		return Rando.Next( x ) == 0;
+	}
+
+
+
 	private void ZombieSpawning()
 	{
-		float baseInterval = 3f;     // Round 1 speed
-		float intervalDrop = 0.25f;  // Drop every 5 rounds
+		float baseInterval = 2f;     // Round 1 speed
+		float intervalDrop = 0.35f;  // Drop every 5 rounds
 		float minInterval = 0.3f;    // Never go faster than this
 		int intervalSteps = Math.Max( 0, (Round - 1) / 5 );
 
 		float interval = baseInterval - (intervalSteps * intervalDrop);
 		interval -= Math.Max( 0, Round - 15 ) * 0.05f; // Endgame acceleration
 		interval = Math.Max( interval, minInterval );
-
+		if ( IsOnslaught )
+		{
+			interval = 1f;
+		}
 		if ( TimeSinceLastZombie >= interval )
 		{
 			SpawnZombie();
@@ -818,20 +1157,20 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 	}
 
 
-
+	//set starting values
 	public void GivePlayerStartingWeapon( Player player )
 	{
-
-		//Log.Info($"giving { Channel.DisplayName } starting weapon");
-
-		//var playerClass = Player.GetComponent<Player>();
 
 		player.SetHealthToMax();
 		player.AddPoints( 500 );
 		WeaponManager.GivePlayerWeapon( "usp-rottenrounds.prefab", player, 0, 0 );
 
-		//player.ChangeCurrentSlot(1);
+	}
 
+	public void GivePlayerRespawnWeapon( Player player )
+	{
+		player.SetHealthToMax();
+		WeaponManager.GivePlayerWeapon( "usp-rottenrounds.prefab", player, 0, 0 );
 	}
 
 
@@ -859,15 +1198,9 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		}
 	}
 
-	private void HandleRoundChanging()
-	{
-		//Log.Info( zombieCount );
-		if ( RoundChange )
-		{
-			RoundEnd();
-			RoundChange = false;
-		}
-	}
+	
+
+
 
 
 
@@ -878,7 +1211,8 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		Restarting = true;
 		KillAllZombies();
 		var scene = Scene.Scene;
-		//ResourceLibrary.TryGet<SceneFile>( scene.Source.ResourcePath, out var scenetolaunch );
+
+
 		var options = new SceneLoadOptions();
 		var WeaponPrefabList = WeaponManager.WeaponPaths;
 		options.SetScene( scene.Source as SceneFile );
@@ -891,34 +1225,161 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 		weaponManager.WeaponPaths = WeaponPrefabList;
 
 		sceneObject.NetworkSpawn();
-		/*Round = 0;
-		GameStarted = false;
-		RespawnPlayers();
-		Restarting = false;*/
+
 	}
+
+
 
 	[Rpc.Host]
-	private void RespawnPlayers()
+	private void TeleportPlayers()
 	{
-		ClearPlayerList();
-		foreach ( var y in Scene.GetAllComponents<Player>() )
+		
+		var list = PlayersList;
+		var totalPlayers = list.Count;
+		for ( int i = 0; i < totalPlayers; i++ )
 		{
-			y.GameObject.Destroy();
+			var player = list[i];
+
+			if ( player.player != null )
+			{
+				Log.Info( "what the freak" );
+				MovePlayer( i, totalPlayers );
+
+			}
 		}
-		foreach ( var x in Connection.All )
+		
+	}
+
+
+	[Rpc.Broadcast]
+	private void MovePlayer( int player, int totalPlayers )
+	{
+		var playertoteleport = PlayersList[player];
+		if ( playertoteleport.player != null )
 		{
-			var startLocation = FindSpawnLocation().WithScale( 1 );
-
-			// Spawn this object and make the client the owner
-			var player = PlayerPrefab.Clone( startLocation, name: $"Player - {x.DisplayName}" );
-			var playerclass = player.GetComponent<Player>();
-
-
-			AddToPlayerList( x.SteamId.ToString(), playerclass );
-			player.NetworkSpawn( x );
-
+			playertoteleport.player.GameObject.WorldPosition = GetSpacedTeleportPosition( player, totalPlayers );
 		}
 	}
+
+	private Vector3 GetTeleportDestinationCenter()
+	{
+		var teleportLoc = Scene.GetAllComponents<OnslaughtTeleportLoc>().FirstOrDefault();
+		return teleportLoc != null ? teleportLoc.GameObject.WorldPosition : Vector3.Zero;
+	}
+
+	private Vector3 GetSpacedTeleportPosition( int index, int totalPlayers )
+	{
+		var center = GetTeleportDestinationCenter();
+		var baseHeightOffset = Vector3.Up * 4f;
+
+		if ( totalPlayers <= 1 )
+		{
+			return ResolveGroundedPosition( center + baseHeightOffset, center );
+		}
+
+		const float spacingRadius = 48f;
+		int playersInRing = 6;
+		int ring = 0;
+		int ringIndex = index;
+
+		while ( ringIndex >= playersInRing )
+		{
+			ringIndex -= playersInRing;
+			ring++;
+			playersInRing += 6;
+		}
+
+		float radius = spacingRadius * (ring + 1);
+		float angleStep = (MathF.PI * 2f) / playersInRing;
+		float angle = angleStep * ringIndex;
+		var horizontalOffset = new Vector3( MathF.Cos( angle ), MathF.Sin( angle ), 0f ) * radius;
+
+		var desired = center + horizontalOffset + baseHeightOffset;
+		return ResolveGroundedPosition( desired, center );
+	}
+
+	private Vector3 GetSpacedReturnPosition( int index, int totalPlayers )
+	{
+		var center = this.GameObject.WorldPosition;
+		var baseHeightOffset = Vector3.Up * 4f;
+
+		if ( totalPlayers <= 1 )
+		{
+			return ResolveGroundedPosition( center + baseHeightOffset, center );
+		}
+
+		const float spacingRadius = 48f;
+		int playersInRing = 6;
+		int ring = 0;
+		int ringIndex = index;
+
+		while ( ringIndex >= playersInRing )
+		{
+			ringIndex -= playersInRing;
+			ring++;
+			playersInRing += 6;
+		}
+
+		float radius = spacingRadius * (ring + 1);
+		float angleStep = (MathF.PI * 2f) / playersInRing;
+		float angle = angleStep * ringIndex;
+		var horizontalOffset = new Vector3( MathF.Cos( angle ), MathF.Sin( angle ), 0f ) * radius;
+
+		var desired = center + horizontalOffset + baseHeightOffset;
+		return ResolveGroundedPosition( desired, center );
+	}
+
+	private Vector3 ResolveGroundedPosition( Vector3 desired, Vector3 center )
+	{
+		if ( TryGetGroundedPlacement( desired, out var grounded ) )
+		{
+			return grounded;
+		}
+
+		// Search nearby slots if the chosen position has no walkable ground below.
+		for ( int ring = 1; ring <= 3; ring++ )
+		{
+			float radius = 24f * ring;
+			for ( int i = 0; i < 8; i++ )
+			{
+				float angle = (MathF.PI * 2f / 8f) * i;
+				var offset = new Vector3( MathF.Cos( angle ), MathF.Sin( angle ), 0f ) * radius;
+				var candidate = desired + offset;
+				if ( TryGetGroundedPlacement( candidate, out grounded ) )
+				{
+					return grounded;
+				}
+			}
+		}
+
+		if ( TryGetGroundedPlacement( center, out grounded ) )
+		{
+			return grounded;
+		}
+
+		return desired;
+	}
+
+	private bool TryGetGroundedPlacement( Vector3 position, out Vector3 groundedPosition )
+	{
+		var start = position + Vector3.Up * 80f;
+		var end = position + Vector3.Down * 400f;
+		var trace = Scene.Trace
+			.FromTo( start, end )
+			.IgnoreGameObjectHierarchy( GameObject )
+			.Run();
+
+		if ( !trace.Hit || trace.GameObject == null || trace.Normal.z < 0.45f )
+		{
+			groundedPosition = default;
+			return false;
+		}
+
+		groundedPosition = trace.HitPosition + Vector3.Up * 6f;
+		return true;
+	}
+
+
 
 
 	protected override void OnUpdate()
@@ -926,46 +1387,46 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 
 		if ( IsProxy ) return;
 
-		//Log.Info( ZombieSpawnPoints.Count );
 
 		if ( Networking.IsHost )
 		{
 
-			/*if ( editortesting )
+
+			if ( GameEnding)
 			{
-				GameStarted = true;
+				if ( TimeSinceGameEnded >= 5f )
+				{
+					var options = new SceneLoadOptions();
+					options.SetScene( "scenes/lobby.scene" );
+
+					Game.ChangeScene( options );
+				}
 				return;
-			}*/
+			}
+
 
 			if ( !GameStarted )
 			{
 				WaitToStartGame();
 			}
 
-			if ( PlayersList.All( (p => p.player.Downed) ) && !Restarting && GameStarted )
+			if ( Scene.GetAllComponents<Player>().All( (p => p.Downed) ) && !Restarting && GameStarted && !GameEnding )
 			{
-				Log.Info( "ALL DEAD! D::::" );
-				RestartGame();
+
+				KillAllZombies();
+				if(IsOnslaught)
+				{
+					EndGame(GEndReason.OnSlaughtFailed);
+				}
+				else
+					EndGame(GEndReason.AllPlayersDead);
+				return;
 			}
 
 
 
 			if ( Restarting ) return;
 
-
-			/*	foreach ( var x in Connection.All )
-				{
-					if ( x.IsConnecting )
-					{
-						if ( !connectingConnections.Contains( x ) )
-						{
-							Log.Info( x.Name + " is connecting" );
-							connectingConnections.Add( x );
-						}
-
-					}
-
-				}*/
 
 
 			if ( !GameStarted ) return;
@@ -995,9 +1456,29 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 				}
 			}
 
+			// Safety: reconcile counters with actual scene state to prevent desync deadlocks
+			if ( AllZombiesSpawned && !RoundChanging )
+			{
+				var aliveZombies = Scene.GetAllComponents<Zombie>().Count( z => z.isAlive );
+				if ( aliveZombies == 0 && (zombieCount > 0 || zombiesRemainingInRound > 0) )
+				{
+					Log.Warning( $"Zombie counter desync detected! zombieCount={zombieCount}, zombiesRemaining={zombiesRemainingInRound}, actual alive=0. Forcing round end." );
+					zombieCount = 0;
+					zombiesRemainingInRound = 0;
+				}
+			}
+
 			if ( !RoundChanging && AllZombiesSpawned && zombieCount <= 0 && zombiesRemainingInRound <= 0 )
 			{
-				RoundEnd();
+				if ( IsOnslaught )
+				{
+					EndGame(GEndReason.OnSlaughtSurvived);
+					Scene.GetAllComponents<GameEnderBase>().FirstOrDefault()?.GameEndSuccess();
+				}
+				else
+				{
+					RoundEnd();
+				}
 			}
 
 			if ( RoundChanging && TimeSinceRoundEnd >= 5f )
@@ -1006,7 +1487,7 @@ public sealed class GameModeManager : Component, Component.INetworkListener, IZo
 			}
 
 			HandleZombieSpawning();
-			//HandleRoundChanging();
+
 
 		}
 

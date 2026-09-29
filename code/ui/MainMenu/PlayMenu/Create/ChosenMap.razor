@@ -10,12 +10,12 @@
             <div class="map-text-info-wrapper">
                 <text class="chosen-author">@MapAuthor</text>
                 <div class="map-votes-wrapper">
-                    <text class="thumbs-up-icon">thumb_up_alt</text>
+                    <button class="thumbs-up-icon" @onclick="@OnUpVote">thumb_up_alt</button>
                     <text class="chosen-up-votes">@MapUpVotes</text>
-                    <text class="thumbs-down-icon">thumb_down_alt</text>
+                    <button class="thumbs-down-icon">thumb_down_alt</button>
                     <text class="chosen-down-votes">@MapDownVotes</text>
                 </div>
-        </div>
+            </div>
         <text class="chosen-text-description">@MapDescription</text>
     </div>
 </div>
@@ -35,10 +35,21 @@
     [Parameter]
     public string MapThumbnail { get; set; }
 
+    [Parameter]
+    public string MapIdent { get; set; }
+
     public void asdf()
     {
         Log.Info("asdf");
     }
+
+    private void OnUpVote()
+    {
+        
+
+    }
+
+
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
